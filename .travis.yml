@@ -2,5 +2,11 @@ sudo: false
 language: java
 jdk: oraclejdk8
 
+cache:
+  directories:
+  - $HOME/.gradle
+before_cache:
+  - rm -f $HOME/.gradle/caches/*.lock
+  - rm -f $HOME/.gradle/caches/*.bin
 script:
   - ./gradlew test
