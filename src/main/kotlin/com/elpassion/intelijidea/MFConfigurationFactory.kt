@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project
 
 class MFConfigurationFactory(configurationType: ConfigurationType) : ConfigurationFactory(configurationType) {
 
-    override fun createTemplateConfiguration(project: Project) = MFRunConfiguration(project, this, "Mainframer")
+    override fun createTemplateConfiguration(project: Project) = MFRunnerConfiguration(project, this, "Mainframer")
 
     override fun getName() = FACTORY_NAME
 

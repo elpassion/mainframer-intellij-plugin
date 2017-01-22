@@ -4,17 +4,17 @@ import com.intellij.openapi.options.SettingsEditor
 import javax.swing.JComponent
 
 
-class MFSettingsEditor : SettingsEditor<MFRunConfiguration>() {
+class MFSettingsEditor : SettingsEditor<MFRunnerConfiguration>() {
 
     override fun createEditor(): JComponent {
         return MFDemoSettingsEditorPanel().mainPanel
     }
 
-    override fun applyEditorTo(s: MFRunConfiguration) {
+    override fun applyEditorTo(s: MFRunnerConfiguration) {
 
     }
 
-    override fun resetEditorFrom(s: MFRunConfiguration) {
+    override fun resetEditorFrom(s: MFRunnerConfiguration) {
 
     }
 }

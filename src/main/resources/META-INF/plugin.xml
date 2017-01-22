@@ -24,6 +24,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.elpassion.intelijidea.MFRunConfigurationType"/>
+        <programRunner implementation="com.elpassion.intelijidea.MFProgramRunner"/>
     </extensions>
 
 </idea-plugin>

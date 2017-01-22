@@ -1,6 +1,6 @@
 import com.elpassion.intelijidea.MFConfigurationFactory
-import com.elpassion.intelijidea.MFRunConfiguration
 import com.elpassion.intelijidea.MFRunConfigurationType
+import com.elpassion.intelijidea.MFRunnerConfiguration
 import com.intellij.openapi.command.impl.DummyProject
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,6 +16,6 @@ class MFConfigurationFactoryTest {
 
     @Test
     fun shouldCreateProperRunConfiguration() {
-        assertEquals(MFRunConfiguration::class.java, confFactory.createTemplateConfiguration(DummyProject.getInstance()).javaClass)
+        assertEquals(MFRunnerConfiguration::class.java, confFactory.createTemplateConfiguration(DummyProject.getInstance()).javaClass)
     }
 }
