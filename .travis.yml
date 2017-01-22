@@ -8,5 +8,8 @@ cache:
 before_cache:
   - rm -f $HOME/.gradle/caches/*.lock
   - rm -f $HOME/.gradle/caches/*.bin
+  - rm -f $HOME/.gradle/daemon
+  - rm -f $HOME/.gradle/native
+
 script:
   - ./gradlew test
