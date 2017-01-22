@@ -1,0 +1,44 @@
+buildscript {
+    ext.kotlin_version = '1.0.6'
+
+    repositories {
+        jcenter()
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.intellij' version "0.1.10"
+}
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+group 'com.elpassion.intelijidea'
+version '0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+sourceSets {
+    main {
+        java.srcDirs 'src/main/kotlin'
+        kotlin.srcDirs 'src/main/kotlin'
+        resources.srcDir 'src/main/resources'
+    }
+    test {
+        java.srcDirs 'src/test/kotlin'
+        kotlin.srcDirs 'src/test/kotlin'
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
