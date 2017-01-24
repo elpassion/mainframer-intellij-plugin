@@ -12,7 +12,7 @@ before_cache:
   - rm -f $HOME/.gradle/native
 
 script:
-- ./gradlew test
+  - ./gradlew test
 
 notifications:
   slack:
