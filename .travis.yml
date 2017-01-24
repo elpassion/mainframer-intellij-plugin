@@ -12,7 +12,11 @@ before_cache:
   - rm -f $HOME/.gradle/native
 
 script:
-  - ./gradlew test
+- ./gradlew test
 
 notifications:
-  slack: elpassion:MMVt3NnH3yPusNWhFbyBvvPB
+  slack:
+    rooms:
+      secure: i75o0wwiOqJ8h7P9w0Pc5K5rosOgGZvgPA+50+mXBceZ1RSa/0Sn5gZgSey7NeM5DVrVvKFptqmIhIlkyI6fBlKIcQHdMfspPq+JicjsbHqM0SYkHI6oisoN7bsLqhgKH69g/B5e7lHZ38D9HpO5dulEce9s5+hCeggrrSAnT+JR37Nt12bUQuD6rGzeLK0ck18L/h9NWdtZN2vwsh5fSMOBGddNy6fwi6Ech0V6ZSAXGct0tvqJS6JyTiZoNbM0Z7mkMKMmmDKz13izi2jl0dZ3l5+kUtL1sgXdLgJ3aRIfEDIWZXPLQSExV9AkO5Z6VHiNFYLVpka0Ibhg1PIp91i0cdeAgDlro80ajDzoB7BZTGYQkYyPo5Z47SpdBK3hlit1A4uHXyGtmTYJO9Kcgp63c7ujppjBM6oMNHQFoEi4yh1Q4lSPNWMQpNr5nDjnZxvQssn1Qx0MfjWqN68m8EBON3UP5Ex271Gy7uBm6qQk4IWIz4j4DUJYaLhVyL2XMF+tmNyZ3TSVQELN280KelwtBDRDd8UxoLc7Mfh5p28y9QWiYSdBkz/y+BMLyjA1gP43Cz6HEhhW5LhlqBT/yHZD9j8vFqoeGuA+KlsVu43qR6waXa8S99V1gVWlf7j0PS0r4OUzhnE4ODXSBQKk2DTX4EvShrZ3YMABs3QbBWI=
+    on_success: change
+    on_failure: always
