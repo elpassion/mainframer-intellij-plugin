@@ -13,3 +13,6 @@ before_cache:
 
 script:
   - ./gradlew test
+
+notifications:
+  slack: elpassion:MMVt3NnH3yPusNWhFbyBvvPB
