@@ -5,7 +5,13 @@ import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.actionSystem.DataContext
+import com.intellij.openapi.ui.MessageType
+import com.intellij.openapi.ui.popup.Balloon
+import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.Key
+import com.intellij.openapi.wm.WindowManager
+import com.intellij.ui.awt.RelativePoint
+import javax.swing.SwingUtilities
 
 class MFBeforeRunTaskProvider : BeforeRunTaskProvider<MFBeforeRunTask>() {
 
@@ -26,6 +32,14 @@ class MFBeforeRunTaskProvider : BeforeRunTaskProvider<MFBeforeRunTask>() {
 
     override fun executeTask(context: DataContext?, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask?): Boolean {
         //TODO: implement
+        SwingUtilities.invokeAndWait {
+            val statusBar = WindowManager.getInstance().getStatusBar(configuration?.project)
+            JBPopupFactory.getInstance()
+                    .createHtmlTextBalloonBuilder("Mainframer is executing task: ${configuration?.name}", MessageType.INFO, null)
+                    .setFadeoutTime(5000)
+                    .createBalloon()
+                    .show(RelativePoint.getNorthEastOf(statusBar.component), Balloon.Position.above)
+        }
         return true
     }
 
