@@ -46,6 +46,3 @@ class MFBeforeRunTaskProvider : BeforeRunTaskProvider<MFBeforeRunTask>() {
     }
 }
 
-class MFBeforeRunTask : BeforeRunTask<MFBeforeRunTask>(MFBeforeRunTaskProvider.ID) {
-
-}
