@@ -6,15 +6,18 @@ import javax.swing.JComponent
 
 class MFSettingsEditor : SettingsEditor<MFRunnerConfiguration>() {
 
+    private val mainEditorPanel = MFSettingsEditorPanel()
+
     override fun createEditor(): JComponent {
-        return MFSettingsEditorPanel().mainPanel
+        mainEditorPanel.taskName.text = MFRunnerConfiguration.DEFAULT_TASK
+        return mainEditorPanel.panel
     }
 
-    override fun applyEditorTo(s: MFRunnerConfiguration) {
-
+    override fun applyEditorTo(configuration: MFRunnerConfiguration) {
+        configuration.taskName = mainEditorPanel.taskName.text
     }
 
-    override fun resetEditorFrom(s: MFRunnerConfiguration) {
-
+    override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
+        configuration.taskName = ""
     }
 }
