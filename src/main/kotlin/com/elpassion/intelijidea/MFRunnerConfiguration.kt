@@ -31,7 +31,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME)
+        taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME) ?: DEFAULT_TASK
     }
 
     override fun writeExternal(element: Element) {
