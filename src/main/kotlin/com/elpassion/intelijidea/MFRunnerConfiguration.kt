@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.util.showBalloon
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.LocatableConfigurationBase
@@ -21,7 +22,12 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        return MFCommandLineState(environment, taskName)
+        if (isMainframerScriptAvailable()) {
+            return MFCommandLineState(environment, taskName)
+        } else {
+            showBalloon(project, "Couldn't find mainframer.sh file in project base directory.")
+            return null
+        }
     }
 
     override fun readExternal(element: Element) {
@@ -34,7 +40,9 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         XmlSerializer.serializeInto(taskName, element)
     }
 
-    companion object{
+    private fun isMainframerScriptAvailable() = project.baseDir.findChild("mainframer.sh") != null
+
+    companion object {
         val DEFAULT_TASK = "assembleDebug"
     }
 }
