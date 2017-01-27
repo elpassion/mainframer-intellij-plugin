@@ -9,7 +9,6 @@ import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
-import com.intellij.util.xmlb.XmlSerializer
 import org.jdom.Element
 
 class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
@@ -32,17 +31,18 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        XmlSerializer.deserializeInto(taskName, element)
+        taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME)
     }
 
-    override fun writeExternal(element: Element?) {
+    override fun writeExternal(element: Element) {
         super.writeExternal(element)
-        XmlSerializer.serializeInto(taskName, element)
+        element.setAttribute(CONFIGURATION_ATTR_TASK_NAME, taskName)
     }
 
     private fun isMainframerScriptAvailable() = project.baseDir.findChild("mainframer.sh") != null
 
     companion object {
         val DEFAULT_TASK = "assembleDebug"
+        private val CONFIGURATION_ATTR_TASK_NAME = "MFRunner.taskName"
     }
 }
