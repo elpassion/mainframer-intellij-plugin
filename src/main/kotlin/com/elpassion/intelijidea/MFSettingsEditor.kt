@@ -21,7 +21,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
         if (configuration.mainframerPath.isNullOrEmpty()) {
             throw ConfigurationException("Mainframer path cannot be empty")
         }
-        if(File(configuration.mainframerPath).exists().not()){
+        if (File(configuration.mainframerPath).exists().not()) {
             throw ConfigurationException("Mainframer path is invalid")
         }
         if (configuration.taskName.isNullOrEmpty()) {
