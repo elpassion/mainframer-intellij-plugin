@@ -1,15 +1,15 @@
 package com.elpassion.intelijidea
 
 import com.intellij.openapi.options.SettingsEditor
+import com.intellij.openapi.project.Project
 import javax.swing.JComponent
 
 
-class MFSettingsEditor : SettingsEditor<MFRunnerConfiguration>() {
+class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>() {
 
-    private val mainEditorPanel = MFSettingsEditorPanel()
+    private val mainEditorPanel = MFSettingsEditorPanel(project)
 
     override fun createEditor(): JComponent {
-        mainEditorPanel.taskName.text = MFRunnerConfiguration.DEFAULT_TASK
         return mainEditorPanel.panel
     }
 

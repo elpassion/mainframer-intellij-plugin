@@ -10,19 +10,21 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import org.jdom.Element
+import java.io.File
 
 class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
-    var taskName: String = DEFAULT_TASK
+    var taskName: String? = null
+    var mainframerPath: String? = null
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
-        return MFSettingsEditor()
+        return MFSettingsEditor(project)
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        if (isMainframerScriptAvailable()) {
-            return MFCommandLineState(environment, taskName)
+        if (isMainframerScriptAvailable() && taskName != null) {
+            return MFCommandLineState(environment, mainframerPath!!, taskName!!)
         } else {
             showBalloon(project, "Couldn't find mainframer.sh file in project base directory.")
             return null
@@ -31,18 +33,20 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME) ?: DEFAULT_TASK
+        taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME)
+        mainframerPath = element.getAttributeValue(CONFIGURATION_ATTR_MAINFRAMER_PATH)
     }
 
     override fun writeExternal(element: Element) {
         super.writeExternal(element)
         element.setAttribute(CONFIGURATION_ATTR_TASK_NAME, taskName)
+        element.setAttribute(CONFIGURATION_ATTR_MAINFRAMER_PATH, mainframerPath)
     }
 
-    private fun isMainframerScriptAvailable() = project.baseDir.findChild("mainframer.sh") != null
+    private fun isMainframerScriptAvailable() = mainframerPath != null && File(mainframerPath).exists()
 
     companion object {
-        val DEFAULT_TASK = "assembleDebug"
         private val CONFIGURATION_ATTR_TASK_NAME = "MFRunner.taskName"
+        private val CONFIGURATION_ATTR_MAINFRAMER_PATH = "MFRunner.taskName"
     }
 }
