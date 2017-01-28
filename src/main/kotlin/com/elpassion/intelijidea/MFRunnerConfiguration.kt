@@ -47,6 +47,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
+    fun isValid(): Boolean = File(mainframerPath).exists() && !taskName.isNullOrEmpty()
+
     companion object {
         private val CONFIGURATION_ATTR_TASK_NAME = "MFRunner.taskName"
         private val CONFIGURATION_ATTR_MAINFRAMER_PATH = "MFRunner.taskName"
