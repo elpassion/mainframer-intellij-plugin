@@ -39,8 +39,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun writeExternal(element: Element) {
         super.writeExternal(element)
-        element.setAttribute(CONFIGURATION_ATTR_TASK_NAME, taskName)
-        element.setAttribute(CONFIGURATION_ATTR_MAINFRAMER_PATH, mainframerPath)
+        taskName?.let { element.setAttribute(CONFIGURATION_ATTR_TASK_NAME, it) }
+        mainframerPath?.let { element.setAttribute(CONFIGURATION_ATTR_MAINFRAMER_PATH, it) }
     }
 
     private fun isMainframerScriptAvailable() = mainframerPath != null && File(mainframerPath).exists()
