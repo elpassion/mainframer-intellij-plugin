@@ -30,7 +30,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
-        configuration.taskName = ""
-        configuration.mainframerPath = ""
+        mainEditorPanel.taskName.text = configuration.taskName ?: ""
+        mainEditorPanel.mainframerScript.text = configuration.mainframerPath ?: ""
     }
 }
