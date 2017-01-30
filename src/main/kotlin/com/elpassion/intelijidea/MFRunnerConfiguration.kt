@@ -26,7 +26,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         if (isMainframerScriptAvailable() && taskName != null) {
             return MFCommandLineState(environment, mainframerPath!!, taskName!!)
         } else {
-            showBalloon(project, "Couldn't find mainframer.sh file in project base directory.")
+            showBalloon(project, "Couldn't find mainframer.sh file in path: $mainframerPath")
             return null
         }
     }
