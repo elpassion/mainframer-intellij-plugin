@@ -43,7 +43,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         mainframerPath?.let { element.setAttribute(CONFIGURATION_ATTR_MAINFRAMER_PATH, it) }
     }
 
-    private fun isMainframerScriptAvailable() = mainframerPath != null && File(mainframerPath, "mainframer.sh").exists()
+    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, "mainframer.sh").exists() } ?: false
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
