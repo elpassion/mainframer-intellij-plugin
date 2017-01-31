@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea
 
-import com.elpassion.intelijidea.util.showBalloon
+import com.elpassion.intelijidea.util.mfScriptDownloadUrl
+import com.elpassion.intelijidea.util.showError
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.LocatableConfigurationBase
@@ -9,8 +10,11 @@ import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.platform.templates.github.DownloadUtil
 import org.jdom.Element
 import java.io.File
+import java.net.URL
+import kotlin.concurrent.thread
 
 class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     : LocatableConfigurationBase(project, configurationFactory, name) {
@@ -26,7 +30,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         if (isMainframerScriptAvailable() && taskName != null) {
             return MFCommandLineState(environment, mainframerPath!!, taskName!!)
         } else {
-            showBalloon(project, "Couldn't find mainframer.sh file in path: $mainframerPath")
+            showScriptNotFoundError()
             return null
         }
     }
@@ -43,11 +47,22 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         mainframerPath?.let { element.setAttribute(CONFIGURATION_ATTR_MAINFRAMER_PATH, it) }
     }
 
-    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, "mainframer.sh").exists() } ?: false
-
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
     fun isValid(): Boolean = isMainframerScriptAvailable() && !taskName.isNullOrEmpty()
+
+    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, "mainframer.sh").exists() } ?: false
+
+    private fun showScriptNotFoundError() {
+        showError(project, "Couldn't find mainframer.sh file in path: $mainframerPath\n" +
+                "<a href=\"$mfScriptDownloadUrl\">Click to download latest script</a>") { downloadFile(it.url) }
+    }
+
+    private fun downloadFile(url: URL) {
+        thread {
+            DownloadUtil.downloadAtomically(null, url.toString(), File(project.basePath, "mainframer.sh"))
+        }
+    }
 
     companion object {
         private val CONFIGURATION_ATTR_TASK_NAME = "MFRunner.taskName"

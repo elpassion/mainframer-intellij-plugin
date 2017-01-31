@@ -6,12 +6,13 @@ import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.ui.awt.RelativePoint
+import javax.swing.event.HyperlinkEvent
 
-fun showBalloon(project: Project?, message: String) {
+fun showError(project: Project, message: String, hyperlinkListener: ((HyperlinkEvent) -> Unit)? = null) {
     val statusBar = WindowManager.getInstance().getStatusBar(project)
     JBPopupFactory.getInstance()
-            .createHtmlTextBalloonBuilder(message, MessageType.ERROR, null)
+            .createHtmlTextBalloonBuilder(message, MessageType.ERROR, hyperlinkListener)
             .setFadeoutTime(5000)
             .createBalloon()
-            .show(RelativePoint.getNorthEastOf(statusBar.component), Balloon.Position.above)
+            .show(RelativePoint.getCenterOf(statusBar.component), Balloon.Position.above)
 }
