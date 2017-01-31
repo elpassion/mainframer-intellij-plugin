@@ -54,8 +54,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, "mainframer.sh").exists() } ?: false
 
     private fun showScriptNotFoundError() {
-        showError(project, "Couldn't find mainframer.sh file in path: $mainframerPath\n" +
-                "<a href=\"$mfScriptDownloadUrl\">Click to download latest script</a>") { downloadFile(it.url) }
+        showError(project, "Cannot find <b>mainframer.sh</b> in the following path:\n\"$mainframerPath\"\n\n" +
+                "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") { downloadFile(it.url) }
     }
 
     private fun downloadFile(url: URL) {
