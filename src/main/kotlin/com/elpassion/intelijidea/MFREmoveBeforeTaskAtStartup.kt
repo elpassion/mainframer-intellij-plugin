@@ -4,6 +4,7 @@ import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.RunnerAndConfigurationSettings
+import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 
@@ -15,13 +16,16 @@ class MFREmoveBeforeTaskAtStartup : StartupActivity {
         val existingConfigurations = runManagerEx.getExistingConfigurations()
         val templateConfigurations = runManagerEx.getTemplateConfigurations()
         val configurationTypes = existingConfigurations.values + templateConfigurations.values
-        configurationTypes.forEach {
-            val task = mfTaskProvider.createTask(it.configuration)
-            if (task != null) {
-                task.isEnabled = true
-                runManagerEx.setBeforeRunTasks(it.configuration, listOf<BeforeRunTask<*>>(task), false)
-            }
-        }
+        configurationTypes.map { it.configuration }
+                .filterIsInstance<RunConfigurationBase>()
+                .filter { it.isCompileBeforeLaunchAddedByDefault }
+                .forEach {
+                    val task = mfTaskProvider.createTask(it)
+                    if (task != null) {
+                        task.isEnabled = true
+                        runManagerEx.setBeforeRunTasks(it, listOf<BeforeRunTask<*>>(task), false)
+                    }
+                }
     }
 
     private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myConfigurations")
