@@ -22,18 +22,11 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
-    <project-components>
-        <component>
-            <implementation-class>com.elpassion.intelijidea.MFRemoveBeforeTaskProjectComponent</implementation-class>
-            <skipForDefaultProject/>
-        </component>
-    </project-components>
-
-
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.elpassion.intelijidea.MFRunConfigurationType"/>
         <programRunner implementation="com.elpassion.intelijidea.MFProgramRunner"/>
         <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.MFBeforeRunTaskProvider"/>
+        <postStartupActivity implementation="com.elpassion.intelijidea.MFREmoveBeforeTaskAtStartup" order="last"/>
     </extensions>
 
 </idea-plugin>

@@ -4,13 +4,11 @@ import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.RunnerAndConfigurationSettings
-import com.intellij.openapi.components.AbstractProjectComponent
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.startup.StartupActivity
 
-
-class MFRemoveBeforeTaskProjectComponent(private val project: Project) : AbstractProjectComponent(project) {
-
-    override fun projectOpened() {
+class MFREmoveBeforeTaskAtStartup : StartupActivity {
+    override fun runActivity(project: Project) {
         val runManagerEx = RunManagerEx.getInstanceEx(project)
         val mfTaskProvider = BeforeRunTaskProvider.getProvider(project, MFBeforeRunTaskProvider.ID)!!
 
