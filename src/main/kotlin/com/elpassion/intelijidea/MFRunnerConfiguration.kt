@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.util.mfFilename
 import com.elpassion.intelijidea.util.mfScriptDownloadUrl
 import com.elpassion.intelijidea.util.showError
 import com.intellij.execution.Executor
@@ -51,16 +52,16 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     fun isValid(): Boolean = isMainframerScriptAvailable() && !taskName.isNullOrEmpty()
 
-    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, "mainframer.sh").exists() } ?: false
+    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
     private fun showScriptNotFoundError() {
-        showError(project, "Cannot find <b>mainframer.sh</b> in the following path:\n\"$mainframerPath\"\n\n" +
+        showError(project, "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
                 "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") { downloadFile(it.url) }
     }
 
     private fun downloadFile(url: URL) {
         thread {
-            DownloadUtil.downloadAtomically(null, url.toString(), File(project.basePath, "mainframer.sh"))
+            DownloadUtil.downloadAtomically(null, url.toString(), File(project.basePath, mfFilename))
         }
     }
 

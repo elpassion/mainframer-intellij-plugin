@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
@@ -10,7 +11,7 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val mainframerPath: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
     override fun startProcess(): ProcessHandler {
-        return OSProcessHandler(GeneralCommandLine("bash", "$mainframerPath/mainframer.sh", "./gradlew $taskName")
+        return OSProcessHandler(GeneralCommandLine("bash", "$mainframerPath/$mfFilename", "./gradlew $taskName")
                 .withWorkDirectory(executionEnvironment.project.basePath))
     }
 }
