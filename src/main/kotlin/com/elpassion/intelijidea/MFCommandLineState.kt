@@ -10,7 +10,7 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val mainframerPath: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
     override fun startProcess(): ProcessHandler {
-        val project = executionEnvironment.project
-        return OSProcessHandler(GeneralCommandLine(mainframerPath, taskName).withWorkDirectory(project.basePath))
+        return OSProcessHandler(GeneralCommandLine("bash", "$mainframerPath/mainframer.sh", "./gradlew $taskName")
+                .withWorkDirectory(executionEnvironment.project.basePath))
     }
 }
