@@ -16,6 +16,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun applyEditorTo(configuration: MFRunnerConfiguration) {
+        configuration.buildCommand = mainEditorPanel.buildCommand.text
         configuration.taskName = mainEditorPanel.taskName.text
         configuration.mainframerPath = mainEditorPanel.mainframerScript.text
         if (configuration.mainframerPath.isNullOrEmpty()) {
@@ -30,7 +31,8 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
-        mainEditorPanel.taskName.text = configuration.taskName ?: ""
+        mainEditorPanel.buildCommand.text = configuration.buildCommand ?: "./gradlew"
+        mainEditorPanel.taskName.text = configuration.taskName ?: "build"
         mainEditorPanel.mainframerScript.text = configuration.mainframerPath ?: configuration.project.basePath
     }
 }

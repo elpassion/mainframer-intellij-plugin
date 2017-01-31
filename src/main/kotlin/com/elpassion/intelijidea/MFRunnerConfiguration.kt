@@ -20,6 +20,7 @@ import kotlin.concurrent.thread
 class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
+    var buildCommand: String? = null
     var taskName: String? = null
     var mainframerPath: String? = null
 
@@ -28,8 +29,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        if (isMainframerScriptAvailable() && taskName != null) {
-            return MFCommandLineState(environment, mainframerPath!!, taskName!!)
+        if (isMainframerScriptAvailable()) {
+            return MFCommandLineState(environment, mainframerPath!!, buildCommand!!, taskName!!)
         } else {
             showScriptNotFoundError()
             return null

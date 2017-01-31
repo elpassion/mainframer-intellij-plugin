@@ -11,6 +11,7 @@ import javax.swing.*;
 
 public class MFSettingsEditorPanel {
     private final Project project;
+    public JTextField buildCommand;
     public JTextField taskName;
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
