@@ -11,8 +11,10 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val mainframerPath: String,
                          private val buildCommand: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
-    override fun startProcess(): ProcessHandler {
-        return OSProcessHandler(GeneralCommandLine("bash", "$mainframerPath/$mfFilename", "$buildCommand $taskName")
-                .withWorkDirectory(executionEnvironment.project.basePath))
-    }
+
+    override fun startProcess(): ProcessHandler =
+            OSProcessHandler(createCommandLine().withWorkDirectory(executionEnvironment.project.basePath))
+
+    private fun createCommandLine() =
+            GeneralCommandLine("bash", "$mainframerPath/$mfFilename", "$buildCommand $taskName")
 }
