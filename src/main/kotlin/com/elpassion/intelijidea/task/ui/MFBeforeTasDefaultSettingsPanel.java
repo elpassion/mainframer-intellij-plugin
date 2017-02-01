@@ -48,8 +48,8 @@ public class MFBeforeTasDefaultSettingsPanel {
     }
 
     public void reset() {
-        buildCommandField.setText(settingsProvider.getDefaultMainframerScript());
-        mainframerScriptField.setText(settingsProvider.getDefaultBuildCommand());
+        buildCommandField.setText(settingsProvider.getDefaultBuildCommand());
+        mainframerScriptField.setText(settingsProvider.getDefaultMainframerScript());
         taskNameField.setText(settingsProvider.getDefaultTaskName());
     }
 }
