@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx

@@ -1,6 +1,6 @@
-import com.elpassion.intelijidea.MFConfigurationFactory
-import com.elpassion.intelijidea.MFRunConfigurationType
-import com.elpassion.intelijidea.MFRunnerConfiguration
+import com.elpassion.intelijidea.configuration.MFConfigurationFactory
+import com.elpassion.intelijidea.configuration.MFRunConfigurationType
+import com.elpassion.intelijidea.configuration.MFRunnerConfiguration
 import com.intellij.openapi.command.impl.DummyProject
 import org.junit.Assert.assertEquals
 import org.junit.Test

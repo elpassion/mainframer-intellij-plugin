@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.configuration
 
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.runners.DefaultProgramRunner

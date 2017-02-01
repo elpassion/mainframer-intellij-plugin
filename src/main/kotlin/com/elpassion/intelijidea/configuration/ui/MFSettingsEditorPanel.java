@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea;
+package com.elpassion.intelijidea.configuration.ui;
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
@@ -9,7 +9,7 @@ import com.intellij.util.IconUtil;
 
 import javax.swing.*;
 
-public class MFBeforeTaskSettingsGeneralPanel {
+public class MFSettingsEditorPanel {
     private final Project project;
     public JTextField buildCommand;
     public JTextField taskName;
@@ -17,7 +17,7 @@ public class MFBeforeTaskSettingsGeneralPanel {
     private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
     public TextFieldWithBrowseButton mainframerScript;
 
-    public MFBeforeTaskSettingsGeneralPanel(Project project) {
+    public MFSettingsEditorPanel(Project project) {
         this.project = project;
     }
 

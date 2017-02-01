@@ -1,5 +1,7 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.configuration
 
+import com.elpassion.intelijidea.common.MFCommandLineState
+import com.elpassion.intelijidea.configuration.MFSettingsEditor
 import com.elpassion.intelijidea.util.mfFilename
 import com.elpassion.intelijidea.util.mfScriptDownloadUrl
 import com.elpassion.intelijidea.util.showError
@@ -57,8 +59,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
     private fun showScriptNotFoundError() {
-        showError(project, "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
-                "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") {
+        showError(project, "Cannot find <b>${mfFilename}</b> in the following path:\n\"$mainframerPath\"\n\n" +
+                "<a href=\"${mfScriptDownloadUrl}\">Download latest script file</a>") {
             if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) downloadFile(it.url)
         }
     }

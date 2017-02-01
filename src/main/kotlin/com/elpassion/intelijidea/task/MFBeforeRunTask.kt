@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.task
 
 import com.intellij.execution.BeforeRunTask
 

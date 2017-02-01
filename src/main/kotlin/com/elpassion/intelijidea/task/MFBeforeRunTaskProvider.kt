@@ -1,5 +1,6 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.task
 
+import com.elpassion.intelijidea.task.ui.MFBeforeRunTaskDialog
 import com.elpassion.intelijidea.util.showError
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.ExecutionException

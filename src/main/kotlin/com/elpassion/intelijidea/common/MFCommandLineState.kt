@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.common
 
 import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.execution.configurations.CommandLineState
@@ -16,5 +16,5 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
             ColoredProcessHandler(createCommandLine().withWorkDirectory(executionEnvironment.project.basePath))
 
     private fun createCommandLine() =
-            GeneralCommandLine("bash", "$mainframerPath/$mfFilename", "$buildCommand $taskName")
+            GeneralCommandLine("bash", "$mainframerPath/${mfFilename}", "$buildCommand $taskName")
 }

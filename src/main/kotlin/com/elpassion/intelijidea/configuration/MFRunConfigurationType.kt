@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.util.MFIcons
 import com.intellij.execution.configurations.ConfigurationType
