@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.configuration.MFSettingsEditor
+import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.util.mfFilename
 import com.elpassion.intelijidea.util.mfScriptDownloadUrl
 import com.elpassion.intelijidea.util.showError
@@ -12,12 +12,9 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
-import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
-import com.intellij.platform.templates.github.DownloadUtil
 import org.jdom.Element
 import java.io.File
-import java.net.URL
 import javax.swing.event.HyperlinkEvent
 
 class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
@@ -61,17 +58,10 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     private fun showScriptNotFoundError() {
         showError(project, "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
                 "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") {
-            if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) downloadFile(it.url)
+            if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
+                MFDownloader.downloadFileToProject(it.url, project, mfFilename)
+            }
         }
-    }
-
-    private fun downloadFile(url: URL) {
-        DownloadUtil.provideDataWithProgressSynchronously(project, "Downloading file",
-                "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}...", {
-            val progressIndicator = ProgressManager.getInstance().progressIndicator
-            DownloadUtil.downloadAtomically(progressIndicator, url.toString(), File(project.basePath, mfFilename))
-            project.baseDir.refresh(true, false)
-        }, null)
     }
 
     companion object {
