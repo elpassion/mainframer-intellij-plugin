@@ -76,12 +76,12 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     }
 
     private fun createWaitingProcessAdapter(result: Ref<Boolean>, targetDone: Semaphore) = object : ProcessAdapter() {
-        override fun startNotified(event: ProcessEvent?) {
+        override fun startNotified(event: ProcessEvent) {
             targetDone.down()
         }
 
-        override fun processTerminated(event: ProcessEvent?) {
-            result.set(event!!.exitCode == 0)
+        override fun processTerminated(event: ProcessEvent) {
+            result.set(event.exitCode == 0)
             targetDone.up()
         }
     }
