@@ -28,15 +28,15 @@ class MFRemoveBeforeTaskAtStartup : StartupActivity {
                 }
     }
 
-    private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection(myConfigurations)
+    private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myConfigurations")
 
-    private fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection(myTemplateConfigurationsMap)
+    private fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myTemplateConfigurationsMap")
 }
 
 //TODO: remove usage of reflection
 private fun <T> Any.getFieldByReflection(fieldName: String): T {
     val declaredField = this.javaClass.getDeclaredField(fieldName)
     declaredField.isAccessible = true
-    @Suppress(UNCHECKED_CAST)
+    @Suppress("UNCHECKED_CAST")
     return declaredField.get(this) as T
 }
