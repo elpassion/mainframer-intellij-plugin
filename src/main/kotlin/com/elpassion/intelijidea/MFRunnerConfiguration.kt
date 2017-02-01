@@ -68,7 +68,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
                 "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}...", {
             val progressIndicator = ProgressManager.getInstance().progressIndicator
             DownloadUtil.downloadAtomically(progressIndicator, url.toString(), File(project.basePath, mfFilename))
-            //TODO: refresh Project
+            project.baseDir.refresh(true, false)
         }, null)
     }
 
