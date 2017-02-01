@@ -29,7 +29,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        if (isMainframerScriptAvailable()) {
+        if (isMfFileAvailable()) {
             return MFCommandLineState(environment, mainframerPath!!, buildCommand!!, taskName!!)
         } else {
             showScriptNotFoundError()
@@ -51,15 +51,15 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
-    fun isValid(): Boolean = isMainframerScriptAvailable() && !taskName.isNullOrEmpty()
+    fun isValid(): Boolean = isMfFileAvailable() && !taskName.isNullOrEmpty()
 
-    private fun isMainframerScriptAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
+    private fun isMfFileAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
     private fun showScriptNotFoundError() {
         showError(project, "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
                 "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") {
             if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                MFDownloader.downloadFileToProject(it.url, project, mfFilename)
+                MFDownloader.downloadFileToProject(it.url.toString(), project, mfFilename)
             }
         }
     }
