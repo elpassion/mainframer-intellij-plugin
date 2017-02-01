@@ -32,9 +32,15 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
         val dialog = MFBeforeRunTaskDialog(project)
-        dialog.command = task.command
-        task.command = dialog.command
-        return dialog.showAndGet()
+        dialog.commandField.text = task.buildCommand
+        dialog.mainframerScript.text = task.mainframerPath
+        dialog.taskField.text = task.taskName
+        if (dialog.showAndGet()) {
+            task.mainframerPath = dialog.mainframerScript.text
+            task.buildCommand = dialog.taskField.text
+            task.taskName = dialog.taskField.text
+        }
+        return false
     }
 
     override fun getId(): Key<MFBeforeRunTask> = ID
@@ -44,30 +50,19 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         return true
     }
 
-    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask?): Boolean {
+    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
         SwingUtilities.invokeAndWait {
             showBalloon(configuration?.project, "Mainframer is executing task: ${configuration?.name}")
         }
-        return executeSync(context)
+        return executeSync(context, task)
     }
 
-    fun executeSync(context: DataContext): Boolean {
+    fun executeSync(context: DataContext, task: MFBeforeRunTask): Boolean {
         val targetDone = Semaphore()
         val result = Ref(false)
-
         try {
-            ApplicationManager.getApplication().invokeAndWait({
-                executeImpl(context, 0L, object : ProcessAdapter() {
-                    override fun startNotified(event: ProcessEvent?) {
-                        targetDone.down()
-                    }
-
-                    override fun processTerminated(event: ProcessEvent?) {
-                        result.set(event!!.exitCode == 0)
-                        targetDone.up()
-                    }
-                })
-            }, ModalityState.NON_MODAL)
+            val waitingProcessAdapter = createWaitingProcessAdapter(result, targetDone)
+            ApplicationManager.getApplication().invokeAndWait({ executeImpl(context, task, waitingProcessAdapter) }, ModalityState.NON_MODAL)
         } catch (e: Exception) {
             LOG.error(e)
             return false
@@ -77,18 +72,29 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         return result.get()
     }
 
-    private fun executeImpl(dataContext: DataContext, executionId: Long, processListener: ProcessAdapter) {
+    private fun createWaitingProcessAdapter(result: Ref<Boolean>, targetDone: Semaphore) = object : ProcessAdapter() {
+        override fun startNotified(event: ProcessEvent?) {
+            targetDone.down()
+        }
+
+        override fun processTerminated(event: ProcessEvent?) {
+            result.set(event!!.exitCode == 0)
+            targetDone.up()
+        }
+    }
+
+    private fun executeImpl(dataContext: DataContext, task: MFBeforeRunTask, waitingProcessAdapter: ProcessAdapter) {
         val project = CommonDataKeys.PROJECT.getData(dataContext) ?: return
 
         FileDocumentManager.getInstance().saveAllDocuments()
         try {
-            val environment = ExecutionEnvironmentBuilder.create(project, DefaultRunExecutor.getRunExecutorInstance(), MFBeforeRunTaskProfile()).build()
-            environment.executionId = executionId
+            val environment = ExecutionEnvironmentBuilder.create(project, DefaultRunExecutor.getRunExecutorInstance(), MFBeforeRunTaskProfile(task)).build()
+            environment.executionId = 0L
             environment.runner.execute(environment) { descriptor ->
                 val processHandler = descriptor.processHandler
                 if (processHandler != null) {
                     LOG.assertTrue(!processHandler.isStartNotified, "ProcessHandler is already startNotified, the listener won't be correctly notified")
-                    processHandler.addProcessListener(processListener)
+                    processHandler.addProcessListener(waitingProcessAdapter)
                 }
             }
         } catch (ex: ExecutionException) {
@@ -97,7 +103,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
-        val task = MFBeforeRunTask("./gradlew assembleDebug")
+        val task = MFBeforeRunTask("path", ".buildCommand", "taskName")
         task.isEnabled = true
         return task
     }
