@@ -16,5 +16,5 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
             ColoredProcessHandler(createCommandLine().withWorkDirectory(executionEnvironment.project.basePath))
 
     private fun createCommandLine() =
-            GeneralCommandLine("bash", "$mainframerPath/${mfFilename}", "$buildCommand $taskName")
+            GeneralCommandLine("bash", "$mainframerPath/$mfFilename", "$buildCommand $taskName")
 }
