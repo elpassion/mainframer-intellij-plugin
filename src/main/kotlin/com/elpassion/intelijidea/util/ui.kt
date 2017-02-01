@@ -16,12 +16,3 @@ fun showError(project: Project, message: String, hyperlinkListener: ((HyperlinkE
             .createBalloon()
             .show(RelativePoint.getCenterOf(statusBar.component), Balloon.Position.above)
 }
-
-fun showBalloon(project: Project?, message: String) {
-    val statusBar = WindowManager.getInstance().getStatusBar(project)
-    JBPopupFactory.getInstance()
-            .createHtmlTextBalloonBuilder(message, MessageType.ERROR, null)
-            .setFadeoutTime(5000)
-            .createBalloon()
-            .show(RelativePoint.getNorthEastOf(statusBar.component), Balloon.Position.above)
-}
