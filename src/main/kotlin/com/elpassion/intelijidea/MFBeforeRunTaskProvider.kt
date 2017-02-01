@@ -15,21 +15,27 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.Ref
 import com.intellij.util.concurrency.Semaphore
 import org.jetbrains.rpc.LOG
 import javax.swing.SwingUtilities
 
-class MFBeforeRunTaskProvider : BeforeRunTaskProvider<MFBeforeRunTask>() {
+class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvider<MFBeforeRunTask>() {
 
     override fun getDescription(task: MFBeforeRunTask): String = TASK_NAME
 
     override fun getName(): String = TASK_NAME
 
-    override fun isConfigurable(): Boolean = false
+    override fun isConfigurable(): Boolean = true
 
-    override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask?): Boolean = false
+    override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
+        val dialog = MFBeforeRunTaskDialog(project)
+        dialog.command = task.command
+        task.command = dialog.command
+        return dialog.showAndGet()
+    }
 
     override fun getId(): Key<MFBeforeRunTask> = ID
 
@@ -91,7 +97,7 @@ class MFBeforeRunTaskProvider : BeforeRunTaskProvider<MFBeforeRunTask>() {
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
-        val task = MFBeforeRunTask()
+        val task = MFBeforeRunTask("./gradlew assembleDebug")
         task.isEnabled = true
         return task
     }
