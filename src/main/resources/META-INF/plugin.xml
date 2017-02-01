@@ -27,6 +27,9 @@
         <programRunner implementation="com.elpassion.intelijidea.configuration.MFProgramRunner" />
         <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.task.MFBeforeRunTaskProvider" />
         <postStartupActivity implementation="com.elpassion.intelijidea.MFRemoveBeforeTaskAtStartup" order="last" />
+        <projectConfigurable groupId="tools" groupWeight="140" displayName="Mainframer" id="mainframer"
+                             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable"/>
+        <applicationService serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider"/>
     </extensions>
 
     <actions>

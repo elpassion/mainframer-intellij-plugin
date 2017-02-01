@@ -21,9 +21,9 @@ public class MFBeforeRunTaskDialog extends DialogWrapper {
     private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
     private JPanel contentPane;
 
-    public JTextField commandField;
+    public JTextField buildCommandField;
     public JTextField taskField;
-    public TextFieldWithBrowseButton mainframerScript;
+    public TextFieldWithBrowseButton mainframerScriptField;
 
     public MFBeforeRunTaskDialog(Project project) {
         super(project);
@@ -50,11 +50,11 @@ public class MFBeforeRunTaskDialog extends DialogWrapper {
     }
 
     private void createUIComponents() {
-        mainframerScript = new TextFieldWithBrowseButton();
-        mainframerScript.setButtonIcon(IconUtil.getAddIcon());
+        mainframerScriptField = new TextFieldWithBrowseButton();
+        mainframerScriptField.setButtonIcon(IconUtil.getAddIcon());
         TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
-        mainframerScript.addBrowseFolderListener(textBrowseFolderListener);
+        mainframerScriptField.addBrowseFolderListener(textBrowseFolderListener);
         mainframerScriptHolder = new LabeledComponent<>();
-        mainframerScriptHolder.setComponent(mainframerScript);
+        mainframerScriptHolder.setComponent(mainframerScriptField);
     }
 }

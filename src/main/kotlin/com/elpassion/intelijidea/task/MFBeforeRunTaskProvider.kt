@@ -25,6 +25,8 @@ import javax.swing.SwingUtilities
 
 class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvider<MFBeforeRunTask>() {
 
+    override fun getId(): Key<MFBeforeRunTask> = ID
+
     override fun getDescription(task: MFBeforeRunTask): String = TASK_NAME
 
     override fun getName(): String = TASK_NAME
@@ -33,23 +35,18 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
         val dialog = MFBeforeRunTaskDialog(project)
-        dialog.commandField.text = task.buildCommand
-        dialog.mainframerScript.text = task.mainframerPath
+        dialog.buildCommandField.text = task.buildCommand
+        dialog.mainframerScriptField.text = task.mainframerPath
         dialog.taskField.text = task.taskName
         if (dialog.showAndGet()) {
-            task.mainframerPath = dialog.mainframerScript.text
-            task.buildCommand = dialog.taskField.text
+            task.mainframerPath = dialog.mainframerScriptField.text
+            task.buildCommand = dialog.buildCommandField.text
             task.taskName = dialog.taskField.text
         }
         return false
     }
 
-    override fun getId(): Key<MFBeforeRunTask> = ID
-
-    override fun canExecuteTask(configuration: RunConfiguration?, task: MFBeforeRunTask?): Boolean {
-        //TODO: change
-        return true
-    }
+    override fun canExecuteTask(configuration: RunConfiguration?, task: MFBeforeRunTask): Boolean = task.isValid()
 
     override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
         SwingUtilities.invokeAndWait {
@@ -106,7 +103,8 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
-        val task = MFBeforeRunTask("path", ".buildCommand", "taskName")
+        val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
+        val task = MFBeforeRunTask(settingsProvider.getDefaultMainframerScript(), settingsProvider.getDefaultBuildCommand(), settingsProvider.getDefaultTaskName())
         task.isEnabled = true
         return task
     }
