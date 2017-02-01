@@ -26,7 +26,7 @@
         <configurationType implementation="com.elpassion.intelijidea.MFRunConfigurationType"/>
         <programRunner implementation="com.elpassion.intelijidea.MFProgramRunner"/>
         <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.MFBeforeRunTaskProvider"/>
-        <postStartupActivity implementation="com.elpassion.intelijidea.MFREmoveBeforeTaskAtStartup" order="last"/>
+        <postStartupActivity implementation="com.elpassion.intelijidea.MFRemoveBeforeTaskAtStartup" order="last"/>
     </extensions>
 
 </idea-plugin>

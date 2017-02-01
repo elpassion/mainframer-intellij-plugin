@@ -8,7 +8,7 @@ import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 
-class MFREmoveBeforeTaskAtStartup : StartupActivity {
+class MFRemoveBeforeTaskAtStartup : StartupActivity {
     override fun runActivity(project: Project) {
         val runManagerEx = RunManagerEx.getInstanceEx(project)
         val mfTaskProvider = BeforeRunTaskProvider.getProvider(project, MFBeforeRunTaskProvider.ID)!!
