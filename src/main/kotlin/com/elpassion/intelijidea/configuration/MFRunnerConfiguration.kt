@@ -25,20 +25,18 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         return MFSettingsEditor(project)
     }
 
-    override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        if (isMfFileAvailable()) {
-            return MFCommandLineState(environment, mainframerPath!!, buildCommand!!, taskName!!)
-        } else {
-            showScriptNotFoundError()
-            return null
-        }
+    override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState {
+        return MFCommandLineState(environment, mainframerPath!!, buildCommand!!, taskName!!)
     }
 
     override fun checkConfiguration() {
         when {
             buildCommand.isNullOrBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
             taskName.isNullOrBlank() -> throw RuntimeConfigurationError("Taskname cannot be empty")
-            !isMfFileAvailable() -> throw RuntimeConfigurationError("Mainframer script cannot be found")
+            !isMfFileAvailable() -> {
+                showScriptNotFoundError()
+                throw RuntimeConfigurationError("Mainframer script cannot be found")
+            }
         }
     }
 
