@@ -20,6 +20,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public JTextField buildCommandField;
     public JTextField taskNameField;
     public JPanel panel;
+    public JCheckBox configureBeforeTasksOnStartupField;
 
     public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;
@@ -38,18 +39,21 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public Boolean isModified() {
         return !Comparing.equal(mainframerScriptField.getText(), settingsProvider.getDefaultMainframerScript()) ||
                 !Comparing.equal(buildCommandField.getText(), settingsProvider.getDefaultBuildCommand()) ||
-                !Comparing.equal(taskNameField.getText(), settingsProvider.getDefaultTaskName());
+                !Comparing.equal(taskNameField.getText(), settingsProvider.getDefaultTaskName()) ||
+                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), settingsProvider.getConfigureBeforeTaskOnStartup());
     }
 
     public void apply() {
         settingsProvider.setDefaultMainframerScript(mainframerScriptField.getText());
         settingsProvider.setDefaultBuildCommand(buildCommandField.getText());
         settingsProvider.setDefaultTaskName(taskNameField.getText());
+        settingsProvider.setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
     }
 
     public void reset() {
         buildCommandField.setText(settingsProvider.getDefaultBuildCommand());
         mainframerScriptField.setText(settingsProvider.getDefaultMainframerScript());
         taskNameField.setText(settingsProvider.getDefaultTaskName());
+        configureBeforeTasksOnStartupField.setSelected(settingsProvider.getConfigureBeforeTaskOnStartup());
     }
 }

@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea
 
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
+import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
@@ -11,6 +12,13 @@ import com.intellij.openapi.startup.StartupActivity
 
 class MFRemoveBeforeTaskAtStartup : StartupActivity {
     override fun runActivity(project: Project) {
+        val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
+        if (settingsProvider.getConfigureBeforeTaskOnStartup()) {
+            injectMainframerBeforeTasks(project)
+        }
+    }
+
+    private fun injectMainframerBeforeTasks(project: Project) {
         val runManagerEx = RunManagerEx.getInstanceEx(project)
         val mfTaskProvider = BeforeRunTaskProvider.getProvider(project, MFBeforeRunTaskProvider.ID)!!
 
