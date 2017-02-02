@@ -14,12 +14,12 @@ import javax.swing.*;
 public class MFBeforeTaskDefaultSettingsPanel {
     private final Project project;
     private final MFBeforeTaskDefaultSettingsProvider settingsProvider;
+    private TextFieldWithBrowseButton mainframerScriptField;
+    private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
 
     public JTextField buildCommandField;
     public JTextField taskNameField;
     public JPanel panel;
-    private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
-    public TextFieldWithBrowseButton mainframerScriptField;
 
     public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;
