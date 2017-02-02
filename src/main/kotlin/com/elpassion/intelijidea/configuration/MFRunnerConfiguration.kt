@@ -6,10 +6,7 @@ import com.elpassion.intelijidea.util.mfFilename
 import com.elpassion.intelijidea.util.mfScriptDownloadUrl
 import com.elpassion.intelijidea.util.showError
 import com.intellij.execution.Executor
-import com.intellij.execution.configurations.ConfigurationFactory
-import com.intellij.execution.configurations.LocatableConfigurationBase
-import com.intellij.execution.configurations.RunConfiguration
-import com.intellij.execution.configurations.RunProfileState
+import com.intellij.execution.configurations.*
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
@@ -37,6 +34,14 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         }
     }
 
+    override fun checkConfiguration() {
+        when {
+            buildCommand.isNullOrBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
+            taskName.isNullOrBlank() -> throw RuntimeConfigurationError("Taskname cannot be empty")
+            !isMfFileAvailable() -> throw RuntimeConfigurationError("Mainframer script cannot be found")
+        }
+    }
+
     override fun readExternal(element: Element) {
         super.readExternal(element)
         taskName = element.getAttributeValue(CONFIGURATION_ATTR_TASK_NAME)
@@ -50,8 +55,6 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
-
-    fun isValid(): Boolean = isMfFileAvailable() && !taskName.isNullOrEmpty()
 
     private fun isMfFileAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
