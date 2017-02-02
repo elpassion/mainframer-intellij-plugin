@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import javax.swing.JComponent
 
-class MFConfigureProjectDialog(project: Project) : DialogWrapper(project, false) {
+class MFConfigureProjectDialog(project: Project, val onVersion: (String) -> Unit) : DialogWrapper(project, false) {
 
     private val form = MFConfigureProjectForm()
 
@@ -15,4 +15,10 @@ class MFConfigureProjectDialog(project: Project) : DialogWrapper(project, false)
     }
 
     override fun createCenterPanel(): JComponent = form.panel
+
+    override fun doOKAction() {
+        super.doOKAction()
+        val selectedVersion = form.versionComboBox.selectedItem.toString()
+        onVersion(selectedVersion)
+    }
 }

@@ -71,7 +71,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     private val errorMessage: String
         get() = "Cannot find <b>$mfFilename</b> in the following path:\n\"${data?.mainframerPath}\"\n\n" +
-                "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>"
+                "<a href=\"${getLatestMfToolDownloadUrl()}\">Download latest script file</a>"
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRunner.data"
