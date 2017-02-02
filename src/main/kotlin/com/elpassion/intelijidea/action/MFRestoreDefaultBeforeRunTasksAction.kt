@@ -14,7 +14,6 @@ class MFRestoreDefaultBeforeRunTasksAction : AnAction(MF_RESTORE_DEFAULT_BEFORE_
             restoreDefaultBeforeRunTasks(runManager, project)
             Messages.showInfoMessage("BeforeRun tasks default configuration restored.", MF_RESTORE_DEFAULT_BEFORE_RUN_TASK_ACTION)
         }
-
     }
 
     companion object {
