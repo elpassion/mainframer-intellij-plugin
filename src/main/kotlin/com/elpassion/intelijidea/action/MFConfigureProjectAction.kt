@@ -12,10 +12,10 @@ import com.intellij.openapi.ui.Messages
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
 
     override fun actionPerformed(event: AnActionEvent?) {
-        event?.project?.configureMainframerInProject()
+        event?.project?.configureMainframer()
     }
 
-    private fun Project.configureMainframerInProject() {
+    private fun Project.configureMainframer() {
         if (!baseDir.hasChild(mfFilename)) {
             MFDownloader.downloadFileToProject(mfScriptDownloadUrl, this, mfFilename)
         }
