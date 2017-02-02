@@ -1,6 +1,6 @@
 import com.elpassion.intelijidea.configuration.MFConfigurationFactory
 import com.elpassion.intelijidea.configuration.MFRunConfigurationType
-import com.intellij.icons.AllIcons
+import com.elpassion.intelijidea.util.MFIcons
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -25,6 +25,6 @@ class MFConfigurationTypeTest {
 
     @Test
     fun shouldHaveProperIcon() {
-        assertEquals(AllIcons.General.Information, configurationType.icon)
+        assertEquals(MFIcons.configurationIcon, configurationType.icon)
     }
 }
