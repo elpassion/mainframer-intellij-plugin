@@ -12,7 +12,6 @@ class MFConfigureProjectDialog(project: Project) : DialogWrapper(project, false)
     init {
         title = "Configure Mainframer in Project"
         init()
-        //TODO: populate combo box with available mf versions
     }
 
     override fun createCenterPanel(): JComponent = form.panel
