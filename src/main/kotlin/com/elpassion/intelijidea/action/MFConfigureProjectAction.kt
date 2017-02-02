@@ -1,7 +1,9 @@
 package com.elpassion.intelijidea.action
 
 import com.elpassion.intelijidea.common.MFDownloader
-import com.elpassion.intelijidea.util.*
+import com.elpassion.intelijidea.util.hasChild
+import com.elpassion.intelijidea.util.mfFilename
+import com.elpassion.intelijidea.util.mfScriptDownloadUrl
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
@@ -10,12 +12,12 @@ import com.intellij.openapi.ui.Messages
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
 
     override fun actionPerformed(event: AnActionEvent?) {
-        event?.project?.let { configureMainframerInProject(it) }
+        event?.project?.configureMainframerInProject()
     }
 
-    private fun configureMainframerInProject(project: Project) {
-        if (!project.baseDir.hasChild(mfFilename)) {
-            MFDownloader.downloadFileToProject(mfScriptDownloadUrl, project, mfFilename)
+    private fun Project.configureMainframerInProject() {
+        if (!baseDir.hasChild(mfFilename)) {
+            MFDownloader.downloadFileToProject(mfScriptDownloadUrl, this, mfFilename)
         }
         Messages.showInfoMessage("Mainframer configured in your project!", MF_CONFIGURE_PROJECT)
     }
