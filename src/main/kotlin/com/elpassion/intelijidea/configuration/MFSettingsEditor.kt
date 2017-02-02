@@ -17,23 +17,27 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun applyEditorTo(configuration: MFRunnerConfiguration) {
-        configuration.buildCommand = mainEditorPanel.buildCommand.text
-        configuration.taskName = mainEditorPanel.taskName.text
-        configuration.mainframerPath = mainEditorPanel.mainframerScript.text
-        if (configuration.mainframerPath.isNullOrEmpty()) {
-            throw ConfigurationException("Mainframer path cannot be empty")
-        }
-        if (File(configuration.mainframerPath).exists().not()) {
-            throw ConfigurationException("Mainframer path is invalid")
-        }
-        if (configuration.taskName.isNullOrEmpty()) {
-            throw ConfigurationException("Task cannot be empty")
+        configuration.data?.run {
+            buildCommand = mainEditorPanel.buildCommand.text
+            taskName = mainEditorPanel.taskName.text
+            mainframerPath = mainEditorPanel.mainframerScript.text
+            if (mainframerPath.isNullOrEmpty()) {
+                throw ConfigurationException("Mainframer path cannot be empty")
+            }
+            if (File(mainframerPath).exists().not()) {
+                throw ConfigurationException("Mainframer path is invalid")
+            }
+            if (taskName.isNullOrEmpty()) {
+                throw ConfigurationException("Task cannot be empty")
+            }
         }
     }
 
     override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
-        mainEditorPanel.buildCommand.text = configuration.buildCommand ?: "./gradlew"
-        mainEditorPanel.taskName.text = configuration.taskName ?: "build"
-        mainEditorPanel.mainframerScript.text = configuration.mainframerPath ?: configuration.project.basePath
+        configuration.data.let {
+            mainEditorPanel.buildCommand.text = it?.buildCommand ?: "./gradlew"
+            mainEditorPanel.taskName.text = it?.taskName ?: "build"
+            mainEditorPanel.mainframerScript.text = it?.mainframerPath ?: configuration.project.basePath
+        }
     }
 }
