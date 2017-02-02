@@ -8,7 +8,6 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.project.Project
-import com.intellij.util.SmartList
 
 fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: BeforeRunTaskProvider<*>) {
     runManagerEx.getConfigurations()
@@ -33,24 +32,21 @@ fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
 
 private fun RunManagerEx.getConfigurations(): Collection<RunConfiguration> = (getExistingConfigurations() + getTemplateConfigurations()).values.map { it.configuration }
 
-private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, myProject: Project): List<BeforeRunTask<*>> {
-    val tasks = SmartList<BeforeRunTask<*>>()
-    Extensions.getExtensions(BeforeRunTaskProvider.EXTENSION_POINT_NAME, myProject).forEach { provider ->
-        val task = provider.createTask(settings)
-        if (task != null && task.isEnabled) {
-            val providerID = provider.id
-            settings.factory.configureBeforeRunTaskDefaults(providerID, task)
-            if (task.isEnabled) {
-                tasks.add(task)
+private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
+    val beforeRunProviders = Extensions.getExtensions(BeforeRunTaskProvider.EXTENSION_POINT_NAME, project)
+    return beforeRunProviders.associate { provider -> provider.id to provider.createTask(settings) }
+            .filterValues { task -> task != null && task.isEnabled }
+            .map {
+                settings.factory.configureBeforeRunTaskDefaults(it.key, it.value)
+                it.value
             }
-        }
-    }
-    return tasks
+            .filterNotNull()
+            .filter { it.isEnabled }
 }
 
-fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myConfigurations")
+private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myConfigurations")
 
-fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myTemplateConfigurationsMap")
+private fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myTemplateConfigurationsMap")
 
 //TODO: remove usage of reflection
 private fun <T> Any.getFieldByReflection(fieldName: String): T {
