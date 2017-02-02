@@ -10,11 +10,6 @@ import com.intellij.util.IconUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class MFBeforeRunTaskDialog extends DialogWrapper {
     private final Project project;
@@ -29,13 +24,6 @@ public class MFBeforeRunTaskDialog extends DialogWrapper {
         super(project);
         this.project = project;
         setModal(true);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         init();
     }
 
@@ -43,10 +31,6 @@ public class MFBeforeRunTaskDialog extends DialogWrapper {
     @Override
     protected JComponent createCenterPanel() {
         return contentPane;
-    }
-
-    private void onCancel() {
-        dispose();
     }
 
     private void createUIComponents() {
