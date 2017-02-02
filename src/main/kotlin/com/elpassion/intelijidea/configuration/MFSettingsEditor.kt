@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.configuration
 
-import com.elpassion.intelijidea.configuration.MFRunnerConfiguration
 import com.elpassion.intelijidea.configuration.ui.MFSettingsEditorPanel
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.options.SettingsEditor
