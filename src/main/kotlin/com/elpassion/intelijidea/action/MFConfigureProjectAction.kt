@@ -17,6 +17,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
 
     private fun Project.configureMainframer() {
         if (!baseDir.hasChild(mfFilename)) {
+            MFConfigureProjectDialog(this).show()
             MFDownloader.downloadFileToProject(mfScriptDownloadUrl, this, mfFilename)
         }
         Messages.showInfoMessage("Mainframer configured in your project!", MF_CONFIGURE_PROJECT)
