@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action
+package com.elpassion.intelijidea.action.configure
 
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.util.hasChild

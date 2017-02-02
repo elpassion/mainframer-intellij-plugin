@@ -1,6 +1,6 @@
-package com.elpassion.intelijidea.action
+package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.action.ui.MFConfigureProjectForm
+import com.elpassion.intelijidea.action.configure.ui.MFConfigureProjectForm
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import javax.swing.JComponent

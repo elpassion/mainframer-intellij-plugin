@@ -33,7 +33,7 @@
     </extensions>
 
     <actions>
-        <action class="com.elpassion.intelijidea.action.MFConfigureProjectAction" id="MF.Configure">
+        <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
             <keyboard-shortcut first-keystroke="control alt M" keymap="$default" />
         </action>
         <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject">
