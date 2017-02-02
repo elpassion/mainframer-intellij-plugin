@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.task
 
-import com.elpassion.intelijidea.task.ui.MFBeforeTasDefaultSettingsPanel
+import com.elpassion.intelijidea.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.SearchableConfigurable
@@ -10,7 +10,7 @@ import javax.swing.JComponent
 
 class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : SearchableConfigurable, Configurable.NoScroll, Disposable {
 
-    var mfSettingsPanel: MFBeforeTasDefaultSettingsPanel? = null
+    var mfSettingsPanel: MFBeforeTaskDefaultSettingsPanel? = null
 
     override fun isModified(): Boolean {
         return mfSettingsPanel?.isModified ?: false
@@ -29,7 +29,7 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
     }
 
     override fun createComponent(): JComponent {
-        mfSettingsPanel = MFBeforeTasDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.INSTANCE)
+        mfSettingsPanel = MFBeforeTaskDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.INSTANCE)
         return mfSettingsPanel!!.panel
     }
 

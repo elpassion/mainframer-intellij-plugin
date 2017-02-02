@@ -11,7 +11,7 @@ import com.intellij.util.IconUtil;
 
 import javax.swing.*;
 
-public class MFBeforeTasDefaultSettingsPanel {
+public class MFBeforeTaskDefaultSettingsPanel {
     private final Project project;
     private final MFBeforeTaskDefaultSettingsProvider settingsProvider;
 
@@ -21,7 +21,7 @@ public class MFBeforeTasDefaultSettingsPanel {
     private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
     public TextFieldWithBrowseButton mainframerScriptField;
 
-    public MFBeforeTasDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
+    public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;
         this.settingsProvider = settingsProvider;
     }
