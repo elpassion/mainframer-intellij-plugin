@@ -36,6 +36,10 @@
         <action class="com.elpassion.intelijidea.action.MFConfigureProjectAction" id="MF.Configure">
             <keyboard-shortcut first-keystroke="control alt M" keymap="$default" />
         </action>
+        <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject">
+        </action>
+        <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore">
+        </action>
     </actions>
 
 </idea-plugin>
