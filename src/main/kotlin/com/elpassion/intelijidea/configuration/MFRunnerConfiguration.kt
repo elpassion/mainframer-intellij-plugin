@@ -56,13 +56,16 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     private fun isMfFileAvailable() = mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
     private fun showScriptNotFoundError() {
-        showError(project, "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
-                "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>") {
+        showError(project, errorMessage) {
             if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
                 MFDownloader.downloadFileToProject(it.url.toString(), project, mfFilename)
             }
         }
     }
+
+    private val errorMessage: String
+        get() = "Cannot find <b>$mfFilename</b> in the following path:\n\"$mainframerPath\"\n\n" +
+                "<a href=\"$mfScriptDownloadUrl\">Download latest script file</a>"
 
     companion object {
         private val CONFIGURATION_ATTR_TASK_NAME = "MFRunner.taskName"
