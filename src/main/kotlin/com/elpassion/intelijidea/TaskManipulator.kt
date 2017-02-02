@@ -11,10 +11,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.SmartList
 
 fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: BeforeRunTaskProvider<*>) {
-    val existingConfigurations = runManagerEx.getExistingConfigurations()
-    val templateConfigurations = runManagerEx.getTemplateConfigurations()
-    val configurationTypes = existingConfigurations.values + templateConfigurations.values
-    configurationTypes.map { it.configuration }
+    runManagerEx.getConfigurations()
             .filterIsInstance<RunConfigurationBase>()
             .filter { it.isCompileBeforeLaunchAddedByDefault }
             .forEach {
@@ -27,13 +24,14 @@ fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: Befo
 }
 
 fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
-    val configurations = (runManager.getExistingConfigurations() + runManager.getTemplateConfigurations()).values
-    configurations.map { it.configuration }
+    runManager.getConfigurations()
             .associate { it to getHardcodedBeforeRunTasks(it, project) }
             .forEach {
                 runManager.setBeforeRunTasks(it.key, it.value, false)
             }
 }
+
+private fun RunManagerEx.getConfigurations(): Collection<RunConfiguration> = (getExistingConfigurations() + getTemplateConfigurations()).values.map { it.configuration }
 
 private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, myProject: Project): List<BeforeRunTask<*>> {
     val tasks = SmartList<BeforeRunTask<*>>()
