@@ -30,7 +30,8 @@ fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
             }
 }
 
-private fun RunManagerEx.getConfigurations(): Collection<RunConfiguration> = (getExistingConfigurations() + getTemplateConfigurations()).values.map { it.configuration }
+private fun RunManagerEx.getConfigurations(): Collection<RunConfiguration>
+        = (getExistingConfigurations() + getTemplateConfigurations()).values.map { it.configuration }
 
 private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = Extensions.getExtensions(BeforeRunTaskProvider.EXTENSION_POINT_NAME, project)
@@ -44,9 +45,11 @@ private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, project: Proj
             .filter { it.isEnabled }
 }
 
-private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myConfigurations")
+private fun RunManagerEx.getExistingConfigurations(): Map<String, RunnerAndConfigurationSettings>
+        = getFieldByReflection("myConfigurations")
 
-private fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings> = getFieldByReflection("myTemplateConfigurationsMap")
+private fun RunManagerEx.getTemplateConfigurations(): Map<String, RunnerAndConfigurationSettings>
+        = getFieldByReflection("myTemplateConfigurationsMap")
 
 //TODO: remove usage of reflection
 private fun <T> Any.getFieldByReflection(fieldName: String): T {
