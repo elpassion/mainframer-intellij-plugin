@@ -19,8 +19,16 @@ class JacksonExtensionsTests {
         Assert.assertEquals("v1.1.2", listFromJson[0].tag_name)
     }
 
+    @Test
+    fun shouldUseParseCamelCase() {
+        val listFromJson = "[{\"description_info\": \"description\"}]".listFromJson<TagNameWrapper>()
+        Assert.assertEquals("description", listFromJson[0].descriptionInfo)
+    }
+
 }
 
 class TagNameWrapper : Serializable {
     var tag_name: String = ""
+    var descriptionInfo: String = ""
+
 }
