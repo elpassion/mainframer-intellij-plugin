@@ -17,10 +17,11 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun applyEditorTo(configuration: MFRunnerConfiguration) {
+        configuration.data?.copy(
+                buildCommand = mainEditorPanel.buildCommand.text,
+                taskName = mainEditorPanel.taskName.text,
+                mainframerPath = mainEditorPanel.mainframerScript.text)
         configuration.data?.run {
-            buildCommand = mainEditorPanel.buildCommand.text
-            taskName = mainEditorPanel.taskName.text
-            mainframerPath = mainEditorPanel.mainframerScript.text
             if (mainframerPath.isNullOrEmpty()) {
                 throw ConfigurationException("Mainframer path cannot be empty")
             }
