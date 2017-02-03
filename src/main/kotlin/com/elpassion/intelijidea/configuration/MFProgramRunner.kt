@@ -7,7 +7,6 @@ class MFProgramRunner : DefaultProgramRunner() {
 
     override fun getRunnerId(): String = "MFRunner"
 
-    override fun canRun(executorId: String, profile: RunProfile): Boolean {
-         return profile is MFRunnerConfiguration
-    }
+    override fun canRun(executorId: String, profile: RunProfile) = profile is MFRunnerConfiguration
+
 }
