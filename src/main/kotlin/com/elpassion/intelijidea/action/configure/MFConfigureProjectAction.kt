@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.action.configure
 
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
-import com.elpassion.intelijidea.util.hasChild
 import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -19,17 +18,15 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     private fun Project.configureMainframer() {
         MFConfigureProjectDialog(this) { version ->
             val outcome = downloadMainframer(version)
-            val messageFromOutcome = getMessageFromOutcome(outcome)
-            Messages.showInfoMessage(messageFromOutcome, MF_CONFIGURE_PROJECT)
+            Messages.showInfoMessage(outcome.getMessage(), MF_CONFIGURE_PROJECT)
         }.show()
     }
 
-    private fun getMessageFromOutcome(outcome: Outcome<Unit>) =
-            when {
-                outcome.isCancelled -> "Mainframer configuration canceled"
-                outcome.exception != null -> "Error during mainframer configuration"
-                else -> "Mainframer configured in your project!"
-            }
+    private fun Outcome<Unit>.getMessage() = when {
+        isCancelled -> "Mainframer configuration canceled"
+        exception != null -> "Error during mainframer configuration"
+        else -> "Mainframer configured in your project!"
+    }
 
     private fun Project.downloadMainframer(version: String) =
             MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), this, mfFilename)
