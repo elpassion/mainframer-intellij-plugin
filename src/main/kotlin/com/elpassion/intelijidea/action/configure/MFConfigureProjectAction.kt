@@ -8,6 +8,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.platform.templates.github.Outcome
 
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
 
@@ -16,17 +17,22 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     }
 
     private fun Project.configureMainframer() {
-        if (!baseDir.hasChild(mfFilename)) {
-            MFConfigureProjectDialog(this) { version ->
-                downloadMainframer(version)
-            }.show()
-        }
-        Messages.showInfoMessage("Mainframer configured in your project!", MF_CONFIGURE_PROJECT)
+        MFConfigureProjectDialog(this) { version ->
+            val outcome = downloadMainframer(version)
+            val messageFromOutcome = getMessageFromOutcome(outcome)
+            Messages.showInfoMessage(messageFromOutcome, MF_CONFIGURE_PROJECT)
+        }.show()
     }
 
-    private fun Project.downloadMainframer(version: String) {
-        MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), this, mfFilename)
-    }
+    private fun getMessageFromOutcome(outcome: Outcome<Unit>) =
+            when {
+                outcome.isCancelled -> "Mainframer configuration canceled"
+                outcome.exception != null -> "Error during mainframer configuration"
+                else -> "Mainframer configured in your project!"
+            }
+
+    private fun Project.downloadMainframer(version: String) =
+            MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), this, mfFilename)
 
     companion object {
         private val MF_CONFIGURE_PROJECT = "Configure Mainframer in Project"

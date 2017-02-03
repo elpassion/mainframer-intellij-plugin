@@ -3,11 +3,12 @@ package com.elpassion.intelijidea.common
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.platform.templates.github.DownloadUtil
+import com.intellij.platform.templates.github.Outcome
 import java.io.File
 
 object MFDownloader {
 
-    fun downloadFileToProject(url: String, project: Project, outputFilename: String) {
+    fun downloadFileToProject(url: String, project: Project, outputFilename: String): Outcome<Unit> {
         val title = "Downloading file"
         val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
         val action = {
@@ -15,6 +16,6 @@ object MFDownloader {
             DownloadUtil.downloadAtomically(progressIndicator, url, File(project.basePath, outputFilename))
             project.baseDir.refresh(true, false)
         }
-        DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
+        return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
     }
 }
