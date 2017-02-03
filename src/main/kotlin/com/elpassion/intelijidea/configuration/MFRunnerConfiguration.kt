@@ -49,8 +49,12 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunnerConfigurationData>()
-                ?: MFRunnerConfigurationData("./gradlew", "build", project.basePath)
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunnerConfigurationData>() ?:
+                MFRunnerConfigurationData().apply {
+                    buildCommand = "./gradlew"
+                    taskName = "build"
+                    mainframerPath = project.basePath
+                }
     }
 
     override fun writeExternal(element: Element) {
@@ -79,4 +83,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 }
 
-class MFRunnerConfigurationData(var buildCommand: String, var taskName: String, var mainframerPath: String?) : Serializable
+class MFRunnerConfigurationData : Serializable {
+    var buildCommand: String = ""
+    var taskName: String = ""
+    var mainframerPath: String? = null
+}
