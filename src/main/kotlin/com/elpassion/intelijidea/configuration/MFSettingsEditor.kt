@@ -35,9 +35,9 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
 
     override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
         configuration.data.let {
-            mainEditorPanel.buildCommand.text = it?.buildCommand ?: "./gradlew"
-            mainEditorPanel.taskName.text = it?.taskName ?: "build"
-            mainEditorPanel.mainframerScript.text = it?.mainframerPath ?: configuration.project.basePath
+            mainEditorPanel.buildCommand.text = it?.buildCommand
+            mainEditorPanel.taskName.text = it?.taskName
+            mainEditorPanel.mainframerScript.text = it?.mainframerPath
         }
     }
 }

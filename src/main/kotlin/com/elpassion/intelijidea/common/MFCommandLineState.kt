@@ -8,7 +8,7 @@ import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
 
 class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
-                         private val mainframerPath: String,
+                         private val mainframerPath: String?,
                          private val buildCommand: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
 

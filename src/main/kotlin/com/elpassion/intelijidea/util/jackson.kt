@@ -7,4 +7,4 @@ val objectMapper by lazy { ObjectMapper() }
 
 fun Any.toJson(): String = objectMapper.writeValueAsString(this)
 
-inline fun <reified T : Serializable> String?.fromJson(): T? = this?.let { objectMapper.readValue(this, T::class.java) }
+inline fun <reified T : Serializable> String.fromJson(): T? = objectMapper.readValue(this, T::class.java)
