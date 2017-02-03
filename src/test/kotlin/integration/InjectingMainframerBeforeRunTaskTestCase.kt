@@ -1,6 +1,7 @@
 package integration
 
 import com.elpassion.intelijidea.injectMainframerBeforeTasks
+import com.elpassion.intelijidea.restoreDefaultBeforeRunTasks
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.Executor
@@ -31,6 +32,15 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     fun testShouldNotAddMainframerToConfigurationWhichDoesNotRequireCompilationBeforeLaunch() {
         val runConfiguration = addTestConfiguration(compileBeforeLaunch = false)
         injectMainframer()
+
+        verifyBeforeRunTasks(runConfiguration)
+                .isEmpty()
+    }
+
+    fun testShouldRemoveMainframerFromConfiguration() {
+        val runConfiguration = addTestConfiguration(compileBeforeLaunch = true)
+        injectMainframer()
+        restoreConfigurations()
 
         verifyBeforeRunTasks(runConfiguration)
                 .isEmpty()
@@ -76,6 +86,10 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     private fun injectMainframer() {
         injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project))
+    }
+
+    private fun restoreConfigurations() {
+        restoreDefaultBeforeRunTasks(runManager, project)
     }
 
     private fun verifyBeforeRunTasks(runConfiguration: RunnerAndConfigurationSettings) = assertThat(runManager.getBeforeRunTasks(runConfiguration.configuration))
