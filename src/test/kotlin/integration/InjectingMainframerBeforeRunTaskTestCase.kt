@@ -46,6 +46,32 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
                 .isEmpty()
     }
 
+    fun testShouldAddMainframerToTemplateConfigurationWhichRequiresCompilationBeforeLaunch() {
+        val runConfiguration = runManager.getConfigurationTemplate(createConfigurationFactory(true))
+        injectMainframer()
+
+        verifyBeforeRunTasks(runConfiguration)
+                .hasSize(1)
+                .allMatch { it is MFBeforeRunTask }
+    }
+
+    fun testShouldNotAddMainframerToTemplateConfigurationWhichDoesNotRequireCompilationBeforeLaunch() {
+        val runConfiguration = runManager.getConfigurationTemplate(createConfigurationFactory(false))
+        injectMainframer()
+
+        verifyBeforeRunTasks(runConfiguration)
+                .isEmpty()
+    }
+
+    fun testShouldRemoveMainframerFromTemplateConfiguration() {
+        val runConfiguration = addTestConfiguration(compileBeforeLaunch = true)
+        injectMainframer()
+        restoreConfigurations()
+
+        verifyBeforeRunTasks(runConfiguration)
+                .isEmpty()
+    }
+
     private fun addTestConfiguration(compileBeforeLaunch: Boolean): RunnerAndConfigurationSettings {
         val runConfiguration = runManager.createRunConfiguration("name", createConfigurationFactory(compileBeforeLaunch))
         runManager.addConfiguration(runConfiguration, false)
