@@ -13,12 +13,12 @@ import javax.swing.*;
 
 public class MFBeforeRunTaskDialog extends DialogWrapper {
     private final Project project;
-    private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
+    private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     private JPanel contentPane;
 
     public JTextField buildCommandField;
     public JTextField taskField;
-    public TextFieldWithBrowseButton mainframerScriptField;
+    public TextFieldWithBrowseButton mainframerToolField;
 
     public MFBeforeRunTaskDialog(Project project) {
         super(project);
@@ -34,11 +34,11 @@ public class MFBeforeRunTaskDialog extends DialogWrapper {
     }
 
     private void createUIComponents() {
-        mainframerScriptField = new TextFieldWithBrowseButton();
-        mainframerScriptField.setButtonIcon(IconUtil.getAddIcon());
+        mainframerToolField = new TextFieldWithBrowseButton();
+        mainframerToolField.setButtonIcon(IconUtil.getAddIcon());
         TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
-        mainframerScriptField.addBrowseFolderListener(textBrowseFolderListener);
-        mainframerScriptHolder = new LabeledComponent<>();
-        mainframerScriptHolder.setComponent(mainframerScriptField);
+        mainframerToolField.addBrowseFolderListener(textBrowseFolderListener);
+        mainframerToolHolder = new LabeledComponent<>();
+        mainframerToolHolder.setComponent(mainframerToolField);
     }
 }

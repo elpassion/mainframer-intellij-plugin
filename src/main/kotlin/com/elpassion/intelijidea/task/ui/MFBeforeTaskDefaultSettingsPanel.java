@@ -14,8 +14,8 @@ import javax.swing.*;
 public class MFBeforeTaskDefaultSettingsPanel {
     private final Project project;
     private final MFBeforeTaskDefaultSettingsProvider settingsProvider;
-    private TextFieldWithBrowseButton mainframerScriptField;
-    private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
+    private TextFieldWithBrowseButton mainframerToolField;
+    private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
 
     public JTextField buildCommandField;
     public JTextField taskNameField;
@@ -28,23 +28,23 @@ public class MFBeforeTaskDefaultSettingsPanel {
     }
 
     private void createUIComponents() {
-        mainframerScriptField = new TextFieldWithBrowseButton();
-        mainframerScriptField.setButtonIcon(IconUtil.getAddIcon());
+        mainframerToolField = new TextFieldWithBrowseButton();
+        mainframerToolField.setButtonIcon(IconUtil.getAddIcon());
         TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
-        mainframerScriptField.addBrowseFolderListener(textBrowseFolderListener);
-        mainframerScriptHolder = new LabeledComponent<>();
-        mainframerScriptHolder.setComponent(mainframerScriptField);
+        mainframerToolField.addBrowseFolderListener(textBrowseFolderListener);
+        mainframerToolHolder = new LabeledComponent<>();
+        mainframerToolHolder.setComponent(mainframerToolField);
     }
 
     public Boolean isModified() {
-        return !Comparing.equal(mainframerScriptField.getText(), settingsProvider.getDefaultMainframerScript()) ||
+        return !Comparing.equal(mainframerToolField.getText(), settingsProvider.getDefaultMainframerPath()) ||
                 !Comparing.equal(buildCommandField.getText(), settingsProvider.getDefaultBuildCommand()) ||
                 !Comparing.equal(taskNameField.getText(), settingsProvider.getDefaultTaskName()) ||
                 !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), settingsProvider.getConfigureBeforeTaskOnStartup());
     }
 
     public void apply() {
-        settingsProvider.setDefaultMainframerScript(mainframerScriptField.getText());
+        settingsProvider.setDefaultMainframerPath(mainframerToolField.getText());
         settingsProvider.setDefaultBuildCommand(buildCommandField.getText());
         settingsProvider.setDefaultTaskName(taskNameField.getText());
         settingsProvider.setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
@@ -52,7 +52,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
 
     public void reset() {
         buildCommandField.setText(settingsProvider.getDefaultBuildCommand());
-        mainframerScriptField.setText(settingsProvider.getDefaultMainframerScript());
+        mainframerToolField.setText(settingsProvider.getDefaultMainframerPath());
         taskNameField.setText(settingsProvider.getDefaultTaskName());
         configureBeforeTasksOnStartupField.setSelected(settingsProvider.getConfigureBeforeTaskOnStartup());
     }

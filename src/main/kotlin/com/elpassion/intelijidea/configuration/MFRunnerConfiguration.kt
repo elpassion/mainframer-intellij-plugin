@@ -29,10 +29,10 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data) {
         when {
-            this == null -> throw ExecutionException("Mainframer script cannot be found")
+            this == null -> throw ExecutionException("Mainframer tool cannot be found")
             this.isMfFileAvailable() -> {
-                showScriptNotFoundError()
-                throw ExecutionException("Mainframer script cannot be found")
+                showToolNotFoundError()
+                throw ExecutionException("Mainframer tool cannot be found")
             }
             else -> MFCommandLineState(environment, mainframerPath, buildCommand, taskName)
         }
@@ -65,7 +65,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     private fun MFRunnerConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
-    private fun showScriptNotFoundError() {
+    private fun showToolNotFoundError() {
         showError(project, errorMessage) {
             if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
                 MFDownloader.downloadFileToProject(it.url.toString(), project, mfFilename)
@@ -75,7 +75,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     private val errorMessage: String
         get() = "Cannot find <b>$mfFilename</b> in the following path:\n\"${data?.mainframerPath}\"\n\n" +
-                "<a href=\"${getLatestMfToolDownloadUrl()}\">Download latest script file</a>"
+                "<a href=\"${getLatestMfToolDownloadUrl()}\">Download latest mainframer tool</a>"
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRunner.data"

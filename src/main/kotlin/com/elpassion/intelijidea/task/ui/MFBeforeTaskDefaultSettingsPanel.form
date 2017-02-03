@@ -45,10 +45,10 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Default mainframer script location"/>
+          <text value="Default mainframer tool location"/>
         </properties>
       </component>
-      <component id="3c7ba" class="com.intellij.openapi.ui.LabeledComponent" binding="mainframerScriptHolder" custom-create="true">
+      <component id="3c7ba" class="com.intellij.openapi.ui.LabeledComponent" binding="mainframerToolHolder" custom-create="true">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

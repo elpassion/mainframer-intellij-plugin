@@ -25,7 +25,7 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
         var configureBeforeTaskOnStartup: Boolean = false
     }
 
-    fun setDefaultMainframerScript(text: String) {
+    fun setDefaultMainframerPath(text: String) {
         myState.defaultMainframerPath = text
     }
 
@@ -41,7 +41,7 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
         myState.configureBeforeTaskOnStartup = value
     }
 
-    fun getDefaultMainframerScript(): String? = myState.defaultMainframerPath
+    fun getDefaultMainframerPath(): String? = myState.defaultMainframerPath
 
     fun getDefaultBuildCommand(): String? = myState.defaultBuildCommand
 

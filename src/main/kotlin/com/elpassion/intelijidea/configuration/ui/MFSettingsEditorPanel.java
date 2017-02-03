@@ -14,19 +14,19 @@ public class MFSettingsEditorPanel {
     public JTextField buildCommand;
     public JTextField taskName;
     public JPanel panel;
-    private LabeledComponent<TextFieldWithBrowseButton> mainframerScriptHolder;
-    public TextFieldWithBrowseButton mainframerScript;
+    private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
+    public TextFieldWithBrowseButton mainframerTool;
 
     public MFSettingsEditorPanel(Project project) {
         this.project = project;
     }
 
     private void createUIComponents() {
-        mainframerScript = new TextFieldWithBrowseButton();
-        mainframerScript.setButtonIcon(IconUtil.getAddIcon());
+        mainframerTool = new TextFieldWithBrowseButton();
+        mainframerTool.setButtonIcon(IconUtil.getAddIcon());
         TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
-        mainframerScript.addBrowseFolderListener(textBrowseFolderListener);
-        mainframerScriptHolder = new LabeledComponent<>();
-        mainframerScriptHolder.setComponent(mainframerScript);
+        mainframerTool.addBrowseFolderListener(textBrowseFolderListener);
+        mainframerToolHolder = new LabeledComponent<>();
+        mainframerToolHolder.setComponent(mainframerTool);
     }
 }
