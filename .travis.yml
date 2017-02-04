@@ -11,8 +11,14 @@ before_cache:
   - rm -f $HOME/.gradle/daemon
   - rm -f $HOME/.gradle/native
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_192b72faab89_key -iv $encrypted_192b72faab89_iv -in gradle.properties.enc -out gradle.properties -d
+
 script:
   - ./gradlew test
+
+after_success:
+  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin
 
 notifications:
   slack:
