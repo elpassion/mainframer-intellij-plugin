@@ -10,13 +10,13 @@ class JacksonExtensionsTests {
     @Test
     fun shouldParseMainframerVersionsList() {
         val listFromJson = "[{\"tag_name\": \"v1.1.2\" }]".listFromJson<TagNameWrapper>()
-        Assert.assertEquals("v1.1.2", listFromJson[0].tag_name)
+        Assert.assertEquals("v1.1.2", listFromJson[0].tagName)
     }
 
     @Test
     fun shouldNotFailWhenJsonHasMoreFieldThanModel() {
         val listFromJson = "[{\"tag_name\": \"v1.1.2\" ,\"ignore_field\": \"ignore_value\" }]".listFromJson<TagNameWrapper>()
-        Assert.assertEquals("v1.1.2", listFromJson[0].tag_name)
+        Assert.assertEquals("v1.1.2", listFromJson[0].tagName)
     }
 
     @Test
@@ -28,7 +28,7 @@ class JacksonExtensionsTests {
 }
 
 class TagNameWrapper : Serializable {
-    var tag_name: String = ""
+    var tagName: String = ""
     var descriptionInfo: String = ""
 
 }
