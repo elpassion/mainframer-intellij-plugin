@@ -1,8 +1,10 @@
 package com.elpassion.intelijidea.action.configure.releases.service
 
+import com.elpassion.intelijidea.action.configure.releases.api.GitHubApi
 
-class MFVersionsReleaseService {
-    fun getVersions(): List<String> {
-        return listOf("2.0.0", "1.1.2", "1.1.1", "1.1.0", "1.0.2", "1.0.1", "1.0.0")
-    }
+
+class MFVersionsReleaseService(private val api: GitHubApi) {
+    fun getVersions(): List<String> = api.listReleases()
+            .execute().body()
+            .map { it.tagName.drop(1) }
 }

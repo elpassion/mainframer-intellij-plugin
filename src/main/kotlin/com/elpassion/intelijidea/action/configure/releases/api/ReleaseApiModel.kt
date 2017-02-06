@@ -1,5 +1,3 @@
 package com.elpassion.intelijidea.action.configure.releases.api
 
-class ReleaseApiModel {
-    var tagName: String? = null
-}
+data class ReleaseApiModel(val tagName: String = "")
