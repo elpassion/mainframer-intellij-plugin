@@ -2,11 +2,8 @@ package com.elpassion.intelijidea
 
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
-import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
-import com.intellij.execution.RunnerAndConfigurationSettings
-import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 

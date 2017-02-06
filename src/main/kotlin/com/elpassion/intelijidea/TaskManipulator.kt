@@ -3,7 +3,6 @@ package com.elpassion.intelijidea
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
-import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.extensions.Extensions
@@ -44,14 +43,9 @@ private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, project: Proj
             .filter { it.isEnabled }
 }
 
-private fun RunManagerEx.getTemplateConfigurations() = getTemplateConfigurationsMap().values.map { it.configuration }
-
-private fun RunManagerEx.getTemplateConfigurationsMap() =
-        getField<Map<String, RunnerAndConfigurationSettings>>("myTemplateConfigurationsMap")
-
-private fun <T> Any.getField(fieldName: String): T {
-    val declaredField = this.javaClass.getDeclaredField(fieldName)
-    declaredField.isAccessible = true
-    @Suppress("UNCHECKED_CAST")
-    return declaredField.get(this) as T
+private fun RunManagerEx.getTemplateConfigurations(): List<RunConfiguration> {
+    val configurationTypes = TemplateConfigurationsProvider.get()
+    return configurationTypes.flatMap { it.configurationFactories.toList() }
+            .map { getConfigurationTemplate(it) }
+            .map { it.configuration }
 }
