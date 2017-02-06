@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.action.configure
 
+import com.elpassion.intelijidea.action.configure.releases.MFConfigureProjectDialog
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename

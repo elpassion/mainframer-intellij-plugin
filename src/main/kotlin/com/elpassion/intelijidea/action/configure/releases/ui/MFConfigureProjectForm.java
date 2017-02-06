@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure.ui;
+package com.elpassion.intelijidea.action.configure.releases.ui;
 
 import javax.swing.*;
 

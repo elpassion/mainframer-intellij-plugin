@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure
+package com.elpassion.intelijidea.action.configure.releases.service
 
 
 class MFVersionsReleaseService {

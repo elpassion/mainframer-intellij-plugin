@@ -1,6 +1,8 @@
-package com.elpassion.intelijidea.action.configure
+package com.elpassion.intelijidea.action.configure.releases
 
-import com.elpassion.intelijidea.action.configure.ui.MFConfigureProjectForm
+import com.elpassion.intelijidea.action.configure.releases.MFComboBoxViewModel
+import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
+import com.elpassion.intelijidea.action.configure.releases.ui.MFConfigureProjectForm
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import javax.swing.JComponent

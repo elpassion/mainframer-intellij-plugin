@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure
+package com.elpassion.intelijidea.action.configure.releases
 
 import com.elpassion.intelijidea.util.mfVersion
 import javax.swing.ComboBoxModel
