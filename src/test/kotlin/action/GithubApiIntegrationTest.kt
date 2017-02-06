@@ -32,7 +32,7 @@ class GithubApiIntegrationTest() {
         assertEquals(2, listReleases.size)
     }
 
-    private fun callRequestForReleases() = provideGithubApi(provideTestRetrofit()).listReleases().execute().body()
+    private fun callRequestForReleases() = provideGithubApi(provideTestRetrofit()).listReleases().blockingFirst()
 
     private fun provideTestRetrofit() = provideBaseRetrofitBuilder().baseUrl(webserver.url("/")).build()
 }

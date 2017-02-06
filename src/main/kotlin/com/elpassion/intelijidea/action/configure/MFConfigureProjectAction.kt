@@ -27,8 +27,14 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     private fun Project.configureMainframer() {
         ProgressManager.getInstance().run(object : Task.Backgroundable(this, "Downloading mainframer versions") {
             override fun run(indicator: ProgressIndicator) {
-                val releaseVersionsList = service.getVersions()
-                showMFConfigureDialog(releaseVersionsList)
+                service.getVersions()
+                        .subscribe({
+                            showMFConfigureDialog(it)
+                        }, {
+                            ApplicationManager.getApplication().invokeLater {
+                                Messages.showInfoMessage(it.message, MF_CONFIGURE_PROJECT)
+                            }
+                        })
             }
         })
     }
