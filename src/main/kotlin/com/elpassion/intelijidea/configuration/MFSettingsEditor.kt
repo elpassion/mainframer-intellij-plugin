@@ -17,7 +17,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
     }
 
     override fun applyEditorTo(configuration: MFRunnerConfiguration) {
-        configuration.data?.copy(
+        configuration.data = configuration.data?.copy(
                 buildCommand = mainEditorPanel.buildCommand.text,
                 taskName = mainEditorPanel.taskName.text,
                 mainframerPath = mainEditorPanel.mainframerTool.text)
