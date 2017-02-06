@@ -10,10 +10,10 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
 
     var taskData: MFTaskData
         get() = MFTaskData(myState.defaultMainframerPath, myState.defaultBuildCommand, myState.defaultTaskName)
-        set(value) {
-            myState.defaultMainframerPath = value.mainframerPath
-            myState.defaultBuildCommand = value.buildCommand
-            myState.defaultTaskName = value.taskName
+        set(value) = with(myState) {
+            defaultMainframerPath = value.mainframerPath
+            defaultBuildCommand = value.buildCommand
+            defaultTaskName = value.taskName
         }
 
     private val myState = State()
