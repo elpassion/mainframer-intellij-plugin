@@ -7,12 +7,14 @@ import java.io.Serializable
 
 class MFBeforeRunTask(var data: MFTaskData?) : BeforeRunTask<MFBeforeRunTask>(MFBeforeRunTaskProvider.ID) {
 
-    fun isValid() = data != null && data!!.isValid && File(data!!.mainframerPath, mfFilename).exists()
+    fun isValid() = data?.isValid() ?: false
 }
 
 data class MFTaskData(val mainframerPath: String? = null,
                       val buildCommand: String? = null,
                       val taskName: String? = null) : Serializable {
 
-    val isValid: Boolean get() = mainframerPath != null && buildCommand != null && taskName != null
+    fun isValid(): Boolean = mainframerPath != null && buildCommand != null && taskName != null && isMfFileExistent()
+
+    private fun isMfFileExistent() = File(mainframerPath, mfFilename).exists()
 }
