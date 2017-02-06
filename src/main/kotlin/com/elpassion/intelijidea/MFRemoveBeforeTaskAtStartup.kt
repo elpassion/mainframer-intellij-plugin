@@ -13,7 +13,7 @@ import com.intellij.openapi.startup.StartupActivity
 class MFRemoveBeforeTaskAtStartup : StartupActivity {
     override fun runActivity(project: Project) {
         val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-        if (settingsProvider.getConfigureBeforeTaskOnStartup()) {
+        if (settingsProvider.state.configureBeforeTaskOnStartup) {
             val mfTaskProvider = BeforeRunTaskProvider.getProvider(project, MFBeforeRunTaskProvider.ID)!!
             val runManagerEx = RunManagerEx.getInstanceEx(project)
             injectMainframerBeforeTasks(runManagerEx, mfTaskProvider)

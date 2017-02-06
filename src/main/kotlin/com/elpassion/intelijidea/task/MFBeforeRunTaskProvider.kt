@@ -35,13 +35,14 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
         val dialog = MFBeforeRunTaskDialog(project)
-        dialog.buildCommandField.text = task.buildCommand
-        dialog.mainframerToolField.text = task.mainframerPath
-        dialog.taskField.text = task.taskName
+        dialog.buildCommandField.text = task.data?.buildCommand
+        dialog.mainframerToolField.text = task.data?.mainframerPath
+        dialog.taskField.text = task.data?.taskName
         if (dialog.showAndGet()) {
-            task.mainframerPath = dialog.mainframerToolField.text
-            task.buildCommand = dialog.buildCommandField.text
-            task.taskName = dialog.taskField.text
+            task.data = MFTaskData(
+                    mainframerPath = dialog.mainframerToolField.text,
+                    buildCommand = dialog.buildCommandField.text,
+                    taskName = dialog.taskField.text)
         }
         return false
     }
@@ -104,8 +105,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
         val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-        val task = MFBeforeRunTask(settingsProvider.getDefaultMainframerPath(), settingsProvider.getDefaultBuildCommand(), settingsProvider.getDefaultTaskName())
-        return task
+        return MFBeforeRunTask(settingsProvider.taskData)
     }
 
     companion object {

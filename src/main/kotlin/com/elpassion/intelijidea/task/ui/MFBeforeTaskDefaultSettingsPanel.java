@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.task.ui;
 
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider;
+import com.elpassion.intelijidea.task.MFTaskData;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
@@ -37,23 +38,28 @@ public class MFBeforeTaskDefaultSettingsPanel {
     }
 
     public Boolean isModified() {
-        return !Comparing.equal(mainframerToolField.getText(), settingsProvider.getDefaultMainframerPath()) ||
-                !Comparing.equal(buildCommandField.getText(), settingsProvider.getDefaultBuildCommand()) ||
-                !Comparing.equal(taskNameField.getText(), settingsProvider.getDefaultTaskName()) ||
-                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), settingsProvider.getConfigureBeforeTaskOnStartup());
+        MFTaskData taskData = settingsProvider.getTaskData();
+        boolean configureBeforeTaskOnStartup = settingsProvider.getState().getConfigureBeforeTaskOnStartup();
+        return !Comparing.equal(mainframerToolField.getText(), taskData.getMainframerPath()) ||
+                !Comparing.equal(buildCommandField.getText(), taskData.getBuildCommand()) ||
+                !Comparing.equal(taskNameField.getText(), taskData.getTaskName()) ||
+                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), configureBeforeTaskOnStartup);
     }
 
     public void apply() {
-        settingsProvider.setDefaultMainframerPath(mainframerToolField.getText());
-        settingsProvider.setDefaultBuildCommand(buildCommandField.getText());
-        settingsProvider.setDefaultTaskName(taskNameField.getText());
-        settingsProvider.setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
+        MFTaskData taskData = new MFTaskData(
+                mainframerToolField.getText(),
+                buildCommandField.getText(),
+                taskNameField.getText());
+        settingsProvider.setTaskData(taskData);
+        settingsProvider.getState().setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
     }
 
     public void reset() {
-        buildCommandField.setText(settingsProvider.getDefaultBuildCommand());
-        mainframerToolField.setText(settingsProvider.getDefaultMainframerPath());
-        taskNameField.setText(settingsProvider.getDefaultTaskName());
-        configureBeforeTasksOnStartupField.setSelected(settingsProvider.getConfigureBeforeTaskOnStartup());
+        MFTaskData taskData = settingsProvider.getTaskData();
+        buildCommandField.setText(taskData.getBuildCommand());
+        mainframerToolField.setText(taskData.getMainframerPath());
+        taskNameField.setText(taskData.getTaskName());
+        configureBeforeTasksOnStartupField.setSelected(settingsProvider.getState().getConfigureBeforeTaskOnStartup());
     }
 }

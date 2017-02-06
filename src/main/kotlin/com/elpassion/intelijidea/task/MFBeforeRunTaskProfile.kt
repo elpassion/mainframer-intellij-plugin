@@ -17,7 +17,10 @@ class MFBeforeRunTaskProfile(private val task: MFBeforeRunTask) : ModuleRunProfi
 
     override fun getState(executor: Executor, env: ExecutionEnvironment): RunProfileState? {
         if (task.isValid()) {
-            return MFCommandLineState(env, mainframerPath = task.mainframerPath!!, buildCommand = task.buildCommand!!, taskName = task.taskName!!)
+            return MFCommandLineState(env,
+                    mainframerPath = task.data?.mainframerPath!!,
+                    buildCommand = task.data?.buildCommand!!,
+                    taskName = task.data?.taskName!!)
         } else {
             return null
         }
