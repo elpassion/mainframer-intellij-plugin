@@ -4,5 +4,5 @@ import javax.swing.*;
 
 public class MFConfigureProjectForm {
     public JPanel panel;
-    public JComboBox versionComboBox;
+    public JComboBox<String> versionComboBox;
 }
