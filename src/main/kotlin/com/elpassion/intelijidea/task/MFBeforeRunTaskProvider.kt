@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.ui.MFBeforeRunTaskDialog
-import com.elpassion.intelijidea.util.showError
+import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RunConfiguration
@@ -53,7 +53,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
         SwingUtilities.invokeAndWait {
             configuration?.let {
-                showError(it.project, "Mainframer is executing task: ${it.name}")
+                showInfo(it.project, "Mainframer is executing task: ${it.name}")
             }
         }
         return executeSync(context, task)
