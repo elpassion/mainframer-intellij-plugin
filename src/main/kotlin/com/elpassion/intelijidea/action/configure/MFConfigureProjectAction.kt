@@ -9,7 +9,6 @@ import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -28,24 +27,21 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
         ProgressManager.getInstance().run(object : Task.Backgroundable(this, "Downloading mainframer versions") {
             override fun run(indicator: ProgressIndicator) {
                 service.getVersions()
+                        .observeOn(UIScheduler)
                         .subscribe({
                             showMFConfigureDialog(it)
                         }, {
-                            ApplicationManager.getApplication().invokeLater {
-                                Messages.showInfoMessage(it.message, MF_CONFIGURE_PROJECT)
-                            }
+                            Messages.showInfoMessage(it.message, MF_CONFIGURE_PROJECT)
                         })
             }
         })
     }
 
     private fun Project.showMFConfigureDialog(versionsList: List<String>) {
-        ApplicationManager.getApplication().invokeLater {
-            MFConfigureProjectDialog(this, versionsList) { version ->
-                val outcome = downloadMainframer(version)
-                Messages.showInfoMessage(outcome.getMessage(), MF_CONFIGURE_PROJECT)
-            }.show()
-        }
+        MFConfigureProjectDialog(this, versionsList) { version ->
+            val outcome = downloadMainframer(version)
+            Messages.showInfoMessage(outcome.getMessage(), MF_CONFIGURE_PROJECT)
+        }.show()
     }
 
     private fun Outcome<Unit>.getMessage() = when {
