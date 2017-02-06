@@ -1,10 +1,10 @@
 package com.elpassion.intelijidea
 
 import com.intellij.execution.configurations.ConfigurationType
-import com.intellij.openapi.extensions.Extensions
+import com.intellij.execution.configurations.ConfigurationType.CONFIGURATION_TYPE_EP
 
 object TemplateConfigurationsProvider {
-    var testValue : List<ConfigurationType>? = null
+    var testValue: List<ConfigurationType>? = null
 
-    fun get() = testValue ?: Extensions.getExtensions(ConfigurationType.CONFIGURATION_TYPE_EP, null).toList()
+    fun get() = testValue ?: CONFIGURATION_TYPE_EP.extensions.toList()
 }
