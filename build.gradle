@@ -41,8 +41,8 @@ sourceSets {
 intellij {
     pluginName 'mainframer-plugin'
     publish {
-        username MF_PUBLISH_USER_NAME
-        password MF_PUBLISH_PASSWORD
+        username project.findProperty("MF_PUBLISH_USER_NAME")
+        password project.findProperty("MF_PUBLISH_PASSWORD")
         channel 'nightly'
     }
 }
