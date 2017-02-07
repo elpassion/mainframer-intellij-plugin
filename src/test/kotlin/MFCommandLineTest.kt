@@ -1,6 +1,6 @@
 import com.elpassion.intelijidea.common.MFCommandLine
 import com.elpassion.intelijidea.util.mfFilename
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MFCommandLineTest {
@@ -8,12 +8,16 @@ class MFCommandLineTest {
     @Test
     fun shouldGenerateCommandLineToExecute() {
         val commandLine = MFCommandLine("./gradlew", "build")
-        Assert.assertEquals("bash \"$mfFilename ./gradlew build\"", commandLine.commandLineString)
+        commandLine.verify()
     }
 
     @Test
     fun shouldGenerateProperCommandLineToExecute() {
         val commandLine = MFCommandLine("gradle", "assembleDebug")
-        Assert.assertEquals("bash \"$mfFilename gradle assembleDebug\"", commandLine.commandLineString)
+        commandLine.verify()
+    }
+
+    private fun MFCommandLine.verify() {
+        assertEquals("bash \"$mfFilename $buildCommand $taskName\"", commandLineString)
     }
 }
