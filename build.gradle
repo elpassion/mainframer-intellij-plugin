@@ -12,6 +12,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version "0.2.0"
+    id 'net.researchgate.release' version '2.4.0'
 }
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -62,4 +63,26 @@ dependencies {
     testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
+}
+
+release {
+    buildTasks = ['doRelease']
+    // Do not change the tagTemplate value to double quotes or the version will be evaluated before
+    // the SNAPSHOT version is updated to the release version.
+    tagTemplate = 'v$version'
+    git {
+        requireBranch = /^release_v\d+.*$/
+    }
+}
+
+// We aren't building or doing anything interesting for release.
+// We just update the version and generate the tag as CI will handle deployment.
+task doRelease {
+    doLast {
+        println '===============================!!PLEASE READ!!=================================\n\n' +
+                'IMPORTANT:  The release command will trigger the creation of a new release ' +
+                'in Github, the uploading of binaries to github, and the publishing of our plugin' +
+                'to the IntelliJ plugin repository.\n' +
+                'Hit CTRL+C to cancel.\n'
+    }
 }
