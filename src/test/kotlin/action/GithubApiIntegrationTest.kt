@@ -8,7 +8,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class GithubApiIntegrationTest() {
+class GithubApiIntegrationTest {
     val webserver = MockWebServer()
 
     @After
