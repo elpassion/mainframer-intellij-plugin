@@ -5,9 +5,9 @@ import com.intellij.execution.BeforeRunTask
 import java.io.File
 import java.io.Serializable
 
-class MFBeforeRunTask(var data: MFTaskData?) : BeforeRunTask<MFBeforeRunTask>(MFBeforeRunTaskProvider.ID) {
+class MFBeforeRunTask(var data: MFTaskData) : BeforeRunTask<MFBeforeRunTask>(MFBeforeRunTaskProvider.ID) {
 
-    fun isValid() = data?.isValid() ?: false
+    fun isValid() = data.isValid()
 }
 
 data class MFTaskData(val mainframerPath: String? = null,
