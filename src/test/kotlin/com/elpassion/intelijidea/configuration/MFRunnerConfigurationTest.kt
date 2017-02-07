@@ -13,23 +13,26 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
-        val exception = assertThrows(RuntimeConfigurationError::class.java) {
-            MFRunnerConfiguration(project, confFactory, "")
-                    .apply { data = null }
-                    .checkConfiguration()
-        }
-        assertEquals("Configuration incorrect", exception.message)
+        assertExceptionMessage(
+                expectedMessage = "Configuration incorrect",
+                mfRunnerConfigurationData = null
+        )
     }
-
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenBuildCommandIsBlankOnCheckConfiguration() {
+        assertExceptionMessage(
+                expectedMessage = "Build command cannot be empty",
+                mfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = ""))
+    }
+
+    private fun assertExceptionMessage(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
         val exception = assertThrows(RuntimeConfigurationError::class.java) {
             MFRunnerConfiguration(project, confFactory, "")
-                    .apply { data = mfRunnerConfigurationData(buildCommand = "") }
+                    .apply { data = mfRunnerConfigurationData }
                     .checkConfiguration()
         }
-        assertEquals("Build command cannot be empty", exception.message)
+        assertEquals(expectedMessage, exception.message)
     }
 
     private fun mfRunnerConfigurationData(buildCommand: String = "buildCommand",
