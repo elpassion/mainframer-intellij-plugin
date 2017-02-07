@@ -1,12 +1,16 @@
 package com.elpassion.intelijidea.action.configure.releases
 
 import com.elpassion.intelijidea.action.configure.releases.ui.MFConfigureProjectForm
+import com.elpassion.intelijidea.common.RxDialogWrapper
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
+import io.reactivex.Emitter
+import io.reactivex.Observable
+import io.reactivex.functions.Cancellable
 import javax.swing.JComponent
 
 
-class MFConfigureProjectDialog(project: Project, val releaseVersionsList: List<String>, private val onVersion: (String) -> Unit) : DialogWrapper(project, false) {
+class MFConfigureProjectDialog(project: Project, val releaseVersionsList: List<String>) : RxDialogWrapper<String>(project) {
 
     private val form = MFConfigureProjectForm()
 
@@ -20,9 +24,5 @@ class MFConfigureProjectDialog(project: Project, val releaseVersionsList: List<S
         return form.panel
     }
 
-    override fun doOKAction() {
-        super.doOKAction()
-        val selectedVersion = form.versionComboBox.selectedItem.toString()
-        onVersion(selectedVersion)
-    }
+    override fun getSuccessResult() = form.versionComboBox.selectedItem.toString()
 }

@@ -5,6 +5,7 @@ import com.elpassion.intelijidea.action.configure.releases.api.provideGithubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetrofit
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
 import com.elpassion.intelijidea.common.MFDownloader
+import com.elpassion.intelijidea.common.Result
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.actionSystem.AnAction
@@ -16,23 +17,18 @@ import io.reactivex.Scheduler
 
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     override fun actionPerformed(event: AnActionEvent) {
-        event.project?.let {
+        event.project?.let { project ->
             MFConfigureProjectActionController(
                     service = MFVersionsReleaseService(provideGithubApi(provideGithubRetrofit())),
                     versionChooser = { versionsList ->
-                        Observable.create({ emitter ->
-                            MFConfigureProjectDialog(it, versionsList, { version ->
-                                emitter.onNext(version)
-                                emitter.onComplete()
-                            }).show()
-                        })
+                        MFConfigureProjectDialog(project, versionsList).showAsObservable()
                     },
                     downloadMainframer = { version ->
                         Observable.just(
-                                MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), it, mfFilename)
+                                MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), project, mfFilename)
                         )
                     },
-                    progressScheduler = ProgressScheduler(it, "Downloading mainframer versions")).configureMainframer()
+                    progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
         }
     }
 
@@ -42,7 +38,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
 
     class MFConfigureProjectActionController(
             val service: MFVersionsReleaseService,
-            val versionChooser: (List<String>) -> Observable<String>,
+            val versionChooser: (List<String>) -> Observable<Result<String>>,
             val downloadMainframer: (String) -> Observable<Outcome<Unit>>,
             val progressScheduler: Scheduler) {
 
@@ -51,6 +47,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     .subscribeOn(progressScheduler)
                     .observeOn(UIScheduler)
                     .flatMap(versionChooser)
+                    .map { (it as Result.Success).value }
                     .flatMap(downloadMainframer)
                     .subscribe({
                         Messages.showInfoMessage(it.getMessage(), MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
