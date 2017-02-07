@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
 import com.elpassion.intelijidea.common.Result
 import com.elpassion.intelijidea.util.flatMapResult
 import com.elpassion.intelijidea.util.subscribeResult
@@ -8,7 +7,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 
 class MFConfigureProjectActionController(
-        val releaseService: MFVersionsReleaseService,
+        val releaseService: () -> Observable<List<String>>,
         val versionChooser: (List<String>) -> Observable<Result<String>>,
         val downloadMainframer: (String) -> Observable<Result<Unit>>,
         val showMessage: (String) -> Unit,
@@ -16,7 +15,7 @@ class MFConfigureProjectActionController(
         val progressScheduler: Scheduler) {
 
     fun configureMainframer() {
-        releaseService.getVersions()
+        releaseService.invoke()
                 .subscribeOn(progressScheduler)
                 .observeOn(uiScheduler)
                 .flatMap(versionChooser)
