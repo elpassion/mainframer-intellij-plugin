@@ -7,9 +7,18 @@ import com.intellij.openapi.components.Storage
 
 @State(name = "MFBeforeTaskDefaultSettingsProvider", storages = arrayOf(Storage("mainframer.xml")))
 class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTaskDefaultSettingsProvider.State> {
+
+    var taskData: MFTaskData
+        get() = MFTaskData(myState.defaultMainframerPath, myState.defaultBuildCommand, myState.defaultTaskName)
+        set(value) = with(myState) {
+            defaultMainframerPath = value.mainframerPath
+            defaultBuildCommand = value.buildCommand
+            defaultTaskName = value.taskName
+        }
+
     private val myState = State()
 
-    override fun getState(): State? = myState
+    override fun getState(): State = myState
 
     override fun loadState(state: State) {
         myState.defaultBuildCommand = state.defaultBuildCommand
@@ -25,37 +34,8 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
         var configureBeforeTaskOnStartup: Boolean = false
     }
 
-    fun setDefaultMainframerPath(text: String) {
-        myState.defaultMainframerPath = text
-    }
-
-    fun setDefaultBuildCommand(text: String) {
-        myState.defaultBuildCommand = text
-    }
-
-    fun setDefaultTaskName(text: String) {
-        myState.defaultTaskName = text
-    }
-
-    fun setConfigureBeforeTaskOnStartup(value: Boolean) {
-        myState.configureBeforeTaskOnStartup = value
-    }
-
-    fun getDefaultMainframerPath(): String? = myState.defaultMainframerPath
-
-    fun getDefaultBuildCommand(): String? = myState.defaultBuildCommand
-
-    fun getDefaultTaskName(): String? = myState.defaultTaskName
-
-    fun getConfigureBeforeTaskOnStartup(): Boolean = myState.configureBeforeTaskOnStartup
-
     companion object {
         val INSTANCE: MFBeforeTaskDefaultSettingsProvider
             get() = ServiceManager.getService(MFBeforeTaskDefaultSettingsProvider::class.java)
     }
 }
-
-
-
-
-

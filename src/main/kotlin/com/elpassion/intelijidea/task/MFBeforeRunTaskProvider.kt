@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.ui.MFBeforeRunTaskDialog
-import com.elpassion.intelijidea.util.showError
+import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RunConfiguration
@@ -34,14 +34,16 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     override fun isConfigurable(): Boolean = true
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
-        val dialog = MFBeforeRunTaskDialog(project)
-        dialog.buildCommandField.text = task.buildCommand
-        dialog.mainframerToolField.text = task.mainframerPath
-        dialog.taskField.text = task.taskName
-        if (dialog.showAndGet()) {
-            task.mainframerPath = dialog.mainframerToolField.text
-            task.buildCommand = dialog.buildCommandField.text
-            task.taskName = dialog.taskField.text
+        MFBeforeRunTaskDialog(project).run {
+            buildCommandField.text = task.data.buildCommand
+            mainframerToolField.text = task.data.mainframerPath
+            taskField.text = task.data.taskName
+            if (showAndGet()) {
+                task.data = MFTaskData(
+                        mainframerPath = mainframerToolField.text,
+                        buildCommand = buildCommandField.text,
+                        taskName = taskField.text)
+            }
         }
         return false
     }
@@ -51,7 +53,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
         SwingUtilities.invokeAndWait {
             configuration?.let {
-                showError(it.project, "Mainframer is executing task: ${it.name}")
+                showInfo(it.project, "Mainframer is executing task: ${it.name}")
             }
         }
         return executeSync(context, task)
@@ -104,8 +106,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
         val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-        val task = MFBeforeRunTask(settingsProvider.getDefaultMainframerPath(), settingsProvider.getDefaultBuildCommand(), settingsProvider.getDefaultTaskName())
-        return task
+        return MFBeforeRunTask(settingsProvider.taskData)
     }
 
     companion object {

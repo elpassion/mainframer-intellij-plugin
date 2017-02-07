@@ -10,11 +10,12 @@ import com.intellij.openapi.ui.Messages
 
 class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) {
     override fun actionPerformed(event: AnActionEvent) {
-        val project = event.project
-        val mfTaskProvider = BeforeRunTaskProvider.getProvider(project, MFBeforeRunTaskProvider.ID)!!
-        val runManagerEx = RunManagerEx.getInstanceEx(project)
-        injectMainframerBeforeTasks(runManagerEx, mfTaskProvider)
-        Messages.showInfoMessage("Mainframer injected!", MF_INJECT_BEFORE_RUN_TASK_ACTION)
+        event.project?.let {
+            val mfTaskProvider = BeforeRunTaskProvider.getProvider(it, MFBeforeRunTaskProvider.ID)!!
+            val runManagerEx = RunManagerEx.getInstanceEx(it)
+            injectMainframerBeforeTasks(runManagerEx, mfTaskProvider)
+            Messages.showInfoMessage("Mainframer injected!", MF_INJECT_BEFORE_RUN_TASK_ACTION)
+        }
     }
 
     companion object {

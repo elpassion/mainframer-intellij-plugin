@@ -30,7 +30,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data) {
         when {
             this == null -> throw ExecutionException("Mainframer tool cannot be found")
-            this.isMfFileAvailable() -> {
+            !this.isMfFileAvailable() -> {
                 showToolNotFoundError()
                 throw ExecutionException("Mainframer tool cannot be found")
             }

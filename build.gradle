@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     ext.kotlin_version = '1.0.6'
 
@@ -12,12 +14,12 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version "0.2.0"
+    id 'net.researchgate.release' version '2.4.0'
 }
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
 group 'com.elpassion.intelijidea'
-version '0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -41,14 +43,50 @@ sourceSets {
 intellij {
     pluginName 'mainframer-plugin'
     publish {
-        username MF_PUBLISH_USER_NAME
-        password MF_PUBLISH_PASSWORD
+        username project.findProperty("MF_PUBLISH_USER_NAME")
+        password project.findProperty("MF_PUBLISH_PASSWORD")
         channel 'nightly'
+    }
+    patchPluginXml {
+        version readVersion()
+        sinceBuild "145"
+    }
+}
+
+private String readVersion() {
+    def versionFile = new File('version.gradle.properties')
+    def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.text)
+    if (matcher.find()) {
+        return matcher.group(1)
+    } else {
+        throw new RuntimeException("Version not found!")
     }
 }
 
 dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.6'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.5'
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+
+    testCompile "com.nhaarman:mockito-kotlin:1.2.0"
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
 }
+
+release {
+    buildTasks = ['build']
+    // Do not change the tagTemplate value to double quotes or the version will be evaluated before
+    // the SNAPSHOT version is updated to the release version.
+    tagTemplate = 'v$version'
+    versionPropertyFile = 'version.gradle.properties'
+    git {
+        requireBranch = 'master'
+    }
+    failOnSnapshotDependencies = false
+}
+
+afterReleaseBuild.dependsOn publishPlugin
