@@ -54,8 +54,8 @@ intellij {
 }
 
 private String readVersion() {
-    def readmeFile = new File('version.gradle.properties')
-    def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(readmeFile.text)
+    def versionFile = new File('version.gradle.properties')
+    def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.text)
     if (matcher.find()) {
         return matcher.group(1)
     }else{
