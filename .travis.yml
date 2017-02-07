@@ -18,7 +18,7 @@ script:
   - ./gradlew test
 
 after_success:
-  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin
+  - test "$TRAVIS_BRANCH" == "master" && ./script/release.sh
 
 notifications:
   slack:
