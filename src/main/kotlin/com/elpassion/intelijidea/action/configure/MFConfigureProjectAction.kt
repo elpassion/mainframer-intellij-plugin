@@ -6,6 +6,7 @@ import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetr
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.common.Result
+import com.elpassion.intelijidea.util.flatMapResult
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.actionSystem.AnAction
@@ -45,8 +46,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     .subscribeOn(progressScheduler)
                     .observeOn(UIScheduler)
                     .flatMap(versionChooser)
-                    .map { (it as Result.Success).value }
-                    .flatMap(downloadMainframer)
+                    .flatMapResult(downloadMainframer)
                     .subscribe({
                         when (it) {
                             is Result.Success -> Messages.showInfoMessage("Mainframer configured in your project!", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
