@@ -77,7 +77,7 @@ release {
     failOnSnapshotDependencies = false
 }
 
-//afterReleaseBuild.dependsOn publishPlugin
+afterReleaseBuild.dependsOn buildPlugin
 
 // We aren't building or doing anything interesting for release.
 // We just update the version and generate the tag as CI will handle deployment.
