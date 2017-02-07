@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     ext.kotlin_version = '1.0.6'
 
@@ -12,6 +14,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.intellij' version "0.2.0"
+    id 'net.researchgate.release' version '2.4.0'
 }
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -45,8 +48,18 @@ intellij {
         channel 'nightly'
     }
     patchPluginXml {
-        version "0.0.1"
+        version readVersion()
         sinceBuild "145"
+    }
+}
+
+private String readVersion() {
+    def versionFile = new File('version.gradle.properties')
+    def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.text)
+    if (matcher.find()) {
+        return matcher.group(1)
+    } else {
+        throw new RuntimeException("Version not found!")
     }
 }
 
@@ -63,3 +76,17 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
 }
+
+release {
+    buildTasks = ['build']
+    // Do not change the tagTemplate value to double quotes or the version will be evaluated before
+    // the SNAPSHOT version is updated to the release version.
+    tagTemplate = 'v$version'
+    versionPropertyFile = 'version.gradle.properties'
+    git {
+        requireBranch = 'master'
+    }
+    failOnSnapshotDependencies = false
+}
+
+afterReleaseBuild.dependsOn publishPlugin
