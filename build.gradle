@@ -84,12 +84,12 @@ release {
     tagTemplate = 'v$version'
     versionPropertyFile = 'version.gradle.properties'
     git {
-        requireBranch = /^release_v\d+.*$/
+        requireBranch = 'master'
     }
     failOnSnapshotDependencies = false
 }
 
-afterReleaseBuild.dependsOn buildPlugin
+afterReleaseBuild.dependsOn publishPlugin
 
 // We aren't building or doing anything interesting for release.
 // We just update the version and generate the tag as CI will handle deployment.
