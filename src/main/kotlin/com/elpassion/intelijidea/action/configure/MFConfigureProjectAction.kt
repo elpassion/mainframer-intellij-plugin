@@ -6,10 +6,7 @@ import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetr
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.common.Result
-import com.elpassion.intelijidea.util.flatMapResult
-import com.elpassion.intelijidea.util.getMfToolDownloadUrl
-import com.elpassion.intelijidea.util.mfFilename
-import com.elpassion.intelijidea.util.subscribeResult
+import com.elpassion.intelijidea.util.*
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
@@ -57,13 +54,4 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     })
         }
     }
-
-    private fun <V> Outcome<V>.asResultObservable(): Observable<Result<V>> {
-        return when {
-            isCancelled -> Observable.just(Result.Canceled())
-            exception != null -> Observable.error(exception)
-            else -> Observable.just(Result.Success(get()!!))
-        }
-    }
 }
-
