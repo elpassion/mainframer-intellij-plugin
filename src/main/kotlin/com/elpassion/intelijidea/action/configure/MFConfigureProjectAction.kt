@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.action.configure.releases.MFConfigureProjectDialog
+import com.elpassion.intelijidea.action.configure.chooser.MFConfigureProjectDialog
 import com.elpassion.intelijidea.action.configure.releases.api.provideGithubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetrofit
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService

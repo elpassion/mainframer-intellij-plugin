@@ -1,6 +1,6 @@
 package action
 
-import com.elpassion.intelijidea.action.configure.releases.MFComboBoxViewModel
+import com.elpassion.intelijidea.action.configure.chooser.MFComboBoxViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

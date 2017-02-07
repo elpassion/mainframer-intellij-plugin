@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure.releases
+package com.elpassion.intelijidea.action.configure.chooser
 
 import com.intellij.ui.CollectionComboBoxModel
 
