@@ -10,7 +10,6 @@ import com.elpassion.intelijidea.util.*
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
-import com.intellij.platform.templates.github.Outcome
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 
@@ -25,6 +24,9 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     downloadMainframer = { version ->
                         MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), project, mfFilename).asResultObservable()
                     },
+                    showMessage = { message ->
+                        Messages.showInfoMessage(message, MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                    },
                     progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
         }
     }
@@ -37,6 +39,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
             val service: MFVersionsReleaseService,
             val versionChooser: (List<String>) -> Observable<Result<String>>,
             val downloadMainframer: (String) -> Observable<Result<Unit>>,
+            val showMessage: (String) -> Unit,
             val progressScheduler: Scheduler) {
 
         fun configureMainframer() {
@@ -46,11 +49,11 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     .flatMap(versionChooser)
                     .flatMapResult(downloadMainframer)
                     .subscribeResult({
-                        Messages.showInfoMessage("Mainframer configured in your project!", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        showMessage("Mainframer configured in your project!")
                     }, {
-                        Messages.showInfoMessage("Mainframer configuration canceled", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        showMessage("Mainframer configuration canceled")
                     }, {
-                        Messages.showInfoMessage("Error during mainframer configuration", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        showMessage("Error during mainframer configuration")
                     })
         }
     }
