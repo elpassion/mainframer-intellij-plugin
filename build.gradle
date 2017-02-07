@@ -70,6 +70,7 @@ release {
     // Do not change the tagTemplate value to double quotes or the version will be evaluated before
     // the SNAPSHOT version is updated to the release version.
     tagTemplate = 'v$version'
+    versionPropertyFile = 'version.gradle.properties'
     git {
         requireBranch = /^release_v\d+.*$/
     }
