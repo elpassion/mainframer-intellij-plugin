@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.common
+package com.elpassion.intelijidea.action.configure.downloader
 
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project

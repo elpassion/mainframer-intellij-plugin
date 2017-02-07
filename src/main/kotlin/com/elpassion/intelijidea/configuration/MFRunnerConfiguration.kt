@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.common.MFDownloader
+import com.elpassion.intelijidea.action.configure.downloader.MFDownloader
 import com.elpassion.intelijidea.util.*
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor

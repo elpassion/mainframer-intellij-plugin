@@ -4,7 +4,7 @@ import com.elpassion.intelijidea.action.configure.chooser.MFConfigureProjectDial
 import com.elpassion.intelijidea.action.configure.releases.api.provideGithubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetrofit
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
-import com.elpassion.intelijidea.common.MFDownloader
+import com.elpassion.intelijidea.action.configure.downloader.MFDownloader
 import com.elpassion.intelijidea.common.ProgressScheduler
 import com.elpassion.intelijidea.common.UIScheduler
 import com.elpassion.intelijidea.util.asResultObservable
