@@ -27,6 +27,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     showMessage = { message ->
                         Messages.showInfoMessage(message, MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
                     },
+                    uiScheduler =  UIScheduler,
                     progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
         }
     }
@@ -40,12 +41,13 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
             val versionChooser: (List<String>) -> Observable<Result<String>>,
             val downloadMainframer: (String) -> Observable<Result<Unit>>,
             val showMessage: (String) -> Unit,
+            val uiScheduler: Scheduler,
             val progressScheduler: Scheduler) {
 
         fun configureMainframer() {
             service.getVersions()
                     .subscribeOn(progressScheduler)
-                    .observeOn(UIScheduler)
+                    .observeOn(uiScheduler)
                     .flatMap(versionChooser)
                     .flatMapResult(downloadMainframer)
                     .subscribeResult({
