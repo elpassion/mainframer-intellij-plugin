@@ -88,5 +88,3 @@ release {
     }
     failOnSnapshotDependencies = false
 }
-
-afterReleaseBuild.dependsOn publishPlugin
