@@ -26,6 +26,13 @@ class MFRunnerConfigurationTest {
                 mfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = ""))
     }
 
+    @Test
+    fun shouldThrowRuntimeConfigurationErrorWhenTaskNameIsBlankOnCheckConfiguration() {
+        assertExceptionMessage(
+                expectedMessage = "Task name cannot be empty",
+                mfRunnerConfigurationData = mfRunnerConfigurationData(taskName = ""))
+    }
+
     private fun assertExceptionMessage(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
         val exception = assertThrows(RuntimeConfigurationError::class.java) {
             MFRunnerConfiguration(project, confFactory, "")
