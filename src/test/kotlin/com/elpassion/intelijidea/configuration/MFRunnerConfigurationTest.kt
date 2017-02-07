@@ -1,10 +1,10 @@
 package com.elpassion.intelijidea.configuration
 
+import com.elpassion.intelijidea.configuration.common.assertThrows
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.command.impl.DummyProject
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.Test
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
 
 class MFRunnerConfigurationTest {
 
@@ -13,18 +13,18 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
-        val exception = assertThrows<RuntimeConfigurationError>(RuntimeConfigurationError::class.java) {
+        val exception = assertThrows(RuntimeConfigurationError::class.java) {
             MFRunnerConfiguration(project, confFactory, "")
                     .apply { data = null }
                     .checkConfiguration()
         }
         assertEquals("Configuration incorrect", exception.message)
     }
-    
-    
+
+
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenBuildCommandIsBlankOnCheckConfiguration() {
-        val exception = assertThrows<RuntimeConfigurationError>(RuntimeConfigurationError::class.java) {
+        val exception = assertThrows(RuntimeConfigurationError::class.java) {
             MFRunnerConfiguration(project, confFactory, "")
                     .apply { data = mfRunnerConfigurationData(buildCommand = "") }
                     .checkConfiguration()
