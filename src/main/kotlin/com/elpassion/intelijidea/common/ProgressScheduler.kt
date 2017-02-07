@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure
+package com.elpassion.intelijidea.common
 
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
