@@ -7,19 +7,19 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 
 class MFConfigureProjectActionController(
-        val releaseService: () -> Observable<List<String>>,
-        val versionChooser: (List<String>) -> Observable<Result<String>>,
-        val downloadMainframer: (String) -> Observable<Result<Unit>>,
+        val mainframerReleasesFetcher: () -> Observable<List<String>>,
+        val mainframerVersionChooser: (List<String>) -> Observable<Result<String>>,
+        val mainframerFileDownloader: (String) -> Observable<Result<Unit>>,
         val showMessage: (String) -> Unit,
         val uiScheduler: Scheduler,
         val progressScheduler: Scheduler) {
 
     fun configureMainframer() {
-        releaseService.invoke()
+        mainframerReleasesFetcher.invoke()
                 .subscribeOn(progressScheduler)
                 .observeOn(uiScheduler)
-                .flatMap(versionChooser)
-                .flatMapResult(downloadMainframer)
+                .flatMap(mainframerVersionChooser)
+                .flatMapResult(mainframerFileDownloader)
                 .subscribeResult({
                     showMessage("Mainframer configured in your project!")
                 }, {

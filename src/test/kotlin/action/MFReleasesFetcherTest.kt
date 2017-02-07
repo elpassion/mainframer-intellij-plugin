@@ -2,7 +2,7 @@ package action
 
 import com.elpassion.intelijidea.action.configure.releases.api.GitHubApi
 import com.elpassion.intelijidea.action.configure.releases.api.ReleaseApiModel
-import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
+import com.elpassion.intelijidea.action.configure.releases.service.MFReleasesFetcher
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
@@ -10,9 +10,9 @@ import io.reactivex.Observable
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class MFVersionsReleaseServiceTest {
+class MFReleasesFetcherTest {
     val api = mock<GitHubApi>()
-    val service = MFVersionsReleaseService(api)
+    val service = MFReleasesFetcher(api)
 
     @Test
     fun shouldDropFirstCharacter() {
