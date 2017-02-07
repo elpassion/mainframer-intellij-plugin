@@ -25,9 +25,9 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                         MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), project, mfFilename).asResultObservable()
                     },
                     showMessage = { message ->
-                        Messages.showInfoMessage(message, MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT)
                     },
-                    uiScheduler =  UIScheduler,
+                    uiScheduler = UIScheduler,
                     progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
         }
     }
@@ -36,27 +36,4 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
         private val MF_CONFIGURE_PROJECT = "Configure Mainframer in Project"
     }
 
-    class MFConfigureProjectActionController(
-            val service: MFVersionsReleaseService,
-            val versionChooser: (List<String>) -> Observable<Result<String>>,
-            val downloadMainframer: (String) -> Observable<Result<Unit>>,
-            val showMessage: (String) -> Unit,
-            val uiScheduler: Scheduler,
-            val progressScheduler: Scheduler) {
-
-        fun configureMainframer() {
-            service.getVersions()
-                    .subscribeOn(progressScheduler)
-                    .observeOn(uiScheduler)
-                    .flatMap(versionChooser)
-                    .flatMapResult(downloadMainframer)
-                    .subscribeResult({
-                        showMessage("Mainframer configured in your project!")
-                    }, {
-                        showMessage("Mainframer configuration canceled")
-                    }, {
-                        showMessage("Error during mainframer configuration")
-                    })
-        }
-    }
 }
