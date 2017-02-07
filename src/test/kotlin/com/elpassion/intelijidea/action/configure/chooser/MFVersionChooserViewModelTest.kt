@@ -1,6 +1,5 @@
-package action
+package com.elpassion.intelijidea.action.configure.chooser
 
-import com.elpassion.intelijidea.action.configure.chooser.MFVersionChooserViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
