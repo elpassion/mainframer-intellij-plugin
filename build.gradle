@@ -58,8 +58,8 @@ private String readVersion() {
     def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.text)
     if (matcher.find()) {
         return matcher.group(1)
-    }else{
-        throw RuntimeException("Version not found!")
+    } else {
+        throw new RuntimeException("Version not found!")
     }
 }
 
