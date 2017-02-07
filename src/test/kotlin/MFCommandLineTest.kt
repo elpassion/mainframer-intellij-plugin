@@ -10,4 +10,10 @@ class MFCommandLineTest {
         val commandLine = MFCommandLine("./gradlew", "build")
         Assert.assertEquals("bash \"$mfFilename ./gradlew build\"", commandLine.commandLineString)
     }
+
+    @Test
+    fun shouldGenerateProperCommandLineToExecute() {
+        val commandLine = MFCommandLine("gradle", "assembleDebug")
+        Assert.assertEquals("bash \"$mfFilename gradle assembleDebug\"", commandLine.commandLineString)
+    }
 }
