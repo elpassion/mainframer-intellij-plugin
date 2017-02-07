@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
     ext.kotlin_version = '1.0.6'
 
@@ -46,8 +48,18 @@ intellij {
         channel 'nightly'
     }
     patchPluginXml {
-        version "0.0.1"
+        version readVersion()
         sinceBuild "145"
+    }
+}
+
+private String readVersion() {
+    def readmeFile = new File('version.gradle.properties')
+    def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(readmeFile.text)
+    if (matcher.find()) {
+        return matcher.group(1)
+    }else{
+        throw RuntimeException("Version not found!")
     }
 }
 
@@ -70,11 +82,14 @@ release {
     // Do not change the tagTemplate value to double quotes or the version will be evaluated before
     // the SNAPSHOT version is updated to the release version.
     tagTemplate = 'v$version'
+    versionPropertyFile = 'version.gradle.properties'
     git {
         requireBranch = /^release_v\d+.*$/
     }
     failOnSnapshotDependencies = false
 }
+
+afterReleaseBuild.dependsOn buildPlugin
 
 // We aren't building or doing anything interesting for release.
 // We just update the version and generate the tag as CI will handle deployment.
