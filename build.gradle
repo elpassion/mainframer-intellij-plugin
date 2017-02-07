@@ -73,6 +73,7 @@ release {
     git {
         requireBranch = /^release_v\d+.*$/
     }
+    failOnSnapshotDependencies = false
 }
 
 // We aren't building or doing anything interesting for release.
