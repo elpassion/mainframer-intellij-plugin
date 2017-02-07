@@ -24,9 +24,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                         MFConfigureProjectDialog(project, versionsList).showAsObservable()
                     },
                     downloadMainframer = { version ->
-                        Observable.just(
-                                MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), project, mfFilename)
-                        )
+                        MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), project, mfFilename).asResultObservable()
                     },
                     progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
         }
@@ -39,7 +37,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     class MFConfigureProjectActionController(
             val service: MFVersionsReleaseService,
             val versionChooser: (List<String>) -> Observable<Result<String>>,
-            val downloadMainframer: (String) -> Observable<Outcome<Unit>>,
+            val downloadMainframer: (String) -> Observable<Result<Unit>>,
             val progressScheduler: Scheduler) {
 
         fun configureMainframer() {
@@ -50,16 +48,21 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     .map { (it as Result.Success).value }
                     .flatMap(downloadMainframer)
                     .subscribe({
-                        Messages.showInfoMessage(it.getMessage(), MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        when (it) {
+                            is Result.Success -> Messages.showInfoMessage("Mainframer configured in your project!", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                            is Result.Canceled -> Messages.showInfoMessage("Mainframer configuration canceled", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        }
                     }, {
-                        Messages.showInfoMessage(it.message, MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                        Messages.showInfoMessage("Error during mainframer configuration", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
                     })
         }
+    }
 
-        private fun Outcome<Unit>.getMessage() = when {
-            isCancelled -> "Mainframer configuration canceled"
-            exception != null -> "Error during mainframer configuration"
-            else -> "Mainframer configured in your project!"
+    private fun <V> Outcome<V>.asResultObservable(): Observable<Result<V>> {
+        return when {
+            isCancelled -> Observable.just(Result.Canceled())
+            exception != null -> Observable.error(exception)
+            else -> Observable.just(Result.Success(get()!!))
         }
     }
 }
