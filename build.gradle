@@ -46,7 +46,7 @@ intellij {
         channel 'nightly'
     }
     patchPluginXml {
-        version version
+        version '$version'
         sinceBuild "145"
     }
 }
