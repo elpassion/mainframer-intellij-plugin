@@ -84,7 +84,7 @@ release {
     tagTemplate = 'v$version'
     versionPropertyFile = 'version.gradle.properties'
     git {
-        requireBranch = 'master'
+        requireBranch = 'release_from_travis'
     }
     failOnSnapshotDependencies = false
 }
