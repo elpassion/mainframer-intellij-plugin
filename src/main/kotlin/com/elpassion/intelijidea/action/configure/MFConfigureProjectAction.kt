@@ -6,14 +6,13 @@ import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetr
 import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
 import com.elpassion.intelijidea.common.MFDownloader
 import com.elpassion.intelijidea.common.ProgressScheduler
-import com.elpassion.intelijidea.common.Result
 import com.elpassion.intelijidea.common.UIScheduler
-import com.elpassion.intelijidea.util.*
+import com.elpassion.intelijidea.util.asResultObservable
+import com.elpassion.intelijidea.util.getMfToolDownloadUrl
+import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
-import io.reactivex.Observable
-import io.reactivex.Scheduler
 
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     override fun actionPerformed(event: AnActionEvent) {
@@ -37,5 +36,4 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     companion object {
         private val MF_CONFIGURE_PROJECT = "Configure Mainframer in Project"
     }
-
 }
