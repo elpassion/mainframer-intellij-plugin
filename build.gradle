@@ -17,7 +17,6 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 
 group 'com.elpassion.intelijidea'
-version '0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -44,6 +43,10 @@ intellij {
         username project.findProperty("MF_PUBLISH_USER_NAME")
         password project.findProperty("MF_PUBLISH_PASSWORD")
         channel 'nightly'
+    }
+    patchPluginXml {
+        version "0.0.1"
+        sinceBuild "145"
     }
 }
 

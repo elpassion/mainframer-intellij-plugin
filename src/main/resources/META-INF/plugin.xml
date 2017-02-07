@@ -1,7 +1,6 @@
 <idea-plugin>
     <id>com.elpassion.intelijidea</id>
     <name>mainframer-plugin</name>
-    <version>0.0.1</version>
     <vendor email="android@elpassion.pl" url="http://www.elpassion.com/">El Passion</vendor>
 
     <description><![CDATA[
@@ -13,11 +12,6 @@
     ]]>
     </change-notes>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="145" />
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
