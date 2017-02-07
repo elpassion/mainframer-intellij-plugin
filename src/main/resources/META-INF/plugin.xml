@@ -4,7 +4,21 @@
     <vendor email="android@elpassion.pl" url="http://www.elpassion.com/">El Passion</vendor>
 
     <description><![CDATA[
-      Plugin for https://github.com/gojuno/mainframer.<br>
+      This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
+      easy and seamless.
+
+      Plugin uses Intellij Idea run configuration mechanism, especially it takes advantage of before run tasks,
+      to replace standard build tasks with the one using mainframer.
+
+      In addition it also provides new runConfiguration to running mainframer tasks.
+
+      <h3>Features:</h3>
+        <ul>
+          <li>BeforeTasks which delegates tasks to mainframer</li>
+          <li>Injecting/Restoring before tasks to all configurations</li>
+          <li>Configuring mainframer in project</li>
+          <li>RunComfiguration for mainframer</li>
+        </ul>
     ]]></description>
 
     <change-notes><![CDATA[
