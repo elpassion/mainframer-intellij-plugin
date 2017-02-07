@@ -8,7 +8,7 @@ import io.reactivex.Observable
 import io.reactivex.Scheduler
 
 class MFConfigureProjectActionController(
-        val service: MFVersionsReleaseService,
+        val releaseService: MFVersionsReleaseService,
         val versionChooser: (List<String>) -> Observable<Result<String>>,
         val downloadMainframer: (String) -> Observable<Result<Unit>>,
         val showMessage: (String) -> Unit,
@@ -16,7 +16,7 @@ class MFConfigureProjectActionController(
         val progressScheduler: Scheduler) {
 
     fun configureMainframer() {
-        service.getVersions()
+        releaseService.getVersions()
                 .subscribeOn(progressScheduler)
                 .observeOn(uiScheduler)
                 .flatMap(versionChooser)

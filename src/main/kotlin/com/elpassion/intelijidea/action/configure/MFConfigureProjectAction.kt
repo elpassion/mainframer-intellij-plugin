@@ -18,7 +18,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let { project ->
             MFConfigureProjectActionController(
-                    service = MFVersionsReleaseService(provideGithubApi(provideGithubRetrofit())),
+                    releaseService = MFVersionsReleaseService(provideGithubApi(provideGithubRetrofit())),
                     versionChooser = { versionsList ->
                         MFConfigureProjectDialog(project, versionsList).showAsObservable()
                     },
