@@ -22,6 +22,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 0.0.12: Refactor injecting before tasks feature.<br>
       Release 0.0.1: Initial release.<br>
     ]]>
     </change-notes>
