@@ -78,7 +78,7 @@ dependencies {
 }
 
 release {
-    buildTasks = ['doRelease']
+    buildTasks = ['build']
     // Do not change the tagTemplate value to double quotes or the version will be evaluated before
     // the SNAPSHOT version is updated to the release version.
     tagTemplate = 'v$version'
@@ -90,15 +90,3 @@ release {
 }
 
 afterReleaseBuild.dependsOn publishPlugin
-
-// We aren't building or doing anything interesting for release.
-// We just update the version and generate the tag as CI will handle deployment.
-task doRelease {
-    doLast {
-        println '===============================!!PLEASE READ!!=================================\n\n' +
-                'IMPORTANT:  The release command will trigger the creation of a new release ' +
-                'in Github, the uploading of binaries to github, and the publishing of our plugin' +
-                'to the IntelliJ plugin repository.\n' +
-                'Hit CTRL+C to cancel.\n'
-    }
-}
