@@ -9,6 +9,7 @@ import com.elpassion.intelijidea.common.Result
 import com.elpassion.intelijidea.util.flatMapResult
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
+import com.elpassion.intelijidea.util.subscribeResult
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
@@ -47,11 +48,10 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
                     .observeOn(UIScheduler)
                     .flatMap(versionChooser)
                     .flatMapResult(downloadMainframer)
-                    .subscribe({
-                        when (it) {
-                            is Result.Success -> Messages.showInfoMessage("Mainframer configured in your project!", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
-                            is Result.Canceled -> Messages.showInfoMessage("Mainframer configuration canceled", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
-                        }
+                    .subscribeResult({
+                        Messages.showInfoMessage("Mainframer configured in your project!", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
+                    }, {
+                        Messages.showInfoMessage("Mainframer configuration canceled", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
                     }, {
                         Messages.showInfoMessage("Error during mainframer configuration", MFConfigureProjectAction.MF_CONFIGURE_PROJECT)
                     })
@@ -66,3 +66,4 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
         }
     }
 }
+
