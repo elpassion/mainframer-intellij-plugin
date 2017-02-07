@@ -46,7 +46,7 @@ intellij {
         channel 'nightly'
     }
     patchPluginXml {
-        version version
+        version '$version'
         sinceBuild "145"
     }
 }
@@ -75,11 +75,6 @@ release {
         requireBranch = /^release_v\d+.*$/
     }
     failOnSnapshotDependencies = false
-
-    failOnCommitNeeded = false
-    failOnPublishNeeded = false
-    failOnUnversionedFiles = false
-    failOnUpdateNeeded = true
 }
 
 //afterReleaseBuild.dependsOn publishPlugin
