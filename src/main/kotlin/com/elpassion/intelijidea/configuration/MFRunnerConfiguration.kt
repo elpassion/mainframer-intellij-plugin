@@ -41,7 +41,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     override fun checkConfiguration() = with(data) {
         when {
             this == null -> throw RuntimeConfigurationError("Configuration incorrect")
-            buildCommand.isNullOrBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
+            buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
             taskName.isNullOrBlank() -> throw RuntimeConfigurationError("Taskname cannot be empty")
             else -> Unit
         }

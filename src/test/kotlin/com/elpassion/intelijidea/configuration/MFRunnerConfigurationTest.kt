@@ -20,4 +20,20 @@ class MFRunnerConfigurationTest {
         }
         assertEquals("Configuration incorrect", exception.message)
     }
+    
+    
+    @Test
+    fun shouldThrowRuntimeConfigurationErrorWhenBuildCommandIsBlankOnCheckConfiguration() {
+        val exception = assertThrows<RuntimeConfigurationError>(RuntimeConfigurationError::class.java) {
+            MFRunnerConfiguration(project, confFactory, "")
+                    .apply { data = mfRunnerConfigurationData(buildCommand = "") }
+                    .checkConfiguration()
+        }
+        assertEquals("Build command cannot be empty", exception.message)
+    }
+
+    private fun mfRunnerConfigurationData(buildCommand: String = "buildCommand",
+                                          taskName: String = "taskName",
+                                          mainframerPath: String? = "path") = MFRunnerConfigurationData(buildCommand, taskName, mainframerPath)
+
 }
