@@ -31,8 +31,20 @@ class MFCommandLineTest {
         commandLine.verify()
     }
 
+    @Test
+    fun shouldGenerateProperCommandLineWithWhiteSpacePathToExecute() {
+        val commandLine = MFCommandLine(
+                mfPath = "/White Spaced Path",
+                buildCommand = "gradle",
+                taskName = "build")
+        commandLine.verify()
+    }
+
     private fun MFCommandLine.verify() {
-        assertEquals("bash ${if (mfPath != null) "$mfPath/" else ""}$mfFilename " +
-                "\"$buildCommand $taskName\"", commandLineString)
+        val expectedParams = listOf(
+                "${if (mfPath != null) "$mfPath/" else ""}$mfFilename",
+                "$buildCommand $taskName"
+        ).map { if (it.contains(" ")) "\"$it\"" else it }
+        assertEquals("bash ${expectedParams.joinToString(separator = " ")}", commandLineString)
     }
 }
