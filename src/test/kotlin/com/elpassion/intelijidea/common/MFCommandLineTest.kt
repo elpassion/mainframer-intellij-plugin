@@ -30,6 +30,12 @@ class MFCommandLineTest {
         commandLine.verify()
     }
 
+    @Test
+    fun shouldGenerateProperCommandLineWithMultipleTasksToExecute() {
+        val commandLine = createCommandLine(taskName = "clean build")
+        commandLine.verify()
+    }
+
     private fun MFCommandLine.verify() {
         val expectedParams = listOf(
                 "${if (mfPath != null) "$mfPath/" else ""}$mfFilename",
