@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.configuration.common.assertThrows
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.any
@@ -71,6 +72,16 @@ class MFRunnerConfigurationTest {
         assertReadExternalValue(
                 expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path"),
                 savedMfRunnerConfigurationData = "{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
+    }
+
+    @Test
+    fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
+        val exception = assertThrows(ExecutionException::class.java) {
+            MFRunnerConfiguration(project, confFactory, "")
+                    .apply { data = null }
+                    .getState(mock(), mock())
+        }
+        assertEquals("Mainframer tool cannot be found", exception.message)
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
