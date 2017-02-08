@@ -3,13 +3,19 @@ package com.elpassion.intelijidea.configuration
 import com.elpassion.intelijidea.configuration.common.assertThrows
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.command.impl.DummyProject
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
+import org.jdom.Element
 import org.junit.Test
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 
 class MFRunnerConfigurationTest {
 
     private val confFactory = MFConfigurationFactory(MFRunConfigurationType())
     private val project = DummyProject.getInstance()
+    private val element = mock<Element>()
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
@@ -30,6 +36,15 @@ class MFRunnerConfigurationTest {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Task name cannot be empty",
                 mfRunnerConfigurationData = mfRunnerConfigurationData(taskName = ""))
+    }
+
+    @Test
+    fun shouldNotSetAttributeValueWhenDataIsNullOnWriteExternal() {
+        MFRunnerConfiguration(project, confFactory, "").run {
+            data = null
+            writeExternal(element)
+            verify(element, never()).setAttribute(any())
+        }
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
