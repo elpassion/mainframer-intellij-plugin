@@ -73,7 +73,6 @@ class MFRunnerConfigurationTest {
     @Test
     fun shouldSetObjectFromGetAttributeValueOnReadExternal() {
         whenever(element.getAttributeValue(any())).thenReturn("{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
-        whenever(project.basePath).thenReturn("basePath")
         val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path")
 
         MFRunnerConfiguration(project, confFactory, "").run {
