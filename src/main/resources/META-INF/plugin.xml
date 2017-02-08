@@ -40,7 +40,7 @@
     </extensions>
 
     <actions>
-        <group class="com.intellij.openapi.actionSystem.DefaultActionGroup" icon="/icons/configurationIcon.png"
+        <group class="com.intellij.openapi.actionSystem.DefaultActionGroup" icon="/icons/mainframerIcon.png"
             id="MF.ActionGroup" popup="true" text="Mainframer">
             <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
                 <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
