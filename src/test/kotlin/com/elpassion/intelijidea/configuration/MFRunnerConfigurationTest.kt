@@ -7,8 +7,9 @@ import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import junit.framework.TestCase.assertEquals
 import org.jdom.Element
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.never
@@ -43,7 +44,7 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldNotSetAttributeValueWhenDataIsNullOnWriteExternal() {
-        MFRunnerConfiguration(project, confFactory, "").run {
+        mfRunnerConfiguration().run {
             data = null
             writeExternal(element)
             verify(element, never()).setAttribute(any(), any())
@@ -52,7 +53,7 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldSetAttributeValueEqualToDataFieldOnWriteExternal() {
-        MFRunnerConfiguration(project, confFactory, "").run {
+        mfRunnerConfiguration().run {
             data = mfRunnerConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
             writeExternal(element)
             verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":null}"))
@@ -77,16 +78,33 @@ class MFRunnerConfigurationTest {
     @Test
     fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
         val exception = assertThrows(ExecutionException::class.java) {
-            MFRunnerConfiguration(project, confFactory, "")
+            mfRunnerConfiguration()
                     .apply { data = null }
                     .getState(mock(), mock())
         }
         assertEquals("Mainframer tool cannot be found", exception.message)
     }
 
+    @Test
+    fun shouldThrowExecutionExceptionWhenMfFileIsNotAvailableOnGetState() {
+        var isToolNotFoundErrorShown = false
+        var shownMainFramerPath: String? = null
+        val exception = assertThrows(ExecutionException::class.java) {
+            mfRunnerConfiguration {
+                isToolNotFoundErrorShown = true
+                shownMainFramerPath = it
+            }.apply {
+                data = mfRunnerConfigurationData(mainframerPath = "mainFramerPath")
+            }.getState(mock(), mock())
+        }
+        assertEquals("Mainframer tool cannot be found", exception.message)
+        assertTrue(isToolNotFoundErrorShown)
+        assertEquals("mainFramerPath", shownMainFramerPath)
+    }
+
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
         val exception = assertThrows(RuntimeConfigurationError::class.java) {
-            MFRunnerConfiguration(project, confFactory, "")
+            mfRunnerConfiguration()
                     .apply { data = mfRunnerConfigurationData }
                     .checkConfiguration()
         }
@@ -95,11 +113,13 @@ class MFRunnerConfigurationTest {
 
     private fun assertReadExternalValue(expectedMfRunnerConfigurationData: MFRunnerConfigurationData, savedMfRunnerConfigurationData: String?) {
         whenever(element.getAttributeValue(any())).thenReturn(savedMfRunnerConfigurationData)
-        MFRunnerConfiguration(project, confFactory, "").run {
+        mfRunnerConfiguration().run {
             readExternal(element)
             assertEquals(expectedMfRunnerConfigurationData, data)
         }
     }
+
+    private fun mfRunnerConfiguration(showToolNotFoundError: (String?) -> Unit = {}) = MFRunnerConfiguration(project, confFactory, "", showToolNotFoundError)
 
     private fun mfRunnerConfigurationData(buildCommand: String = "buildCommand",
                                           taskName: String = "taskName",

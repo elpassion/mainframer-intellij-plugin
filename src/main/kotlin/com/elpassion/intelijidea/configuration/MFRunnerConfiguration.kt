@@ -1,7 +1,6 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
 import com.elpassion.intelijidea.util.*
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
@@ -15,10 +14,9 @@ import com.intellij.openapi.project.Project
 import org.jdom.Element
 import java.io.File
 import java.io.Serializable
-import javax.swing.event.HyperlinkEvent
 
 
-class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
+class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String, val showToolNotFoundError: (mainframerPath: String?) -> Unit)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
     var data: MFRunnerConfigurationData? = null
@@ -31,7 +29,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         when {
             this == null -> throw ExecutionException("Mainframer tool cannot be found")
             !this.isMfFileAvailable() -> {
-                showToolNotFoundError()
+                showToolNotFoundError(data?.mainframerPath)
                 throw ExecutionException("Mainframer tool cannot be found")
             }
             else -> MFCommandLineState(environment, mainframerPath, buildCommand, taskName)
@@ -39,14 +37,6 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     private fun MFRunnerConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
-
-    private fun showToolNotFoundError() {
-        showError(project, errorMessage) {
-            if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                MFFileDownloader(project).downloadFileToProject(it.url.toString(), mfFilename)
-            }
-        }
-    }
 
     override fun checkConfiguration() = with(data) {
         when {
@@ -72,10 +62,6 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
-
-    private val errorMessage: String
-        get() = "Cannot find <b>$mfFilename</b> in the following path:\n\"${data?.mainframerPath}\"\n\n" +
-                "<a href=\"${getLatestMfToolDownloadUrl()}\">Download latest mainframer tool</a>"
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRunner.data"
