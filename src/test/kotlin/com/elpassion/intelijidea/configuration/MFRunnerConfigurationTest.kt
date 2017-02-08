@@ -8,6 +8,7 @@ import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import org.jdom.Element
 import org.junit.Test
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
@@ -44,6 +45,15 @@ class MFRunnerConfigurationTest {
             data = null
             writeExternal(element)
             verify(element, never()).setAttribute(any(), any())
+        }
+    }
+
+    @Test
+    fun shouldSetAttributeValueEqualToDataFieldOnWriteExternal() {
+        MFRunnerConfiguration(project, confFactory, "").run {
+            data = mfRunnerConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
+            writeExternal(element)
+            verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":null}"))
         }
     }
 
