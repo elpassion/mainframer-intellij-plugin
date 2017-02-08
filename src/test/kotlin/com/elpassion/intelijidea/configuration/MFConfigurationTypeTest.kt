@@ -25,6 +25,6 @@ class MFConfigurationTypeTest {
 
     @Test
     fun shouldHaveProperIcon() {
-        assertEquals(MFIcons.configurationIcon, configurationType.icon)
+        assertEquals(MFIcons.mainframerIcon, configurationType.icon)
     }
 }
