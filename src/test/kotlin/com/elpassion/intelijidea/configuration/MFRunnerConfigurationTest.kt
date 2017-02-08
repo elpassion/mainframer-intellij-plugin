@@ -59,7 +59,7 @@ class MFRunnerConfigurationTest {
     }
 
     @Test
-    fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNull() {
+    fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNullOnReadExternal() {
         whenever(element.getAttributeValue(any())).thenReturn(null)
         whenever(project.basePath).thenReturn("basePath")
         val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath")
