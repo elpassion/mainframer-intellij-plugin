@@ -17,7 +17,7 @@
           <li>BeforeTasks which delegates tasks to mainframer</li>
           <li>Injecting/Restoring before tasks to all configurations</li>
           <li>Configuring mainframer in project</li>
-          <li>RunComfiguration for mainframer</li>
+          <li>RunConfiguration for mainframer</li>
         </ul>
     ]]></description>
 
