@@ -31,7 +31,7 @@ class MFVersionChooserViewModelTest {
     fun shouldReallyRememberSelectedItem() {
         val mfComboBoxViewModel = MFVersionChooserViewModel(listOf())
 
-        mfComboBoxViewModel.setSelectedItem("My item 2")
+        mfComboBoxViewModel.selectedItem = "My item 2"
 
         assertEquals("My item 2", mfComboBoxViewModel.selectedItem)
     }
