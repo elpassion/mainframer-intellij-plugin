@@ -43,6 +43,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
                         mainframerPath = mainframerToolField.text,
                         buildCommand = buildCommandField.text,
                         taskName = taskField.text)
+                return true
             }
         }
         return false
