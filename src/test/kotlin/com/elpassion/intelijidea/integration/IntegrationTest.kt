@@ -1,4 +1,4 @@
-package integration
+package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTaskProvider

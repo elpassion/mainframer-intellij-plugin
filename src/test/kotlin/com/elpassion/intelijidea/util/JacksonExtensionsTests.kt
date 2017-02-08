@@ -1,6 +1,5 @@
-package jackson
+package com.elpassion.intelijidea.util
 
-import com.elpassion.intelijidea.util.listFromJson
 import org.junit.Assert
 import org.junit.Test
 import java.io.Serializable

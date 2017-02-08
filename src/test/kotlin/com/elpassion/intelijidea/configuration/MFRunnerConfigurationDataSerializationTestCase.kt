@@ -1,4 +1,5 @@
-import com.elpassion.intelijidea.configuration.MFRunnerConfigurationData
+package com.elpassion.intelijidea.configuration
+
 import com.elpassion.intelijidea.util.fromJson
 import com.elpassion.intelijidea.util.toJson
 import junit.framework.TestCase

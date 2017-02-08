@@ -1,4 +1,4 @@
-package integration
+package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
 import com.elpassion.intelijidea.injectMainframerBeforeTasks

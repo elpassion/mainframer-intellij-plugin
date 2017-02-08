@@ -1,5 +1,5 @@
-import com.elpassion.intelijidea.configuration.MFConfigurationFactory
-import com.elpassion.intelijidea.configuration.MFRunConfigurationType
+package com.elpassion.intelijidea.configuration
+
 import com.elpassion.intelijidea.util.MFIcons
 import org.junit.Assert.assertEquals
 import org.junit.Test

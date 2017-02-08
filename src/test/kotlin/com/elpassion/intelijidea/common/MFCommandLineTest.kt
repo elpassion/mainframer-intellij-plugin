@@ -1,4 +1,5 @@
-import com.elpassion.intelijidea.common.MFCommandLine
+package com.elpassion.intelijidea.common
+
 import com.elpassion.intelijidea.util.mfFilename
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -31,7 +32,7 @@ class MFCommandLineTest {
     }
 
     private fun MFCommandLine.verify() {
-        assertEquals("bash \"${if (mfPath != null) "$mfPath/" else ""}$mfFilename " +
+        assertEquals("bash \"${if (mfPath != null) "$mfPath/" else ""}${mfFilename} " +
                 "$buildCommand $taskName\"", commandLineString)
     }
 }

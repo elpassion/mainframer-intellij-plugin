@@ -1,4 +1,4 @@
-package tools;
+package com.elpassion.intelijidea.tools;
 
 import okhttp3.Request;
 import retrofit2.Call;

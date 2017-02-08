@@ -1,4 +1,4 @@
-package tools
+package com.elpassion.intelijidea.tools
 
 import retrofit2.Call
 import retrofit2.Response
