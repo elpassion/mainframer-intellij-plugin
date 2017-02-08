@@ -5,12 +5,17 @@ import com.intellij.execution.configurations.GeneralCommandLine
 
 class MFCommandLine(val mfPath: String? = null, val buildCommand: String, val taskName: String) : GeneralCommandLine() {
 
-    init {
-        exePath = "bash"
-        addParameter(buildString {
+    val absoluteMfPath: String
+        get() = buildString {
             mfPath?.let { append("$it/") }
             append(mfFilename)
-        })
-        addParameter("$buildCommand $taskName")
+        }
+
+    val commandWithTask: String
+        get() = "$buildCommand $taskName"
+
+    init {
+        exePath = "bash"
+        addParameters(absoluteMfPath, commandWithTask)
     }
 }
