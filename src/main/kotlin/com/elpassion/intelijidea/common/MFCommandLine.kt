@@ -7,9 +7,10 @@ class MFCommandLine(val mfPath: String? = null, val buildCommand: String, val ta
 
     init {
         exePath = "bash"
-        addParameters(buildString {
+        addParameter(buildString {
             mfPath?.let { append("$it/") }
-            append("$mfFilename $buildCommand $taskName")
+            append(mfFilename)
         })
+        addParameter("$buildCommand $taskName")
     }
 }

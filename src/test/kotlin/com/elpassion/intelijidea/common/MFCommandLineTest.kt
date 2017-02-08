@@ -32,7 +32,7 @@ class MFCommandLineTest {
     }
 
     private fun MFCommandLine.verify() {
-        assertEquals("bash \"${if (mfPath != null) "$mfPath/" else ""}${mfFilename} " +
-                "$buildCommand $taskName\"", commandLineString)
+        assertEquals("bash ${if (mfPath != null) "$mfPath/" else ""}$mfFilename " +
+                "\"$buildCommand $taskName\"", commandLineString)
     }
 }
