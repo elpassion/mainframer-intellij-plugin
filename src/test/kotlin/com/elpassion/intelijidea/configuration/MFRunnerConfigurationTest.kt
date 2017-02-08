@@ -43,7 +43,7 @@ class MFRunnerConfigurationTest {
         MFRunnerConfiguration(project, confFactory, "").run {
             data = null
             writeExternal(element)
-            verify(element, never()).setAttribute(any())
+            verify(element, never()).setAttribute(any(), any())
         }
     }
 
