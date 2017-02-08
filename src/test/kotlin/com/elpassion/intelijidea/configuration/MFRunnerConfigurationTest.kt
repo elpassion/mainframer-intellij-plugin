@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.configuration.common.assertThrows
 import com.intellij.execution.configurations.RuntimeConfigurationError
-import com.intellij.openapi.command.impl.DummyProject
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -64,6 +63,18 @@ class MFRunnerConfigurationTest {
         whenever(element.getAttributeValue(any())).thenReturn(null)
         whenever(project.basePath).thenReturn("basePath")
         val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath")
+
+        MFRunnerConfiguration(project, confFactory, "").run {
+            readExternal(element)
+            assertEquals(expectedMfRunnerConfigurationData, data)
+        }
+    }
+
+    @Test
+    fun shouldSetObjectFromGetAttributeValueOnReadExternal() {
+        whenever(element.getAttributeValue(any())).thenReturn("{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
+        whenever(project.basePath).thenReturn("basePath")
+        val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path")
 
         MFRunnerConfiguration(project, confFactory, "").run {
             readExternal(element)
