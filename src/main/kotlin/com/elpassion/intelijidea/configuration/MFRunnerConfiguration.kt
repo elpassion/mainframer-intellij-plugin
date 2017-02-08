@@ -38,6 +38,16 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         }
     }
 
+    private fun MFRunnerConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
+
+    private fun showToolNotFoundError() {
+        showError(project, errorMessage) {
+            if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
+                MFFileDownloader(project).downloadFileToProject(it.url.toString(), mfFilename)
+            }
+        }
+    }
+
     override fun checkConfiguration() = with(data) {
         when {
             this == null -> throw RuntimeConfigurationError("Configuration incorrect")
@@ -62,16 +72,6 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
-
-    private fun MFRunnerConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
-
-    private fun showToolNotFoundError() {
-        showError(project, errorMessage) {
-            if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                MFFileDownloader(project).downloadFileToProject(it.url.toString(), mfFilename)
-            }
-        }
-    }
 
     private val errorMessage: String
         get() = "Cannot find <b>$mfFilename</b> in the following path:\n\"${data?.mainframerPath}\"\n\n" +
