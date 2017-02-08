@@ -3,8 +3,10 @@ package com.elpassion.intelijidea.configuration
 import com.elpassion.intelijidea.configuration.common.assertThrows
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.command.impl.DummyProject
+import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import junit.framework.TestCase.assertEquals
 import org.jdom.Element
 import org.junit.Test
@@ -15,7 +17,7 @@ import org.mockito.Mockito.verify
 class MFRunnerConfigurationTest {
 
     private val confFactory = MFConfigurationFactory(MFRunConfigurationType())
-    private val project = DummyProject.getInstance()
+    private val project = mock<Project>()
     private val element = mock<Element>()
 
     @Test
@@ -54,6 +56,18 @@ class MFRunnerConfigurationTest {
             data = mfRunnerConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
             writeExternal(element)
             verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":null}"))
+        }
+    }
+
+    @Test
+    fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNull() {
+        whenever(element.getAttribute(any())).thenReturn(null)
+        whenever(project.basePath).thenReturn("basePath")
+        val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath")
+
+        MFRunnerConfiguration(project, confFactory, "").run {
+            readExternal(element)
+            assertEquals(expectedMfRunnerConfigurationData, data)
         }
     }
 
