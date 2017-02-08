@@ -15,8 +15,7 @@ class MFRunnerConfigurationTest {
     fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
         assertExceptionMessage(
                 expectedMessage = "Configuration incorrect",
-                mfRunnerConfigurationData = null
-        )
+                mfRunnerConfigurationData = null)
     }
 
     @Test
