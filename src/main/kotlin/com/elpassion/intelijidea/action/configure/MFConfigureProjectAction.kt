@@ -1,51 +1,29 @@
 package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.action.configure.releases.MFConfigureProjectDialog
-import com.elpassion.intelijidea.action.configure.releases.api.provideGithubApi
-import com.elpassion.intelijidea.action.configure.releases.api.provideGithubRetrofit
-import com.elpassion.intelijidea.action.configure.releases.service.MFVersionsReleaseService
-import com.elpassion.intelijidea.common.MFDownloader
-import com.elpassion.intelijidea.util.getMfToolDownloadUrl
-import com.elpassion.intelijidea.util.mfFilename
+import com.elpassion.intelijidea.action.configure.chooser.MFVersionChooser
+import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
+import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubApi
+import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubRetrofit
+import com.elpassion.intelijidea.action.configure.releases.service.MFReleasesFetcher
+import com.elpassion.intelijidea.common.ProgressScheduler
+import com.elpassion.intelijidea.common.UIScheduler
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
-import com.intellij.platform.templates.github.Outcome
 
 class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
-    private val service = MFVersionsReleaseService(provideGithubApi(provideGithubRetrofit()))
-
     override fun actionPerformed(event: AnActionEvent) {
-        event.project?.configureMainframer()
+        event.project?.let { project ->
+            MFConfigureProjectActionController(
+                    mainframerReleasesFetcher = MFReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
+                    mainframerVersionChooser = MFVersionChooser(project),
+                    mainframerFileDownloader = MFFileDownloader(project),
+                    showMessage = { message -> Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT) },
+                    uiScheduler = UIScheduler,
+                    progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")
+            ).configureMainframer()
+        }
     }
-
-    private fun Project.configureMainframer() {
-        service.getVersions()
-                .subscribeOn(ProgressScheduler(this, "Downloading mainframer versions"))
-                .observeOn(UIScheduler)
-                .subscribe({
-                    showMFConfigureDialog(it)
-                }, {
-                    Messages.showInfoMessage(it.message, MF_CONFIGURE_PROJECT)
-                })
-    }
-
-    private fun Project.showMFConfigureDialog(versionsList: List<String>) {
-        MFConfigureProjectDialog(this, versionsList) { version ->
-            val outcome = downloadMainframer(version)
-            Messages.showInfoMessage(outcome.getMessage(), MF_CONFIGURE_PROJECT)
-        }.show()
-    }
-
-    private fun Outcome<Unit>.getMessage() = when {
-        isCancelled -> "Mainframer configuration canceled"
-        exception != null -> "Error during mainframer configuration"
-        else -> "Mainframer configured in your project!"
-    }
-
-    private fun Project.downloadMainframer(version: String) =
-            MFDownloader.downloadFileToProject(getMfToolDownloadUrl(version), this, mfFilename)
 
     companion object {
         private val MF_CONFIGURE_PROJECT = "Configure Mainframer in Project"

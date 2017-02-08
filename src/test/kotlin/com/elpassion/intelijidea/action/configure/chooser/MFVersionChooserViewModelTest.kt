@@ -1,36 +1,35 @@
-package action
+package com.elpassion.intelijidea.action.configure.chooser
 
-import com.elpassion.intelijidea.action.configure.releases.MFComboBoxViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class MFComboBoxViewModelTest {
+class MFVersionChooserViewModelTest {
 
     @Test
     fun shouldDefaultSelectionNullWhenEmptyList() {
-        val mfComboBoxViewModel = MFComboBoxViewModel(emptyList())
+        val mfComboBoxViewModel = MFVersionChooserViewModel(emptyList())
 
         assertNull(mfComboBoxViewModel.selectedItem)
     }
 
     @Test
     fun shouldDefaultSelectionFirstItem() {
-        val mfComboBoxViewModel = MFComboBoxViewModel(listOf("Item 1", "Item 2"))
+        val mfComboBoxViewModel = MFVersionChooserViewModel(listOf("Item 1", "Item 2"))
 
         assertEquals("Item 1", mfComboBoxViewModel.selectedItem)
     }
 
     @Test
     fun shouldRememberSelectedItem() {
-        val mfComboBoxViewModel = MFComboBoxViewModel(emptyList())
+        val mfComboBoxViewModel = MFVersionChooserViewModel(emptyList())
 
         assertNull(mfComboBoxViewModel.selectedItem)
     }
 
     @Test
     fun shouldReallyRememberSelectedItem() {
-        val mfComboBoxViewModel = MFComboBoxViewModel(listOf())
+        val mfComboBoxViewModel = MFVersionChooserViewModel(listOf())
 
         mfComboBoxViewModel.setSelectedItem("My item 2")
 

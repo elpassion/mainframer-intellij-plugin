@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.common.MFDownloader
+import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
 import com.elpassion.intelijidea.util.*
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
@@ -68,7 +68,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     private fun showToolNotFoundError() {
         showError(project, errorMessage) {
             if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                MFDownloader.downloadFileToProject(it.url.toString(), project, mfFilename)
+                MFFileDownloader(project).downloadFileToProject(it.url.toString(), mfFilename)
             }
         }
     }
