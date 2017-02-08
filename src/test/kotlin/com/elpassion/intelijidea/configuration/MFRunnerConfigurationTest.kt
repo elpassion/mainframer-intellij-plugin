@@ -60,25 +60,17 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNullOnReadExternal() {
-        whenever(element.getAttributeValue(any())).thenReturn(null)
         whenever(project.basePath).thenReturn("basePath")
-        val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath")
-
-        MFRunnerConfiguration(project, confFactory, "").run {
-            readExternal(element)
-            assertEquals(expectedMfRunnerConfigurationData, data)
-        }
+        assertReadExternalValue(
+                expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath"),
+                savedMfRunnerConfigurationData = null)
     }
 
     @Test
     fun shouldSetObjectFromGetAttributeValueOnReadExternal() {
-        whenever(element.getAttributeValue(any())).thenReturn("{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
-        val expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path")
-
-        MFRunnerConfiguration(project, confFactory, "").run {
-            readExternal(element)
-            assertEquals(expectedMfRunnerConfigurationData, data)
-        }
+        assertReadExternalValue(
+                expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path"),
+                savedMfRunnerConfigurationData = "{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
@@ -88,6 +80,14 @@ class MFRunnerConfigurationTest {
                     .checkConfiguration()
         }
         assertEquals(expectedMessage, exception.message)
+    }
+
+    private fun assertReadExternalValue(expectedMfRunnerConfigurationData: MFRunnerConfigurationData, savedMfRunnerConfigurationData: String?) {
+        whenever(element.getAttributeValue(any())).thenReturn(savedMfRunnerConfigurationData)
+        MFRunnerConfiguration(project, confFactory, "").run {
+            readExternal(element)
+            assertEquals(expectedMfRunnerConfigurationData, data)
+        }
     }
 
     private fun mfRunnerConfigurationData(buildCommand: String = "buildCommand",
