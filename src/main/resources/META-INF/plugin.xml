@@ -5,13 +5,12 @@
 
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
-      easy and seamless.
-
+      easy and seamless.<br>
+      <br>
       Plugin uses Intellij Idea run configuration mechanism, especially it takes advantage of before run tasks,
-      to replace standard build tasks with the one using mainframer.
-
-      In addition it also provides new runConfiguration to running mainframer tasks.
-
+      to replace standard build tasks with the one using mainframer.<br>
+      <br>
+      In addition it provides new runConfiguration to run mainframer tasks.<br>
       <h3>Features:</h3>
         <ul>
           <li>BeforeTasks which delegates tasks to mainframer</li>
