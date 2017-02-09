@@ -24,6 +24,7 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
                 .observeOn(UINonModalScheduler())
                 .doOnNext(saveFiles)
                 .flatMap(executeAsync)
+                .observeOn(UINonModalScheduler())
                 .map { it.exitCode == 0 }
                 .doOnNext(syncFiles)
                 .doOnError(logError)
