@@ -37,12 +37,15 @@ class MFCommandLineTest {
     }
 
     private fun MFCommandLine.verifyResultingString() {
-        val expectedParams = listOf(
-                "${if (mfPath != null) "$mfPath/" else ""}$mfFilename",
-                "$buildCommand $taskName"
-        ).map { if (it.contains(" ")) "\"$it\"" else it }
-        assertEquals("bash ${expectedParams.joinToString(separator = " ")}", commandLineString)
+        val mfLocation = if (mfPath != null) "$mfPath/" else ""
+        val mfAbsolutePath = "$mfLocation$mfFilename"
+        val expectedParams = listOf(mfAbsolutePath, "$buildCommand $taskName").joinParams()
+        assertEquals("bash $expectedParams", commandLineString)
     }
+
+    private val String.withOptionalQuotes: String get() = if (contains(" ")) "\"$this\"" else this
+
+    private fun List<String>.joinParams() = map { it.withOptionalQuotes }.joinToString(separator = " ")
 
     private fun createCommandLine(mfPath: String = "", buildCommand: String = "./gradlew", taskName: String = "build")
             = MFCommandLine(mfPath, buildCommand, taskName)
