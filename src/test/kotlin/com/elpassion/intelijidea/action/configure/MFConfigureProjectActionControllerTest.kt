@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.action.configure
 
+import com.elpassion.android.commons.rxjavatest.thenError
 import com.elpassion.android.commons.rxjavatest.thenJust
 import com.elpassion.android.commons.rxjavatest.thenNever
 import com.elpassion.intelijidea.common.Result
@@ -53,5 +54,16 @@ class MFConfigureProjectActionControllerTest {
         controller.configureMainframer()
 
         verify(mainframerVersionChooser).invoke(fetchedVersions)
+    }
+
+    @Test
+    fun shouldShowErrorWhenDownloadFails() {
+        whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(Result.Success("2.0.0"))
+        whenever(mainframerFileDownloader.invoke(any())).thenError()
+
+        controller.configureMainframer()
+
+        verify(showMessage).invoke("Error during mainframer configuration")
     }
 }
