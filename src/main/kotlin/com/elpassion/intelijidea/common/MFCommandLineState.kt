@@ -39,7 +39,7 @@ class BringConsoleToFrontExecutionResult(
 
     class OnSystemTextAvailableProcessAdapter(val onSystemTextAvailable: () -> Unit) : ProcessAdapter() {
         override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-            if (outputType === ProcessOutputTypes.STDOUT || outputType === ProcessOutputTypes.STDERR) {
+            if (outputType !== ProcessOutputTypes.SYSTEM) {
                 onSystemTextAvailable()
             }
         }
