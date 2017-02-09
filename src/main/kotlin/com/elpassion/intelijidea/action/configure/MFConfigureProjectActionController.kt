@@ -20,12 +20,15 @@ class MFConfigureProjectActionController(
                 .observeOn(uiScheduler)
                 .flatMap(mainframerVersionChooser)
                 .flatMapResult(mainframerFileDownloader)
-                .subscribeResult({
-                    showMessage("Mainframer configured in your project!")
-                }, {
-                    showMessage("Mainframer configuration canceled")
-                }, {
-                    showMessage("Error during mainframer configuration")
-                })
+                .subscribeResult(
+                        onSuccess = {
+                            showMessage("Mainframer configured in your project!")
+                        },
+                        onCancelled = {
+
+                        },
+                        onError = {
+                            showMessage("Error during mainframer configuration")
+                        })
     }
 }
