@@ -15,7 +15,7 @@ import org.junit.Test
 class MFConfigureProjectActionControllerTest {
 
     private val mainframerReleasesFetcher = mock<() -> Observable<List<String>>>()
-    private val mainframerVersionChooser = mock<(List<String>) -> Observable<Result<String>>>()
+    private val mainframerVersionChooser = mock<(List<String>) -> Observable<String>>()
     private val mainframerFileDownloader = mock<(String) -> Observable<Result<Unit>>>()
     private val showMessage = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
@@ -25,7 +25,7 @@ class MFConfigureProjectActionControllerTest {
     @Test
     fun shouldConfigureMainframerInProject() {
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust(Result.Success("2.0.0"))
+        whenever(mainframerVersionChooser.invoke(any())).thenJust("2.0.0")
         whenever(mainframerFileDownloader.invoke(any())).thenJust(Result.Success(Unit))
 
         controller.configureMainframer()
@@ -37,7 +37,7 @@ class MFConfigureProjectActionControllerTest {
     fun shouldConfigureChosenVersionOfMainframer() {
         val chosenVersion = "2.0.0"
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust(Result.Success(chosenVersion))
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(chosenVersion)
         whenever(mainframerFileDownloader.invoke(any())).thenNever()
 
         controller.configureMainframer()
@@ -59,7 +59,7 @@ class MFConfigureProjectActionControllerTest {
     @Test
     fun shouldShowErrorWhenDownloadFails() {
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust(Result.Success("2.0.0"))
+        whenever(mainframerVersionChooser.invoke(any())).thenJust("2.0.0")
         whenever(mainframerFileDownloader.invoke(any())).thenError()
 
         controller.configureMainframer()

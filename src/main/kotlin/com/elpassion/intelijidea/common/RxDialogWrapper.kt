@@ -8,19 +8,18 @@ import io.reactivex.subjects.PublishSubject
 
 abstract class RxDialogWrapper<T>(project: Project) : DialogWrapper(project, false), Cancellable {
 
-    private val subject = PublishSubject.create<Result<T>>()
+    private val subject = PublishSubject.create<T>()
 
     abstract fun getSuccessResult(): T
 
     override final fun doOKAction() {
         super.doOKAction()
-        subject.onNext(Result.Success(getSuccessResult()))
+        subject.onNext(getSuccessResult())
         subject.onComplete()
     }
 
     override final fun doCancelAction() {
         super.doCancelAction()
-        subject.onNext(Result.Canceled())
         subject.onComplete()
     }
 
@@ -32,5 +31,5 @@ abstract class RxDialogWrapper<T>(project: Project) : DialogWrapper(project, fal
         throw IllegalAccessError("Use showAsObservable()")
     }
 
-    fun showAsObservable(): Observable<Result<T>> = subject.doOnSubscribe { super.show() }
+    fun showAsObservable(): Observable<T> = subject.doOnSubscribe { super.show() }
 }
