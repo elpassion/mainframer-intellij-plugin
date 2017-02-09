@@ -1,15 +1,12 @@
 package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.common.Result
-import com.elpassion.intelijidea.util.flatMapResult
-import com.elpassion.intelijidea.util.subscribeResult
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 
 class MFConfigureProjectActionController(
         val mainframerReleasesFetcher: () -> Observable<List<String>>,
         val mainframerVersionChooser: (List<String>) -> Observable<String>,
-        val mainframerFileDownloader: (String) -> Observable<Result<Unit>>,
+        val mainframerFileDownloader: (String) -> Observable<Unit>,
         val showMessage: (String) -> Unit,
         val uiScheduler: Scheduler,
         val progressScheduler: Scheduler) {
@@ -20,15 +17,10 @@ class MFConfigureProjectActionController(
                 .observeOn(uiScheduler)
                 .flatMap(mainframerVersionChooser)
                 .flatMap(mainframerFileDownloader)
-                .subscribeResult(
-                        onSuccess = {
-                            showMessage("Mainframer configured in your project!")
-                        },
-                        onCancelled = {
-
-                        },
-                        onError = {
-                            showMessage("Error during mainframer configuration")
-                        })
+                .subscribe({
+                    showMessage("Mainframer configured in your project!")
+                }, {
+                    showMessage("Error during mainframer configuration")
+                })
     }
 }

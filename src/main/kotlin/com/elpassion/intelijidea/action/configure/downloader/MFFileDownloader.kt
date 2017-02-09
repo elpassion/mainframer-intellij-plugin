@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.action.configure.downloader
 
-import com.elpassion.intelijidea.common.Result
 import com.elpassion.intelijidea.util.asResultObservable
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
@@ -11,8 +10,8 @@ import com.intellij.platform.templates.github.Outcome
 import io.reactivex.Observable
 import java.io.File
 
-class MFFileDownloader(val project: Project) : Function1<String, Observable<Result<Unit>>> {
-    override fun invoke(version: String): Observable<Result<Unit>> {
+class MFFileDownloader(val project: Project) : Function1<String, Observable<Unit>> {
+    override fun invoke(version: String): Observable<Unit> {
         return downloadFileToProject(getMfToolDownloadUrl(version), mfFilename).asResultObservable()
     }
 

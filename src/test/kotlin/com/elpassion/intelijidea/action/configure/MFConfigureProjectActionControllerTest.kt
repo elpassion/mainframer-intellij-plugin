@@ -3,7 +3,6 @@ package com.elpassion.intelijidea.action.configure
 import com.elpassion.android.commons.rxjavatest.thenError
 import com.elpassion.android.commons.rxjavatest.thenJust
 import com.elpassion.android.commons.rxjavatest.thenNever
-import com.elpassion.intelijidea.common.Result
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
@@ -16,7 +15,7 @@ class MFConfigureProjectActionControllerTest {
 
     private val mainframerReleasesFetcher = mock<() -> Observable<List<String>>>()
     private val mainframerVersionChooser = mock<(List<String>) -> Observable<String>>()
-    private val mainframerFileDownloader = mock<(String) -> Observable<Result<Unit>>>()
+    private val mainframerFileDownloader = mock<(String) -> Observable<Unit>>()
     private val showMessage = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()
@@ -26,7 +25,7 @@ class MFConfigureProjectActionControllerTest {
     fun shouldConfigureMainframerInProject() {
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
         whenever(mainframerVersionChooser.invoke(any())).thenJust("2.0.0")
-        whenever(mainframerFileDownloader.invoke(any())).thenJust(Result.Success(Unit))
+        whenever(mainframerFileDownloader.invoke(any())).thenJust(Unit)
 
         controller.configureMainframer()
 
