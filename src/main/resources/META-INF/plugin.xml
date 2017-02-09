@@ -37,6 +37,7 @@
             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
         <applicationService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
+        <errorHandler implementation="MFErrorHandler"/>
     </extensions>
 
     <actions>
