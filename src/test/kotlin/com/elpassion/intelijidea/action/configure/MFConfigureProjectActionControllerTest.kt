@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.action.configure
 
 import com.elpassion.android.commons.rxjavatest.thenJust
+import com.elpassion.android.commons.rxjavatest.thenNever
 import com.elpassion.intelijidea.common.Result
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -29,5 +30,17 @@ class MFConfigureProjectActionControllerTest {
         controller.configureMainframer()
 
         verify(showMessage).invoke("Mainframer configured in your project!")
+    }
+
+    @Test
+    fun shouldConfigureChosenVersionOfMainframer() {
+        val chosenVersion = "2.0.0"
+        whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(Result.Success(chosenVersion))
+        whenever(mainframerFileDownloader.invoke(any())).thenNever()
+
+        controller.configureMainframer()
+
+        verify(mainframerFileDownloader).invoke(chosenVersion)
     }
 }
