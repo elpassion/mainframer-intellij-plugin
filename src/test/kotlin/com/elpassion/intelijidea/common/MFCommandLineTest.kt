@@ -9,34 +9,34 @@ class MFCommandLineTest {
     @Test
     fun shouldGenerateCommandLineToExecute() {
         val commandLine = createCommandLine()
-        commandLine.verify()
+        commandLine.verifyResultingString()
     }
 
     @Test
     fun shouldGenerateProperCommandLineToExecute() {
         val commandLine = createCommandLine(buildCommand = "gradle", taskName = "assembleDebug")
-        commandLine.verify()
+        commandLine.verifyResultingString()
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithCustomPathToExecute() {
         val commandLine = createCommandLine(mfPath = "/customPath")
-        commandLine.verify()
+        commandLine.verifyResultingString()
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithWhiteSpacePathToExecute() {
         val commandLine = createCommandLine(mfPath = "/White Spaced Path")
-        commandLine.verify()
+        commandLine.verifyResultingString()
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithMultipleTasksToExecute() {
         val commandLine = createCommandLine(taskName = "clean build")
-        commandLine.verify()
+        commandLine.verifyResultingString()
     }
 
-    private fun MFCommandLine.verify() {
+    private fun MFCommandLine.verifyResultingString() {
         val expectedParams = listOf(
                 "${if (mfPath != null) "$mfPath/" else ""}$mfFilename",
                 "$buildCommand $taskName"
