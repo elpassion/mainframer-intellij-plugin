@@ -43,10 +43,10 @@ class MFCommandLineTest {
         assertEquals("bash $expectedParams", commandLineString)
     }
 
-    private val String.withOptionalQuotes: String get() = if (contains(" ")) "\"$this\"" else this
+    private fun createCommandLine(mfPath: String = "", buildCommand: String = "./gradlew", taskName: String = "build")
+            = MFCommandLine(mfPath, buildCommand, taskName)
 
     private fun List<String>.joinParams() = map { it.withOptionalQuotes }.joinToString(separator = " ")
 
-    private fun createCommandLine(mfPath: String = "", buildCommand: String = "./gradlew", taskName: String = "build")
-            = MFCommandLine(mfPath, buildCommand, taskName)
+    private val String.withOptionalQuotes: String get() = if (contains(" ")) "\"$this\"" else this
 }
