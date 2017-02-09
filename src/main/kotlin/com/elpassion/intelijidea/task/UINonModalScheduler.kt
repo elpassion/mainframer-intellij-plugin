@@ -6,7 +6,7 @@ import io.reactivex.Scheduler
 import io.reactivex.internal.schedulers.ExecutorScheduler
 import java.util.concurrent.Executor
 
-class UINonModalScheduler : Scheduler() {
+object UINonModalScheduler : Scheduler() {
 
     override fun createWorker(): Worker {
         return ExecutorScheduler.ExecutorWorker(UIExecutor)

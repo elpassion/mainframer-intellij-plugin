@@ -20,11 +20,11 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
 
     fun executeSync(task: MFBeforeRunTask): Boolean {
         return Observable.fromCallable { createExecutionEnv(task) }
-                .subscribeOn(UINonModalScheduler())
-                .observeOn(UINonModalScheduler())
+                .subscribeOn(UINonModalScheduler)
+                .observeOn(UINonModalScheduler)
                 .doOnNext(saveFiles)
                 .flatMap(executeAsync)
-                .observeOn(UINonModalScheduler())
+                .observeOn(UINonModalScheduler)
                 .map { it.exitCode == 0 }
                 .doOnNext(syncFiles)
                 .doOnError(logError)
