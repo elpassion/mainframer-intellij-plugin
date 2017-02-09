@@ -43,4 +43,15 @@ class MFConfigureProjectActionControllerTest {
 
         verify(mainframerFileDownloader).invoke(chosenVersion)
     }
+
+    @Test
+    fun shouldShowFetchedVersionsOfMainframer() {
+        val fetchedVersions = listOf("2.0.0", "1.0.0")
+        whenever(mainframerReleasesFetcher.invoke()).thenJust(fetchedVersions)
+        whenever(mainframerVersionChooser.invoke(any())).thenNever()
+
+        controller.configureMainframer()
+
+        verify(mainframerVersionChooser).invoke(fetchedVersions)
+    }
 }
