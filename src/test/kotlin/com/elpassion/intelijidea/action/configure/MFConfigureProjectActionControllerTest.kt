@@ -66,4 +66,13 @@ class MFConfigureProjectActionControllerTest {
 
         verify(showMessage).invoke("Error during mainframer configuration")
     }
+
+    @Test
+    fun shouldShowErrorWhenFetchFails() {
+        whenever(mainframerReleasesFetcher.invoke()).thenError()
+
+        controller.configureMainframer()
+
+        verify(showMessage).invoke("Error during mainframer configuration")
+    }
 }
