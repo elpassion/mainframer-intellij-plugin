@@ -20,26 +20,28 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
     private fun createCommandLine() = MFCommandLine(mainframerPath, buildCommand, taskName)
 
     override fun execute(executor: Executor, runner: ProgramRunner<*>): ExecutionResult {
-        return super.execute(executor, runner).apply {
-            with(processHandler) {
-                addOnTextAvailableListener(onText = { bringConsoleToFront(executor) })
+        return BringConsoleToFrontExecutionResult(super.execute(executor, runner), environment, executor)
+    }
+}
+
+class BringConsoleToFrontExecutionResult(
+        executionResult: ExecutionResult,
+        val environment: ExecutionEnvironment,
+        val executor: Executor) : ExecutionResult by executionResult {
+
+    init {
+        processHandler.addProcessListener(OnSystemTextAvailableProcessAdapter({ bringConsoleToFront() }))
+    }
+
+    private fun bringConsoleToFront() {
+        ExecutionManager.getInstance(environment.project).contentManager.toFrontRunContent(executor, processHandler)
+    }
+
+    class OnSystemTextAvailableProcessAdapter(val onSystemTextAvailable: () -> Unit) : ProcessAdapter() {
+        override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+            if (outputType !== ProcessOutputTypes.SYSTEM) {
+                onSystemTextAvailable()
             }
-        }
-    }
-
-    private fun ProcessHandler.bringConsoleToFront(executor: Executor) {
-        ExecutionManager.getInstance(executionEnvironment.project).contentManager.toFrontRunContent(executor, this)
-    }
-}
-
-private fun ProcessHandler.addOnTextAvailableListener(onText: () -> Unit) {
-    addProcessListener(createOnTextAvailableListener(onText))
-}
-
-private fun createOnTextAvailableListener(onText: () -> Unit) = object : ProcessAdapter() {
-    override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-        if (outputType === ProcessOutputTypes.STDOUT || outputType === ProcessOutputTypes.STDERR) {
-            onText()
         }
     }
 }
