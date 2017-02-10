@@ -40,7 +40,7 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditView
     private void createUIComponents() {
         mainframerToolField = new TextFieldWithBrowseButton();
         mainframerToolField.setButtonIcon(IconUtil.getAddIcon());
-        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
+        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
         mainframerToolField.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerToolField);

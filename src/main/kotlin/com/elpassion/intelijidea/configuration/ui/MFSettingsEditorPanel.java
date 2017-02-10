@@ -24,7 +24,7 @@ public class MFSettingsEditorPanel {
     private void createUIComponents() {
         mainframerTool = new TextFieldWithBrowseButton();
         mainframerTool.setButtonIcon(IconUtil.getAddIcon());
-        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor(), project);
+        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
         mainframerTool.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerTool);
