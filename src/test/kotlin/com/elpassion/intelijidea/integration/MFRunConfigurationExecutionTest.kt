@@ -15,9 +15,8 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
 
     fun testShouldThrowExecutionExceptionWhenConfigurationDataIsNull() {
         val exception = assertThrows(ExecutionException::class.java) {
-            val config = createRunConfiguration()
-            val executor = DefaultRunExecutor.getRunExecutorInstance()
-            ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
+            val config = createRunConfiguration(configurationData = null)
+            buildAndExecuteProject(config)
         }
         assertEquals("Mainframer tool cannot be found", exception.message)
     }
@@ -25,21 +24,19 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     fun testShouldThrowExecutionExceptionWhenToolNotFound() {
         val exception = assertThrows(ExecutionException::class.java) {
             val data = createConfigurationData(withToolFile = false)
-            val config = createRunConfiguration(data)
-            val executor = DefaultRunExecutor.getRunExecutorInstance()
-            ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
+            val config = createRunConfiguration(configurationData = data)
+            buildAndExecuteProject(config)
         }
         assertEquals("Mainframer tool cannot be found", exception.message)
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
         val data = createConfigurationData(withToolFile = true)
-        val config = createRunConfiguration(data)
-        val executor = DefaultRunExecutor.getRunExecutorInstance()
-        ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
+        val config = createRunConfiguration(configurationData = data)
+        buildAndExecuteProject(config)
     }
 
-    private fun createRunConfiguration(configurationData: MFRunnerConfigurationData? = null) =
+    private fun createRunConfiguration(configurationData: MFRunnerConfigurationData?) =
             MFRunnerConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
                 data = configurationData
             }
@@ -51,5 +48,10 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         }
         val data = MFRunnerConfigurationData(mainframerPath = mfDir.absolutePath)
         return data
+    }
+
+    private fun buildAndExecuteProject(config: MFRunnerConfiguration) {
+        val executor = DefaultRunExecutor.getRunExecutorInstance()
+        ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
     }
 }
