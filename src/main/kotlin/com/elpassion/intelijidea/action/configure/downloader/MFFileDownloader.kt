@@ -12,19 +12,19 @@ import java.io.File
 
 class MFFileDownloader(val project: Project) : Function1<String, Observable<Unit>> {
     override fun invoke(version: String): Observable<Unit> {
-        return downloadFileToProject(getMfToolDownloadUrl(version), mfFilename).asResultObservable()
+        return downloadFileToProject(project, getMfToolDownloadUrl(version), mfFilename).asResultObservable()
     }
+}
 
-    //TODO: Make private and remove @Deprecated annotation
-    @Deprecated(message = "Replace with MFConfigureProjectAction")
-    fun downloadFileToProject(url: String, outputFilename: String): Outcome<Unit> {
-        val title = "Downloading file"
-        val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
-        val action = {
-            val progressIndicator = ProgressManager.getInstance().progressIndicator
-            DownloadUtil.downloadAtomically(progressIndicator, url, File(project.basePath, outputFilename))
-            project.baseDir.refresh(true, false)
-        }
-        return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
+//TODO: Make private and remove @Deprecated annotation
+@Deprecated(message = "Replace with MFConfigureProjectAction")
+fun downloadFileToProject(project: Project, url: String, outputFilename: String): Outcome<Unit> {
+    val title = "Downloading file"
+    val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
+    val action = {
+        val progressIndicator = ProgressManager.getInstance().progressIndicator
+        DownloadUtil.downloadAtomically(progressIndicator, url, File(project.basePath, outputFilename))
+        project.baseDir.refresh(true, false)
     }
+    return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
 }

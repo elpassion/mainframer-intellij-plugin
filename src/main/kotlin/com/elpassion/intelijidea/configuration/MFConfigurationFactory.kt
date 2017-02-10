@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.configuration
 
-import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
+import com.elpassion.intelijidea.action.configure.downloader.downloadFileToProject
 import com.elpassion.intelijidea.util.getLatestMfToolDownloadUrl
 import com.elpassion.intelijidea.util.mfFilename
 import com.elpassion.intelijidea.util.showError
@@ -18,7 +18,7 @@ class MFConfigurationFactory(configurationType: ConfigurationType) : Configurati
             showToolNotFoundError = { mainframerPath ->
                 showError(project, fileNotFoundErrorMessage(mainframerPath)) {
                     if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                        MFFileDownloader(project).downloadFileToProject(it.url.toString(), mfFilename)
+                        downloadFileToProject(project, it.url.toString(), mfFilename)
                     }
                 }
             })
