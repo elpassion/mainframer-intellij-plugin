@@ -40,12 +40,12 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
             }
 
     private fun createConfigurationData(withToolFile: Boolean): MFRunnerConfigurationData {
-        val mfDir = FileUtil.createTempDirectory("", "mf")
-        if (withToolFile) {
-            FileUtil.createTempFile(mfDir, "mainframer", ".sh")
+        with(FileUtil.createTempDirectory("", "mf")) {
+            if (withToolFile) {
+                FileUtil.createTempFile(this, "mainframer", ".sh")
+            }
+            return MFRunnerConfigurationData(mainframerPath = absolutePath)
         }
-        val data = MFRunnerConfigurationData(mainframerPath = mfDir.absolutePath)
-        return data
     }
 
     private fun buildProjectAndExecute(config: MFRunnerConfiguration) {
