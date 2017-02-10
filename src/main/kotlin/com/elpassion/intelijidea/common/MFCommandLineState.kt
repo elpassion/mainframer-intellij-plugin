@@ -14,10 +14,10 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val buildCommand: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
 
-    override fun startProcess(): ProcessHandler =
-            ColoredProcessHandler(createCommandLine().withWorkDirectory(executionEnvironment.project.basePath))
+    override fun startProcess(): ProcessHandler = ColoredProcessHandler(createCommandLine())
 
-    private fun createCommandLine() = MFCommandLine(mainframerPath, buildCommand, taskName)
+    private fun createCommandLine() = createMfCommandLine(mainframerPath, buildCommand, taskName)
+            .withWorkDirectory(executionEnvironment.project.basePath)
 
     override fun execute(executor: Executor, runner: ProgramRunner<*>): ExecutionResult {
         return BringConsoleToFrontExecutionResult(super.execute(executor, runner), environment, executor)
