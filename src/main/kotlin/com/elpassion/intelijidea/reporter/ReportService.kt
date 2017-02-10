@@ -1,10 +1,11 @@
 package com.elpassion.intelijidea.reporter
 
-import com.intellij.openapi.diagnostic.SubmittedReportInfo
-import com.intellij.openapi.project.Project
-import io.reactivex.Observable
+import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubRetrofit
 
 class ReportService {
-    fun uploadReport(project: Project?, reportValues: Map<String, String>)
-            = Observable.error<SubmittedReportInfo>(NotImplementedError())
+
+    private val issueApi by lazy { provideGitHubRetrofit().create(GithubIssueApi::class.java) }
+
+    fun uploadReport(reportValues: Map<String, String>)
+            = issueApi.createIssue(convertToGithubIssueFormat(reportValues))
 }

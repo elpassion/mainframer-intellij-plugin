@@ -1,7 +1,12 @@
 package com.elpassion.intelijidea.reporter
 
+import com.elpassion.intelijidea.common.ProgressScheduler
+import com.elpassion.intelijidea.common.UIScheduler
+import com.intellij.diagnostic.ReportMessages
 import com.intellij.errorreport.bean.ErrorBean
 import com.intellij.ide.DataManager
+import com.intellij.notification.NotificationListener
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationNamesInfo
 import com.intellij.openapi.application.ex.ApplicationInfoEx
@@ -11,6 +16,7 @@ import com.intellij.openapi.diagnostic.SubmittedReportInfo
 import com.intellij.openapi.project.Project
 import io.reactivex.functions.Consumer
 import java.awt.Component
+
 
 class MFErrorHandler : ErrorReportSubmitter() {
     override fun getReportActionText(): String {
@@ -33,9 +39,24 @@ class MFErrorHandler : ErrorReportSubmitter() {
     }
 
     private fun doSubmit(consumer: Consumer<SubmittedReportInfo>, reportValues: Map<String, String>, project: Project?) {
-        ReportService().uploadReport(project, reportValues)
+        ReportService().uploadReport(reportValues)
+                .observeOn(ProgressScheduler(project,"Uploading crash report"))
+                .subscribeOn(UIScheduler)
+                .map {
+                    SubmittedReportInfo(null, "Issue " + it, SubmittedReportInfo.SubmissionStatus.NEW_ISSUE)
+                }
                 .doOnNext(consumer)
-                .subscribe()
+                .subscribe({
+                    ReportMessages.GROUP.createNotification(ReportMessages.ERROR_REPORT,
+                            "Submitted",
+                            NotificationType.INFORMATION,
+                            null).setImportant(false).notify(project)
+                }, {
+                    ReportMessages.GROUP.createNotification(ReportMessages.ERROR_REPORT,
+                            "Something went wrong",
+                            NotificationType.ERROR,
+                            NotificationListener.URL_OPENING_LISTENER).setImportant(false).notify(project)
+                })
     }
 }
 
