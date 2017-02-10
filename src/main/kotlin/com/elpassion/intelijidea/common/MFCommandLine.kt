@@ -18,4 +18,6 @@ class MFCommandLine(val mfPath: String? = null, val buildCommand: String, val ta
         exePath = "bash"
         addParameters(absoluteMfPath, commandWithTask)
     }
+
+    fun getResultingString(): String = commandLineString
 }
