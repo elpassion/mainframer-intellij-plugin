@@ -15,7 +15,7 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
 
     fun testShouldThrowExecutionExceptionWhenToolNotFound() {
         val exception = assertThrows(ExecutionException::class.java) {
-            val config = MFRunnerConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {})
+            val config = createRunConfiguration()
             val executor = DefaultRunExecutor.getRunExecutorInstance()
             ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
         }
@@ -23,13 +23,21 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
-        val mfDir = FileUtil.createTempDirectory("", "mf")
-        FileUtil.createTempFile(mfDir, "mainframer", ".sh")
-        val configurationData = MFRunnerConfigurationData(mainframerPath = mfDir.absolutePath)
-        val config = MFRunnerConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
-            data = configurationData
-        }
+        val data = createConfigurationData()
+        val config = createRunConfiguration(data)
         val executor = DefaultRunExecutor.getRunExecutorInstance()
         ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
+    }
+
+    private fun createRunConfiguration(configurationData: MFRunnerConfigurationData? = null) =
+            MFRunnerConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
+                data = configurationData
+            }
+
+    private fun createConfigurationData(): MFRunnerConfigurationData {
+        val mfDir = FileUtil.createTempDirectory("", "mf")
+        FileUtil.createTempFile(mfDir, "mainframer", ".sh")
+        val data = MFRunnerConfigurationData(mainframerPath = mfDir.absolutePath)
+        return data
     }
 }
