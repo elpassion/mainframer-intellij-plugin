@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Scheduler
 import io.reactivex.internal.schedulers.ExecutorScheduler
 
-class ProgressScheduler(private val project: Project, private val description: String) : Scheduler() {
+class ProgressScheduler(private val project: Project?, private val description: String) : Scheduler() {
     override fun createWorker(): Worker {
         return ExecutorScheduler.ExecutorWorker { command ->
             ProgressManager.getInstance().run(object : Task.Backgroundable(project, description) {
