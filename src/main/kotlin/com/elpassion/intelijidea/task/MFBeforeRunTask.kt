@@ -14,7 +14,7 @@ data class MFTaskData(val mainframerPath: String? = null,
                       val buildCommand: String? = null,
                       val taskName: String? = null) : Serializable {
 
-    fun isValid(): Boolean = mainframerPath != null && buildCommand != null && taskName != null && isMfFileExistent()
+    fun isValid(): Boolean = !mainframerPath.isNullOrBlank() && !buildCommand.isNullOrBlank() && !taskName.isNullOrBlank() && isMfFileExistent()
 
     private fun isMfFileExistent() = File(mainframerPath, mfFilename).exists()
 }
