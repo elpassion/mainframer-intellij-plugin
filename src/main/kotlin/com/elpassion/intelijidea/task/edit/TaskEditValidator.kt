@@ -13,7 +13,7 @@ class TaskEditValidator(val form: TaskEditForm) {
                 taskFieldIsEmpty() -> ValidationInfo("Task cannot be empty", form.taskField())
                 buildCommandIsEmpty() -> ValidationInfo("Build command cannot be empty", form.buildCommandField())
                 pathIsEmpty() -> ValidationInfo("Path cannot be empty", form.mainframerToolField())
-                pathIsInvalid() -> ValidationInfo("Path cannot be empty", form.mainframerToolField())
+                pathIsInvalid() -> ValidationInfo("Cannot found mainframer script in path", form.mainframerToolField())
                 else -> null
             }
 
