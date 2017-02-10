@@ -4,7 +4,7 @@ import com.elpassion.intelijidea.action.configure.chooser.MFVersionChooser
 import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubRetrofit
-import com.elpassion.intelijidea.action.configure.releases.service.MFReleasesFetcher
+import com.elpassion.intelijidea.action.configure.releases.service.mfReleasesFetcher
 import com.elpassion.intelijidea.common.ProgressScheduler
 import com.elpassion.intelijidea.common.UIScheduler
 import com.intellij.openapi.actionSystem.AnAction
@@ -15,7 +15,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let { project ->
             MFConfigureProjectActionController(
-                    mainframerReleasesFetcher = MFReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
+                    mainframerReleasesFetcher = mfReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
                     mainframerVersionChooser = MFVersionChooser(project),
                     mainframerFileDownloader = MFFileDownloader(project),
                     showMessage = { message -> Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT) },

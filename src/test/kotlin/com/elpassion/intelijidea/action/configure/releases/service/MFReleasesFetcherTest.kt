@@ -6,12 +6,11 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class MFReleasesFetcherTest {
     val api = mock<GitHubApi>()
-    val service = MFReleasesFetcher(api)
+    val service = mfReleasesFetcher(api)
 
     @Test
     fun shouldDropFirstCharacter() {
