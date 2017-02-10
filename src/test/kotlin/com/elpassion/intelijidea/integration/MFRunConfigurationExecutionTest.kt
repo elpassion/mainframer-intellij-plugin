@@ -14,20 +14,18 @@ import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCa
 class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldThrowExecutionExceptionWhenConfigurationDataIsNull() {
-        val exception = assertThrows(ExecutionException::class.java) {
+        assertThrows(ExecutionException::class.java) {
             val config = createRunConfiguration(configurationData = null)
             buildAndExecuteProject(config)
         }
-        assertEquals("Mainframer tool cannot be found", exception.message)
     }
 
     fun testShouldThrowExecutionExceptionWhenToolNotFound() {
-        val exception = assertThrows(ExecutionException::class.java) {
+        assertThrows(ExecutionException::class.java) {
             val data = createConfigurationData(withToolFile = false)
             val config = createRunConfiguration(configurationData = data)
             buildAndExecuteProject(config)
         }
-        assertEquals("Mainframer tool cannot be found", exception.message)
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
