@@ -5,8 +5,6 @@ import io.reactivex.Observable
 
 class MFReleasesFetcher(private val api: GitHubApi) : Function0<Observable<List<String>>> {
 
-    override fun invoke() = getVersions()
-
-    fun getVersions(): Observable<List<String>> = api.listReleases()
+    override fun invoke(): Observable<List<String>> = api.listReleases()
             .map { it.map { it.tagName.drop(1) } }
 }

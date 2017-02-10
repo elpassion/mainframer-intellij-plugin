@@ -17,7 +17,7 @@ class MFReleasesFetcherTest {
     fun shouldDropFirstCharacter() {
         stubApiToReturn(ReleaseApiModel("v1.1.2"))
 
-        service.getVersions()
+        service()
                 .test()
                 .assertValue{ it.first() == "1.1.2"}
     }
@@ -26,7 +26,7 @@ class MFReleasesFetcherTest {
     fun shouldProperMapReleaseApiModelToString() {
         stubApiToReturn(ReleaseApiModel("v1.1.2"), ReleaseApiModel("v1.1.3"))
 
-        service.getVersions()
+        service()
                 .test()
                 .assertValue{ it[0] == "1.1.2"}
                 .assertValue{ it[1] == "1.1.3"}
