@@ -16,7 +16,7 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     fun testShouldThrowExecutionExceptionWhenConfigurationDataIsNull() {
         assertThrows(ExecutionException::class.java) {
             val config = createRunConfiguration(configurationData = null)
-            buildAndExecuteProject(config)
+            buildProjectAndExecute(config)
         }
     }
 
@@ -24,14 +24,14 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         assertThrows(ExecutionException::class.java) {
             val data = createConfigurationData(withToolFile = false)
             val config = createRunConfiguration(configurationData = data)
-            buildAndExecuteProject(config)
+            buildProjectAndExecute(config)
         }
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
         val data = createConfigurationData(withToolFile = true)
         val config = createRunConfiguration(configurationData = data)
-        buildAndExecuteProject(config)
+        buildProjectAndExecute(config)
     }
 
     private fun createRunConfiguration(configurationData: MFRunnerConfigurationData?) =
@@ -48,7 +48,7 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         return data
     }
 
-    private fun buildAndExecuteProject(config: MFRunnerConfiguration) {
+    private fun buildProjectAndExecute(config: MFRunnerConfiguration) {
         val executor = DefaultRunExecutor.getRunExecutorInstance()
         ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
     }
