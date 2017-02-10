@@ -12,7 +12,7 @@ class MFConfigureProjectActionController(
         val progressScheduler: Scheduler) {
 
     fun configureMainframer() {
-        mainframerReleasesFetcher.invoke()
+        mainframerReleasesFetcher()
                 .subscribeOn(progressScheduler)
                 .observeOn(uiScheduler)
                 .flatMap(mainframerVersionChooser)
