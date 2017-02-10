@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.common
 
-import com.elpassion.intelijidea.util.mfFilename
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -8,45 +7,46 @@ class MFCommandLineTest {
 
     @Test
     fun shouldGenerateCommandLineToExecute() {
-        val commandLine = createCommandLine()
-        commandLine.verifyResultingString()
+        val commandLine = MFCommandLine(
+                mfPath = null,
+                buildCommand = "./gradlew",
+                taskName = "build")
+        assertEquals("bash mainframer.sh \"./gradlew build\"", commandLine.getResultingString())
     }
 
     @Test
     fun shouldGenerateProperCommandLineToExecute() {
-        val commandLine = createCommandLine(buildCommand = "gradle", taskName = "assembleDebug")
-        commandLine.verifyResultingString()
+        val commandLine = MFCommandLine(
+                mfPath = null,
+                buildCommand = "gradle",
+                taskName = "assembleDebug")
+        assertEquals("bash mainframer.sh \"gradle assembleDebug\"", commandLine.getResultingString())
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithCustomPathToExecute() {
-        val commandLine = createCommandLine(mfPath = "/customPath")
-        commandLine.verifyResultingString()
+        val commandLine = MFCommandLine(
+                mfPath = "/customPath",
+                buildCommand = "./gradlew",
+                taskName = "build")
+        assertEquals("bash /customPath/mainframer.sh \"./gradlew build\"", commandLine.getResultingString())
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithWhiteSpacePathToExecute() {
-        val commandLine = createCommandLine(mfPath = "/White Spaced Path")
-        commandLine.verifyResultingString()
+        val commandLine = MFCommandLine(
+                mfPath = "/White Spaced Path",
+                buildCommand = "./gradlew",
+                taskName = "build")
+        assertEquals("bash \"/White Spaced Path/mainframer.sh\" \"./gradlew build\"", commandLine.getResultingString())
     }
 
     @Test
     fun shouldGenerateProperCommandLineWithMultipleTasksToExecute() {
-        val commandLine = createCommandLine(taskName = "clean build")
-        commandLine.verifyResultingString()
+        val commandLine = MFCommandLine(
+                mfPath = null,
+                buildCommand = "./gradlew",
+                taskName = "clean build")
+        assertEquals("bash mainframer.sh \"./gradlew clean build\"", commandLine.getResultingString())
     }
-
-    private fun MFCommandLine.verifyResultingString() {
-        val mfLocation = if (mfPath != null) "$mfPath/" else ""
-        val mfAbsolutePath = "$mfLocation$mfFilename"
-        val expectedParams = listOf(mfAbsolutePath, "$buildCommand $taskName").joinParams()
-        assertEquals("bash $expectedParams", getResultingString())
-    }
-
-    private fun createCommandLine(mfPath: String = "", buildCommand: String = "./gradlew", taskName: String = "build")
-            = MFCommandLine(mfPath, buildCommand, taskName)
-
-    private fun List<String>.joinParams() = map { it.withOptionalQuotes }.joinToString(separator = " ")
-
-    private val String.withOptionalQuotes: String get() = if (contains(" ")) "\"$this\"" else this
 }
