@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.action.configure
 
 import com.elpassion.intelijidea.action.configure.chooser.mfVersionChooser
-import com.elpassion.intelijidea.action.configure.downloader.MFFileDownloader
+import com.elpassion.intelijidea.action.configure.downloader.mfFileDownloader
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubRetrofit
 import com.elpassion.intelijidea.action.configure.releases.service.mfReleasesFetcher
@@ -17,7 +17,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
             MFConfigureProjectActionController(
                     mainframerReleasesFetcher = mfReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
                     mainframerVersionChooser = mfVersionChooser(project),
-                    mainframerFileDownloader = MFFileDownloader(project),
+                    mainframerFileDownloader = mfFileDownloader(project),
                     showMessage = { message -> Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT) },
                     uiScheduler = UIScheduler,
                     progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")

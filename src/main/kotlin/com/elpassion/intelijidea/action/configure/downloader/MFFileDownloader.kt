@@ -10,10 +10,8 @@ import com.intellij.platform.templates.github.Outcome
 import io.reactivex.Observable
 import java.io.File
 
-class MFFileDownloader(val project: Project) : Function1<String, Observable<Unit>> {
-    override fun invoke(version: String): Observable<Unit> {
-        return downloadFileToProject(project, getMfToolDownloadUrl(version), mfFilename).asResultObservable()
-    }
+fun mfFileDownloader(project: Project) = { version: String ->
+    downloadFileToProject(project, getMfToolDownloadUrl(version), mfFilename).asResultObservable()
 }
 
 //TODO: Make private and remove @Deprecated annotation
