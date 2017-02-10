@@ -1,24 +1,20 @@
 package com.elpassion.intelijidea.task.edit;
 
-import com.elpassion.intelijidea.util.JTextFieldExtensionKt;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.LabeledComponent;
-import com.intellij.openapi.ui.TextBrowseFolderListener;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.ui.*;
 import com.intellij.util.IconUtil;
-import io.reactivex.Observable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditView, TaskEditView.Actions {
+public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm {
+
+    private final TaskEditValidator taskEditValidator = new TaskEditValidator(this);
     private final Project project;
-    private final TaskEditController controller = new TaskEditController(this, this);
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     private JPanel contentPane;
-
     public JTextField buildCommandField;
     public JTextField taskField;
     public TextFieldWithBrowseButton mainframerToolField;
@@ -32,8 +28,13 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditView
 
     @Nullable
     @Override
+    protected ValidationInfo doValidate() {
+        return taskEditValidator.doValidate();
+    }
+
+    @Nullable
+    @Override
     protected JComponent createCenterPanel() {
-        controller.onCreate();
         return contentPane;
     }
 
@@ -46,18 +47,27 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditView
         mainframerToolHolder.setComponent(mainframerToolField);
     }
 
-    @Override
-    public Observable<String> observeTaskName() {
-        return JTextFieldExtensionKt.textChanges(taskField);
+    public void restoreMainframerData(String mainframerPath, String buildCommand, String taskName) {
+        mainframerToolField.setText(mainframerPath);
+        buildCommandField.setText(buildCommand);
+        taskField.setText(taskName);
     }
 
+    @NotNull
     @Override
-    public void enableAcceptButton() {
-        setOKActionEnabled(true);
+    public JTextField taskField() {
+        return taskField;
     }
 
+    @NotNull
     @Override
-    public void disableAcceptButton() {
-        setOKActionEnabled(false);
+    public JTextField buildCommandField() {
+        return buildCommandField;
+    }
+
+    @NotNull
+    @Override
+    public TextFieldWithBrowseButton mainframerToolField() {
+        return mainframerToolField;
     }
 }
