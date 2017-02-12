@@ -10,13 +10,13 @@ import org.junit.Test
 
 class MFReleasesFetcherTest {
     val api = mock<GitHubApi>()
-    val service = mfReleasesFetcher(api)
+    val releasesFetcher = mfReleasesFetcher(api)
 
     @Test
     fun shouldDropFirstCharacter() {
         stubApiToReturn(ReleaseApiModel("v1.1.2"))
 
-        service()
+        releasesFetcher()
                 .test()
                 .assertValue{ it.first() == "1.1.2"}
     }
@@ -25,7 +25,7 @@ class MFReleasesFetcherTest {
     fun shouldProperMapReleaseApiModelToString() {
         stubApiToReturn(ReleaseApiModel("v1.1.2"), ReleaseApiModel("v1.1.3"))
 
-        service()
+        releasesFetcher()
                 .test()
                 .assertValue{ it[0] == "1.1.2"}
                 .assertValue{ it[1] == "1.1.3"}
