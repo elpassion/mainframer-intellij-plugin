@@ -6,29 +6,17 @@ import com.intellij.openapi.ui.ValidationInfo
 import java.io.File
 import javax.swing.JTextField
 
-class TaskEditValidator(val form: TaskEditForm) {
+fun taskEditFormFormValidate(taskField: JTextField, buildCommandField: JTextField, mfFolderBrowser: TextFieldWithBrowseButton) =
+        when {
+            taskField.isBlank() -> ValidationInfo("Task cannot be empty", taskField)
+            buildCommandField.isBlank() -> ValidationInfo("Build command cannot be empty", buildCommandField)
+            mfFolderBrowser.isBlank() -> ValidationInfo("Path cannot be empty", mfFolderBrowser)
+            mfFolderBrowser.isPathToScriptInvalid() -> ValidationInfo("Cannot find mainframer script in path", mfFolderBrowser)
+            else -> null
+        }
 
-    fun doValidate() =
-            when {
-                taskFieldIsEmpty() -> ValidationInfo("Task cannot be empty", form.taskField())
-                buildCommandIsEmpty() -> ValidationInfo("Build command cannot be empty", form.buildCommandField())
-                pathIsEmpty() -> ValidationInfo("Path cannot be empty", form.mainframerToolField())
-                pathIsInvalid() -> ValidationInfo("Cannot find mainframer script in path", form.mainframerToolField())
-                else -> null
-            }
+private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text, mfFilename).exists().not()
 
-    private fun pathIsInvalid() = !File(form.mainframerToolField().text, mfFilename).exists()
+private fun TextFieldWithBrowseButton.isBlank() = text.isBlank()
 
-    private fun taskFieldIsEmpty() = form.taskField().text.isBlank()
-
-    private fun buildCommandIsEmpty() = form.buildCommandField().text.isBlank()
-
-    private fun pathIsEmpty() = form.mainframerToolField().text.isBlank()
-
-}
-
-interface TaskEditForm {
-    fun taskField(): JTextField
-    fun buildCommandField(): JTextField
-    fun mainframerToolField(): TextFieldWithBrowseButton
-}
+private fun JTextField.isBlank() = text.isBlank()

@@ -3,14 +3,10 @@ package com.elpassion.intelijidea.task.edit
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
-import com.intellij.openapi.ui.TextFieldWithBrowseButton
-import com.intellij.openapi.ui.ValidationInfo
 import javax.swing.JComponent
-import javax.swing.JTextField
 
-class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEditForm {
+class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
 
-    private val taskEditValidator = TaskEditValidator(this)
     val form = MFBeforeRunTaskForm(project)
 
     init {
@@ -20,13 +16,9 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEdit
 
     override fun createCenterPanel(): JComponent = form.panel
 
-    override fun doValidate(): ValidationInfo? = taskEditValidator.doValidate()
-
-    override fun taskField(): JTextField = form.taskField
-
-    override fun buildCommandField(): JTextField = form.buildCommandField
-
-    override fun mainframerToolField(): TextFieldWithBrowseButton = form.mainframerToolField
+    override fun doValidate() = with(form) {
+        taskEditFormFormValidate(taskField, buildCommandField, mainframerToolField)
+    }
 
     fun restoreMainframerTask(data: MFTaskData) {
         form.mainframerToolField.text = data.mainframerPath
