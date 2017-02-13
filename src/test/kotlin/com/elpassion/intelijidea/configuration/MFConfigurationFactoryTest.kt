@@ -15,6 +15,6 @@ class MFConfigurationFactoryTest {
 
     @Test
     fun shouldCreateProperRunConfiguration() {
-        assertEquals(MFRunnerConfiguration::class.java, confFactory.createTemplateConfiguration(DummyProject.getInstance()).javaClass)
+        assertEquals(MFRunConfiguration::class.java, confFactory.createTemplateConfiguration(DummyProject.getInstance()).javaClass)
     }
 }

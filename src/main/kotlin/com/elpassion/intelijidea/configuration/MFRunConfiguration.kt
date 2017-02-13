@@ -16,10 +16,11 @@ import java.io.File
 import java.io.Serializable
 
 
-class MFRunnerConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String, val showToolNotFoundError: (mainframerPath: String?) -> Unit)
+class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String,
+                         val showToolNotFoundError: (mainframerPath: String?) -> Unit)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
-    var data: MFRunnerConfigurationData? = null
+    var data: MFRunConfigurationData? = null
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return MFSettingsEditor(project)
@@ -36,7 +37,7 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
         }
     }
 
-    private fun MFRunnerConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
+    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
 
     override fun checkConfiguration() = with(data) {
         when {
@@ -49,8 +50,8 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunnerConfigurationData>() ?:
-                MFRunnerConfigurationData(
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunConfigurationData>() ?:
+                MFRunConfigurationData(
                         buildCommand = "./gradlew",
                         taskName = "build",
                         mainframerPath = project.basePath)
@@ -64,10 +65,10 @@ class MFRunnerConfiguration(project: Project, configurationFactory: Configuratio
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
     companion object {
-        private val CONFIGURATION_ATTR_DATA = "MFRunner.data"
+        private val CONFIGURATION_ATTR_DATA = "MFRun.data"
     }
 }
 
-data class MFRunnerConfigurationData(val buildCommand: String = "",
-                                     val taskName: String = "",
-                                     val mainframerPath: String? = null) : Serializable
+data class MFRunConfigurationData(val buildCommand: String = "",
+                                  val taskName: String = "",
+                                  val mainframerPath: String? = null) : Serializable

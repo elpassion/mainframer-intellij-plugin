@@ -15,7 +15,7 @@ import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 
-class MFRunnerConfigurationTest {
+class MFRunConfigurationTest {
 
     private val confFactory = MFConfigurationFactory(MFRunConfigurationType())
     private val project = mock<Project>()
@@ -25,26 +25,26 @@ class MFRunnerConfigurationTest {
     fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Configuration incorrect",
-                mfRunnerConfigurationData = null)
+                mfRunConfigurationData = null)
     }
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenBuildCommandIsBlankOnCheckConfiguration() {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Build command cannot be empty",
-                mfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = ""))
+                mfRunConfigurationData = mfRunConfigurationData(buildCommand = ""))
     }
 
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenTaskNameIsBlankOnCheckConfiguration() {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Task name cannot be empty",
-                mfRunnerConfigurationData = mfRunnerConfigurationData(taskName = ""))
+                mfRunConfigurationData = mfRunConfigurationData(taskName = ""))
     }
 
     @Test
     fun shouldNotSetAttributeValueWhenDataIsNullOnWriteExternal() {
-        mfRunnerConfiguration().run {
+        mfRunConfiguration().run {
             data = null
             writeExternal(element)
             verify(element, never()).setAttribute(any(), any())
@@ -53,8 +53,8 @@ class MFRunnerConfigurationTest {
 
     @Test
     fun shouldSetAttributeValueEqualToDataFieldOnWriteExternal() {
-        mfRunnerConfiguration().run {
-            data = mfRunnerConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
+        mfRunConfiguration().run {
+            data = mfRunConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
             writeExternal(element)
             verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":null}"))
         }
@@ -64,21 +64,21 @@ class MFRunnerConfigurationTest {
     fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNullOnReadExternal() {
         whenever(project.basePath).thenReturn("basePath")
         assertReadExternalValue(
-                expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath"),
-                savedMfRunnerConfigurationData = null)
+                expectedMfRunConfigurationData = mfRunConfigurationData(buildCommand = "./gradlew", taskName = "build", mainframerPath = "basePath"),
+                savedMfRunConfigurationData = null)
     }
 
     @Test
     fun shouldSetObjectFromGetAttributeValueOnReadExternal() {
         assertReadExternalValue(
-                expectedMfRunnerConfigurationData = mfRunnerConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path"),
-                savedMfRunnerConfigurationData = "{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
+                expectedMfRunConfigurationData = mfRunConfigurationData(buildCommand = "build_command", taskName = "task_name", mainframerPath = "path"),
+                savedMfRunConfigurationData = "{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
     }
 
     @Test
     fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
         val exception = assertThrows(ExecutionException::class.java) {
-            mfRunnerConfiguration()
+            mfRunConfiguration()
                     .apply { data = null }
                     .getState(mock(), mock())
         }
@@ -90,11 +90,11 @@ class MFRunnerConfigurationTest {
         var isToolNotFoundErrorShown = false
         var shownMainFramerPath: String? = null
         val exception = assertThrows(ExecutionException::class.java) {
-            mfRunnerConfiguration {
+            mfRunConfiguration {
                 isToolNotFoundErrorShown = true
                 shownMainFramerPath = it
             }.apply {
-                data = mfRunnerConfigurationData(mainframerPath = "mainFramerPath")
+                data = mfRunConfigurationData(mainframerPath = "mainFramerPath")
             }.getState(mock(), mock())
         }
         assertEquals("Mainframer tool cannot be found", exception.message)
@@ -102,27 +102,27 @@ class MFRunnerConfigurationTest {
         assertEquals("mainFramerPath", shownMainFramerPath)
     }
 
-    private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunnerConfigurationData: MFRunnerConfigurationData?) {
+    private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunConfigurationData: MFRunConfigurationData?) {
         val exception = assertThrows(RuntimeConfigurationError::class.java) {
-            mfRunnerConfiguration()
-                    .apply { data = mfRunnerConfigurationData }
+            mfRunConfiguration()
+                    .apply { data = mfRunConfigurationData }
                     .checkConfiguration()
         }
         assertEquals(expectedMessage, exception.message)
     }
 
-    private fun assertReadExternalValue(expectedMfRunnerConfigurationData: MFRunnerConfigurationData, savedMfRunnerConfigurationData: String?) {
-        whenever(element.getAttributeValue(any())).thenReturn(savedMfRunnerConfigurationData)
-        mfRunnerConfiguration().run {
+    private fun assertReadExternalValue(expectedMfRunConfigurationData: MFRunConfigurationData, savedMfRunConfigurationData: String?) {
+        whenever(element.getAttributeValue(any())).thenReturn(savedMfRunConfigurationData)
+        mfRunConfiguration().run {
             readExternal(element)
-            assertEquals(expectedMfRunnerConfigurationData, data)
+            assertEquals(expectedMfRunConfigurationData, data)
         }
     }
 
-    private fun mfRunnerConfiguration(showToolNotFoundError: (String?) -> Unit = {}) = MFRunnerConfiguration(project, confFactory, "", showToolNotFoundError)
+    private fun mfRunConfiguration(showToolNotFoundError: (String?) -> Unit = {}) = MFRunConfiguration(project, confFactory, "", showToolNotFoundError)
 
-    private fun mfRunnerConfigurationData(buildCommand: String = "buildCommand",
-                                          taskName: String = "taskName",
-                                          mainframerPath: String? = "path") = MFRunnerConfigurationData(buildCommand, taskName, mainframerPath)
+    private fun mfRunConfigurationData(buildCommand: String = "buildCommand",
+                                       taskName: String = "taskName",
+                                       mainframerPath: String? = "path") = MFRunConfigurationData(buildCommand, taskName, mainframerPath)
 
 }

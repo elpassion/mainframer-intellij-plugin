@@ -4,16 +4,16 @@ import com.elpassion.intelijidea.util.fromJson
 import com.elpassion.intelijidea.util.toJson
 import junit.framework.TestCase
 
-class MFRunnerConfigurationDataSerializationTestCase : TestCase() {
+class MFRunConfigurationDataSerializationTestCase : TestCase() {
 
     fun testShouldDeserializeSerializedObject() {
-        val data = MFRunnerConfigurationData(
+        val data = MFRunConfigurationData(
                 buildCommand = "buildCommand",
                 taskName = "taskName",
                 mainframerPath = "path")
 
         val json = data.toJson()
-        val deserializedData = json.fromJson<MFRunnerConfigurationData>()
+        val deserializedData = json.fromJson<MFRunConfigurationData>()
         assertEquals(data, deserializedData)
     }
 }

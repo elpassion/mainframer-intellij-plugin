@@ -2,8 +2,8 @@ package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.configuration.MFConfigurationFactory
 import com.elpassion.intelijidea.configuration.MFRunConfigurationType
-import com.elpassion.intelijidea.configuration.MFRunnerConfiguration
-import com.elpassion.intelijidea.configuration.MFRunnerConfigurationData
+import com.elpassion.intelijidea.configuration.MFRunConfiguration
+import com.elpassion.intelijidea.configuration.MFRunConfigurationData
 import com.elpassion.intelijidea.configuration.common.assertThrows
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.executors.DefaultRunExecutor
@@ -34,21 +34,21 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         buildProjectAndExecute(config)
     }
 
-    private fun createRunConfiguration(configurationData: MFRunnerConfigurationData?) =
-            MFRunnerConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
+    private fun createRunConfiguration(configurationData: MFRunConfigurationData?) =
+            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
                 data = configurationData
             }
 
-    private fun createConfigurationData(withToolFile: Boolean): MFRunnerConfigurationData {
+    private fun createConfigurationData(withToolFile: Boolean): MFRunConfigurationData {
         with(FileUtil.createTempDirectory("", "mf")) {
             if (withToolFile) {
                 FileUtil.createTempFile(this, "mainframer", ".sh")
             }
-            return MFRunnerConfigurationData(mainframerPath = absolutePath)
+            return MFRunConfigurationData(mainframerPath = absolutePath)
         }
     }
 
-    private fun buildProjectAndExecute(config: MFRunnerConfiguration) {
+    private fun buildProjectAndExecute(config: MFRunConfiguration) {
         val executor = DefaultRunExecutor.getRunExecutorInstance()
         ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
     }

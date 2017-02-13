@@ -11,7 +11,7 @@ import javax.swing.event.HyperlinkEvent
 
 class MFConfigurationFactory(configurationType: ConfigurationType) : ConfigurationFactory(configurationType) {
 
-    override fun createTemplateConfiguration(project: Project) = MFRunnerConfiguration(
+    override fun createTemplateConfiguration(project: Project) = MFRunConfiguration(
             project = project,
             configurationFactory = this,
             name = "Mainframer",
