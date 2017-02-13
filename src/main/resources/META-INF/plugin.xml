@@ -23,7 +23,7 @@
     <change-notes><![CDATA[
       Release 0.2.1: Fixing minor problems + refactoring.<br>
       Release 0.2.0: Add general settings for before tasks.<br>
-      Release 0.0.12: Refactor injecting before tasks feature.<br>
+      Release 0.0.11: Refactor injecting before tasks feature.<br>
       Release 0.0.1: Initial release.<br>
     ]]>
     </change-notes>
