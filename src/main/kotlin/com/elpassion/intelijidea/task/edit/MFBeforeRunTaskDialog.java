@@ -16,7 +16,7 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm
     private final TaskEditValidator taskEditValidator = new TaskEditValidator(this);
     private final Project project;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
-    private JPanel contentPane;
+    public JPanel panel;
     public JTextField buildCommandField;
     public JTextField taskField;
     public TextFieldWithBrowseButton mainframerToolField;
@@ -37,7 +37,7 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        return contentPane;
+        return panel;
     }
 
     private void createUIComponents() {
