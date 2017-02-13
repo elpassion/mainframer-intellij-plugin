@@ -18,25 +18,15 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEdit
         init()
     }
 
-    override fun createCenterPanel(): JComponent {
-        return form.panel
-    }
+    override fun createCenterPanel(): JComponent = form.panel
 
-    override fun doValidate(): ValidationInfo? {
-        return taskEditValidator.doValidate()
-    }
+    override fun doValidate(): ValidationInfo? = taskEditValidator.doValidate()
 
-    override fun taskField(): JTextField {
-        return form.taskField
-    }
+    override fun taskField(): JTextField = form.taskField
 
-    override fun buildCommandField(): JTextField {
-        return form.buildCommandField
-    }
+    override fun buildCommandField(): JTextField = form.buildCommandField
 
-    override fun mainframerToolField(): TextFieldWithBrowseButton {
-        return form.mainframerToolField
-    }
+    override fun mainframerToolField(): TextFieldWithBrowseButton = form.mainframerToolField
 
     fun restoreMainframerTask(data: MFTaskData) {
         form.mainframerToolField.text = data.mainframerPath
