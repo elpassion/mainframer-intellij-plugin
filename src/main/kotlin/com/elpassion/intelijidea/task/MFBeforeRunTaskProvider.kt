@@ -22,12 +22,9 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
         MFBeforeRunTaskDialog(project).run {
-            restoreMainframerData(task.data.mainframerPath, task.data.buildCommand, task.data.taskName)
+            restoreMainframerTask(task)
             if (showAndGet()) {
-                task.data = MFTaskData(
-                        mainframerPath = mainframerToolField.text,
-                        buildCommand = buildCommandField.text,
-                        taskName = taskField.text)
+                task.data = createMFTaskDataFromForms()
                 return true
             }
         }

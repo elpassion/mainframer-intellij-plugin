@@ -1,5 +1,7 @@
 package com.elpassion.intelijidea.task.edit;
 
+import com.elpassion.intelijidea.task.MFBeforeRunTask;
+import com.elpassion.intelijidea.task.MFTaskData;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
@@ -47,10 +49,17 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm
         mainframerToolHolder.setComponent(mainframerToolField);
     }
 
-    public void restoreMainframerData(String mainframerPath, String buildCommand, String taskName) {
-        mainframerToolField.setText(mainframerPath);
-        buildCommandField.setText(buildCommand);
-        taskField.setText(taskName);
+    public void restoreMainframerTask(MFBeforeRunTask beforeRunTask) {
+        MFTaskData data = beforeRunTask.getData();
+        mainframerToolField.setText(data.getMainframerPath());
+        buildCommandField.setText(data.getBuildCommand());
+        taskField.setText(data.getTaskName());
+    }
+
+    public MFTaskData createMFTaskDataFromForms() {
+        return new MFTaskData(mainframerToolField.getText(),
+                buildCommandField.getText(),
+                taskField.getText());
     }
 
     @NotNull
