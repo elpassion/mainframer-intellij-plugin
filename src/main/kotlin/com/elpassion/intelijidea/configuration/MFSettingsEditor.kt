@@ -8,7 +8,7 @@ import java.io.File
 import javax.swing.JComponent
 
 
-class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>() {
+class MFSettingsEditor(project: Project) : SettingsEditor<MFRunConfiguration>() {
 
     private val mainEditorPanel = MFSettingsEditorPanel(project)
 
@@ -16,7 +16,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
         return mainEditorPanel.panel
     }
 
-    override fun applyEditorTo(configuration: MFRunnerConfiguration) {
+    override fun applyEditorTo(configuration: MFRunConfiguration) {
         configuration.data = configuration.data?.copy(
                 buildCommand = mainEditorPanel.buildCommand.text,
                 taskName = mainEditorPanel.taskName.text,
@@ -34,7 +34,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunnerConfiguration>
         }
     }
 
-    override fun resetEditorFrom(configuration: MFRunnerConfiguration) {
+    override fun resetEditorFrom(configuration: MFRunConfiguration) {
         configuration.data.let {
             mainEditorPanel.buildCommand.text = it?.buildCommand
             mainEditorPanel.taskName.text = it?.taskName

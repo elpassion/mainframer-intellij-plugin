@@ -10,7 +10,7 @@ class MFRunConfigurationType : ConfigurationType {
 
     override fun getConfigurationTypeDescription() = "Run project using mainframer"
 
-    override fun getIcon(): Icon = MFIcons.configurationIcon
+    override fun getIcon(): Icon = MFIcons.mainframerIcon
 
     override fun getId() = "MAINFRAMER_RUN_CONFIGURATION"
 

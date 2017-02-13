@@ -1,9 +1,9 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.common.MFCommandLineState
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ModuleRunProfile
-import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.module.Module
 import javax.swing.Icon
@@ -15,16 +15,11 @@ class MFBeforeRunTaskProfile(private val task: MFBeforeRunTask) : ModuleRunProfi
 
     override fun getModules(): Array<Module> = Module.EMPTY_ARRAY
 
-    override fun getState(executor: Executor, env: ExecutionEnvironment): RunProfileState? {
-        if (task.isValid()) {
-            return with(task.data) {
-                MFCommandLineState(env,
-                        mainframerPath = mainframerPath!!,
-                        buildCommand = buildCommand!!,
-                        taskName = taskName!!)
+    override fun getState(executor: Executor, env: ExecutionEnvironment) =
+            when (task.isValid()) {
+                true -> with(task.data) {
+                    MFCommandLineState(env, mainframerPath, buildCommand!!, taskName!!)
+                }
+                else -> throw ExecutionException("Cannot run mainframer script")
             }
-        } else {
-            return null
-        }
-    }
 }

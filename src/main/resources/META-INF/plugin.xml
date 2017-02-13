@@ -5,24 +5,25 @@
 
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
-      easy and seamless.
-
-      Plugin uses Intellij Idea run configuration mechanism, especially it takes advantage of before run tasks,
-      to replace standard build tasks with the one using mainframer.
-
-      In addition it also provides new runConfiguration to running mainframer tasks.
-
+      easy and seamless.<br>
+      <br>
+      Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks,
+      to replace standard build tasks with the one using mainframer.<br>
+      <br>
+      In addition it provides new runConfiguration to run mainframer tasks.<br>
       <h3>Features:</h3>
         <ul>
           <li>BeforeTasks which delegates tasks to mainframer</li>
           <li>Injecting/Restoring before tasks to all configurations</li>
           <li>Configuring mainframer in project</li>
-          <li>RunComfiguration for mainframer</li>
+          <li>RunConfiguration for mainframer</li>
         </ul>
     ]]></description>
 
     <change-notes><![CDATA[
-      Release 0.0.12: Refactor injecting before tasks feature.<br>
+      Release 0.2.2: Fixing minor problems + refactoring.<br>
+      Release 0.2.0: Add general settings for before tasks.<br>
+      Release 0.0.11: Refactor injecting before tasks feature.<br>
       Release 0.0.1: Initial release.<br>
     ]]>
     </change-notes>
@@ -34,19 +35,22 @@
         <programRunner implementation="com.elpassion.intelijidea.configuration.MFProgramRunner" />
         <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.task.MFBeforeRunTaskProvider" />
         <postStartupActivity implementation="com.elpassion.intelijidea.MFRemoveBeforeTaskAtStartup" order="last" />
-        <projectConfigurable groupId="tools" groupWeight="140" displayName="Mainframer" id="mainframer"
-                             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable"/>
-        <applicationService serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider"/>
+        <projectConfigurable displayName="Mainframer" groupId="tools" groupWeight="140" id="mainframer"
+            instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
+        <applicationService
+            serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
     </extensions>
 
     <actions>
-        <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
-            <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
-        </action>
-        <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject">
-        </action>
-        <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore">
-        </action>
+        <group class="com.intellij.openapi.actionSystem.DefaultActionGroup" icon="/icons/mainframerIcon.png"
+            id="MF.ActionGroup" popup="true" text="Mainframer">
+            <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
+                <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
+            </action>
+            <separator />
+            <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject" />
+            <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore" />
+        </group>
     </actions>
 
 </idea-plugin>

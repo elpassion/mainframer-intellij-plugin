@@ -1,7 +1,6 @@
 sudo: false
 language: java
 jdk: oraclejdk8
-
 cache:
   directories:
     - $HOME/.gradle/caches/
@@ -24,3 +23,14 @@ notifications:
       secure: i75o0wwiOqJ8h7P9w0Pc5K5rosOgGZvgPA+50+mXBceZ1RSa/0Sn5gZgSey7NeM5DVrVvKFptqmIhIlkyI6fBlKIcQHdMfspPq+JicjsbHqM0SYkHI6oisoN7bsLqhgKH69g/B5e7lHZ38D9HpO5dulEce9s5+hCeggrrSAnT+JR37Nt12bUQuD6rGzeLK0ck18L/h9NWdtZN2vwsh5fSMOBGddNy6fwi6Ech0V6ZSAXGct0tvqJS6JyTiZoNbM0Z7mkMKMmmDKz13izi2jl0dZ3l5+kUtL1sgXdLgJ3aRIfEDIWZXPLQSExV9AkO5Z6VHiNFYLVpka0Ibhg1PIp91i0cdeAgDlro80ajDzoB7BZTGYQkYyPo5Z47SpdBK3hlit1A4uHXyGtmTYJO9Kcgp63c7ujppjBM6oMNHQFoEi4yh1Q4lSPNWMQpNr5nDjnZxvQssn1Qx0MfjWqN68m8EBON3UP5Ex271Gy7uBm6qQk4IWIz4j4DUJYaLhVyL2XMF+tmNyZ3TSVQELN280KelwtBDRDd8UxoLc7Mfh5p28y9QWiYSdBkz/y+BMLyjA1gP43Cz6HEhhW5LhlqBT/yHZD9j8vFqoeGuA+KlsVu43qR6waXa8S99V1gVWlf7j0PS0r4OUzhnE4ODXSBQKk2DTX4EvShrZ3YMABs3QbBWI=
     on_success: change
     on_failure: always
+
+deploy:
+  provider: releases
+  api_key:
+    secure: YtKAx8RBOX+i0Lqg6Osr/3WhrDgmvS9qJK/KIj5xYBHdaVZAQ9g+lwrHnT57U1+JMTl2xY8Jo6vqPoEd+Dg2NXUpBIXSAQgEt5yHXjRxht8u/ae5h6mgElRQiFH+fDW/XDCTuVcV/HmVtbAJ03RQk6RXyn7U9fk3zhCwlFu2aGvDZmI4clvBmsLISo3ei9+vTxFCENzR0XlvqNO5+OqOZZ6444M3ykx0h8mDlkIUYNgZmtI8XERX9xA1DtST9cutvMGALwfmf5qNZ5mPdPnPdnCvv2wo0jp1BJTPu1dZJh+uKU9WSjCzWW54tMOyv7gv6rDXWhcJL5m0OLE1Az16fOCio38U2JVjww23aiPW2vOhGS37H5ygMuamiNSF8DY6PwRoGChv34jvFpXDxbUsjv0uzuEiyVC0wv3s7J9sCHQHH9CD2w6hRJdh6S8BCA/7cA3FNfEeFyUkSQbzpOm+hxiSiCXzZ+PqqcL5q05YSYnnSthW6NhsZ9yzMdJl9OXAQCUdBy4JXH00ughwGy2eeEwlxl77UumFcKncj+b6HRNUXODaV8i0Y1xRpdtRLFL0cVG/DtovvTYoWgI9WI0SyAG78fFcJTbha5B1FKZF4qDuxb6cAGIN7pkPXYlpYThXxjhRSTdC23lmcEXNN4nkVgJYTAYuKmuIEcZaB2FskYI=
+  file: build/distributions/mainframer-plugin.zip
+  skip_cleanup: true
+  on:
+    repo: elpassion/mainframer-intellij-plugin
+    branch: master
+    tags: true
