@@ -23,7 +23,7 @@ git checkout develop -b release/$VERSION_NAME
 checkResult
 ./gradlew build
 checkResult
-./gradlew updateVersion $VERSION_NAME
+./gradlew updateVersion -PversionName=$VERSION_NAME
 checkResult
 git commit -a -m "Update version to $VERSION_NAME."
 checkResult
