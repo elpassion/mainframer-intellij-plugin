@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.task.edit
 
+import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -36,4 +37,10 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEdit
     override fun mainframerToolField(): TextFieldWithBrowseButton {
         return form.mainframerToolField
     }
+
+    fun createMFTaskDataFromForms() = MFTaskData(
+            mainframerPath = form.mainframerToolField.text,
+            buildCommand = form.buildCommandField.text,
+            taskName = form.taskField.text)
+
 }

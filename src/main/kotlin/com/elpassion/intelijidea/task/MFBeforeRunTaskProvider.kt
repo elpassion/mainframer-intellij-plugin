@@ -24,7 +24,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         MFBeforeRunTaskDialog(project).run {
             form.restoreMainframerTask(task)
             if (showAndGet()) {
-                task.data = form.createMFTaskDataFromForms()
+                task.data = createMFTaskDataFromForms()
                 return true
             }
         }

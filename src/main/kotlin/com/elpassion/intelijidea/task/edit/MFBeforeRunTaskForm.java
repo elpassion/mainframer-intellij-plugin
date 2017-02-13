@@ -40,9 +40,4 @@ public class MFBeforeRunTaskForm {
         taskField.setText(data.getTaskName());
     }
 
-    public MFTaskData createMFTaskDataFromForms() {
-        return new MFTaskData(mainframerToolField.getText(),
-                buildCommandField.getText(),
-                taskField.getText());
-    }
 }
