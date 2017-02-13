@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.task.edit
 
-import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -49,5 +48,4 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEdit
             mainframerPath = form.mainframerToolField.text,
             buildCommand = form.buildCommandField.text,
             taskName = form.taskField.text)
-
 }
