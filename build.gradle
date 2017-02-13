@@ -52,7 +52,7 @@ intellij {
     }
 }
 
-private String readVersion() {
+private static String readVersion() {
     def versionFile = new File('version.gradle.properties')
     def matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.text)
     if (matcher.find()) {
