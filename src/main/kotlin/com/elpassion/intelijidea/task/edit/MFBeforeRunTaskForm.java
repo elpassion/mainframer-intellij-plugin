@@ -1,7 +1,5 @@
 package com.elpassion.intelijidea.task.edit;
 
-import com.elpassion.intelijidea.task.MFBeforeRunTask;
-import com.elpassion.intelijidea.task.MFTaskData;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
@@ -32,12 +30,4 @@ public class MFBeforeRunTaskForm {
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerToolField);
     }
-
-    public void restoreMainframerTask(MFBeforeRunTask beforeRunTask) {
-        MFTaskData data = beforeRunTask.getData();
-        mainframerToolField.setText(data.getMainframerPath());
-        buildCommandField.setText(data.getBuildCommand());
-        taskField.setText(data.getTaskName());
-    }
-
 }

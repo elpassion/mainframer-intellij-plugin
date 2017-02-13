@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.task.edit
 
+import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
@@ -36,6 +37,12 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project), TaskEdit
 
     override fun mainframerToolField(): TextFieldWithBrowseButton {
         return form.mainframerToolField
+    }
+
+    fun restoreMainframerTask(data: MFTaskData) {
+        form.mainframerToolField.text = data.mainframerPath
+        form.buildCommandField.text = data.buildCommand
+        form.taskField.text = data.taskName
     }
 
     fun createMFTaskDataFromForms() = MFTaskData(
