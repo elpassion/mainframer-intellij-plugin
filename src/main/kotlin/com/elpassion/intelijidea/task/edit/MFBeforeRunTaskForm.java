@@ -4,16 +4,15 @@ import com.elpassion.intelijidea.task.MFBeforeRunTask;
 import com.elpassion.intelijidea.task.MFTaskData;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.*;
+import com.intellij.openapi.ui.LabeledComponent;
+import com.intellij.openapi.ui.TextBrowseFolderListener;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.util.IconUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm {
+public class MFBeforeRunTaskForm {
 
-    private final TaskEditValidator taskEditValidator = new TaskEditValidator(this);
     private final Project project;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JPanel panel;
@@ -21,23 +20,8 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm
     public JTextField taskField;
     public TextFieldWithBrowseButton mainframerToolField;
 
-    public MFBeforeRunTaskDialog(Project project) {
-        super(project);
+    public MFBeforeRunTaskForm(Project project) {
         this.project = project;
-        setModal(true);
-        init();
-    }
-
-    @Nullable
-    @Override
-    protected ValidationInfo doValidate() {
-        return taskEditValidator.doValidate();
-    }
-
-    @Nullable
-    @Override
-    protected JComponent createCenterPanel() {
-        return panel;
     }
 
     private void createUIComponents() {
@@ -60,23 +44,5 @@ public class MFBeforeRunTaskDialog extends DialogWrapper implements TaskEditForm
         return new MFTaskData(mainframerToolField.getText(),
                 buildCommandField.getText(),
                 taskField.getText());
-    }
-
-    @NotNull
-    @Override
-    public JTextField taskField() {
-        return taskField;
-    }
-
-    @NotNull
-    @Override
-    public JTextField buildCommandField() {
-        return buildCommandField;
-    }
-
-    @NotNull
-    @Override
-    public TextFieldWithBrowseButton mainframerToolField() {
-        return mainframerToolField;
     }
 }
