@@ -6,7 +6,7 @@ import com.intellij.openapi.ui.ValidationInfo
 import java.io.File
 import javax.swing.JTextField
 
-fun taskEditFormFormValidate(taskField: JTextField, buildCommandField: JTextField, mfFolderBrowser: TextFieldWithBrowseButton) =
+fun taskFormValidate(taskField: JTextField, buildCommandField: JTextField, mfFolderBrowser: TextFieldWithBrowseButton) =
         when {
             taskField.isBlank() -> ValidationInfo("Task cannot be empty", taskField)
             buildCommandField.isBlank() -> ValidationInfo("Build command cannot be empty", buildCommandField)
