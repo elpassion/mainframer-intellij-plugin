@@ -7,6 +7,6 @@ fun <V> Outcome<V>.asResultObservable(): Observable<V> {
     return when {
         isCancelled -> Observable.empty()
         exception != null -> Observable.error(exception)
-        else -> Observable.just(get())
+        else -> Observable.just(get()!!)
     }
 }
