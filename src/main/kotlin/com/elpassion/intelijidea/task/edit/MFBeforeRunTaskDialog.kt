@@ -20,7 +20,7 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
         taskFormValidate(taskField, buildCommandField, mainframerToolField)
     }
 
-    fun restoreMainframerTaskData(data: MFTaskData) {
+    fun restoreMainframerTask(data: MFTaskData) {
         form.mainframerToolField.text = data.mainframerPath
         form.buildCommandField.text = data.buildCommand
         form.taskField.text = data.taskName
