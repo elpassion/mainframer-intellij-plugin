@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.task.ui;
 
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider;
 import com.elpassion.intelijidea.task.MFTaskData;
-import com.elpassion.intelijidea.task.edit.TaskEditValidatorKt;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
@@ -17,12 +16,11 @@ public class MFBeforeTaskDefaultSettingsPanel {
     private final Project project;
     private final MFBeforeTaskDefaultSettingsProvider settingsProvider;
     public TextFieldWithBrowseButton mainframerToolField;
-    private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
-
     public JTextField buildCommandField;
     public JTextField taskNameField;
     public JPanel panel;
     public JCheckBox configureBeforeTasksOnStartupField;
+    private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
 
     public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;

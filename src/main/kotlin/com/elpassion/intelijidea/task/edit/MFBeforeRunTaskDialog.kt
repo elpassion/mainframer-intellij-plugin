@@ -17,7 +17,7 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
     override fun createCenterPanel(): JComponent = form.panel
 
     override fun doValidate() = with(form) {
-        taskFormValidate(taskField, buildCommandField, mainframerToolField)
+        validateTaskFormFields(taskField, buildCommandField, mainframerToolField)
     }
 
     fun restoreMainframerTaskData(data: MFTaskData) {

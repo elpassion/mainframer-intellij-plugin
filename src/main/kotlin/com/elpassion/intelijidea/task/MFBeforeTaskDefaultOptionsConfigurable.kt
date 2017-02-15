@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.task
 
-import com.elpassion.intelijidea.task.edit.taskFormValidate
+import com.elpassion.intelijidea.task.edit.validateTaskFormFields
 import com.elpassion.intelijidea.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.options.Configurable
@@ -23,8 +23,8 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
     override fun getDisplayName(): String = "Mainframer"
 
     override fun apply() {
-        with(mfSettingsPanel ?: return) {
-            taskFormValidate(taskNameField, buildCommandField, mainframerToolField)?.let { throw ConfigurationException(it.message) }
+        mfSettingsPanel?.run {
+            validateTaskFormFields(taskNameField, buildCommandField, mainframerToolField)?.let { throw ConfigurationException(it.message) }
             save()
         }
     }
