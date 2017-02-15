@@ -22,7 +22,7 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
         return Observable.fromCallable { createExecutionEnv(task) }
                 .subscribeOn(UINonModalScheduler)
                 .observeOn(UINonModalScheduler)
-                .doOnNext { saveFiles() }
+                .doOnNext { saveAllDocuments() }
                 .flatMap(executeAsync)
                 .observeOn(UINonModalScheduler)
                 .map { it.exitCode == 0 }
@@ -72,4 +72,4 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
     }
 }
 
-private fun saveFiles() = FileDocumentManager.getInstance().saveAllDocuments()
+private fun saveAllDocuments() = FileDocumentManager.getInstance().saveAllDocuments()
