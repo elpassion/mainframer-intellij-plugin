@@ -41,8 +41,6 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
                 }
     }
 
-    private fun saveFiles() = FileDocumentManager.getInstance().saveAllDocuments()
-
     private val executeAsync: (ExecutionEnvironment) -> Observable<ProcessEvent> = { env ->
         val publisher = PublishSubject.create<ProcessEvent>()
         env.runner.execute(env) { descriptor ->
@@ -73,3 +71,5 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
         }
     }
 }
+
+private fun saveFiles() = FileDocumentManager.getInstance().saveAllDocuments()
