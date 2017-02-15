@@ -22,7 +22,7 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
         return Observable.fromCallable { createExecutionEnv(task) }
                 .subscribeOn(UINonModalScheduler)
                 .observeOn(UINonModalScheduler)
-                .doOnNext(saveFiles)
+                .doOnNext { saveFiles() }
                 .flatMap(executeAsync)
                 .observeOn(UINonModalScheduler)
                 .map { it.exitCode == 0 }
@@ -41,9 +41,7 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
                 }
     }
 
-    private val saveFiles: (ExecutionEnvironment) -> Unit = {
-        FileDocumentManager.getInstance().saveAllDocuments()
-    }
+    private fun saveFiles() = FileDocumentManager.getInstance().saveAllDocuments()
 
     private val executeAsync: (ExecutionEnvironment) -> Observable<ProcessEvent> = { env ->
         val publisher = PublishSubject.create<ProcessEvent>()
