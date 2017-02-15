@@ -11,24 +11,24 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFileManager
-import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.SingleEmitter
 import io.reactivex.functions.Consumer
-import io.reactivex.subjects.PublishSubject
 import org.jetbrains.rpc.LOG
 
 class MFBeforeRunTaskExecutor(private val project: Project) {
 
     fun executeSync(task: MFBeforeRunTask): Boolean {
-        return Observable.fromCallable { createExecutionEnv(task) }
+        return Single.fromCallable { createExecutionEnv(task) }
                 .subscribeOn(UINonModalScheduler)
-                .doOnNext { saveAllDocuments() }
+                .doAfterSuccess { saveAllDocuments() }
                 .flatMap(executeAsync)
                 .observeOn(UINonModalScheduler)
                 .map { it.exitCode == 0 }
-                .doOnNext(syncFiles)
+                .doAfterSuccess(syncFiles)
                 .doOnError(logError)
                 .onErrorReturnItem(false)
-                .blockingSingle()
+                .blockingGet()
     }
 
     private fun createExecutionEnv(task: MFBeforeRunTask): ExecutionEnvironment {
@@ -40,20 +40,19 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
                 }
     }
 
-    private val executeAsync: (ExecutionEnvironment) -> Observable<ProcessEvent> = { env ->
-        PublishSubject.create<ProcessEvent>().apply {
+    private val executeAsync: (ExecutionEnvironment) -> Single<ProcessEvent> = { env ->
+        Single.create { emitter ->
             env.runner.execute(env) { descriptor ->
                 val processHandler = descriptor.processHandler
-                processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(this))
+                processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(emitter))
             }
         }
     }
 
-    private class EmitOnTerminatedProcessAdapter(private val publisher: PublishSubject<ProcessEvent>) : ProcessAdapter() {
+    private class EmitOnTerminatedProcessAdapter(private val emitter: SingleEmitter<ProcessEvent>) : ProcessAdapter() {
 
         override fun processTerminated(event: ProcessEvent) {
-            publisher.onNext(event)
-            publisher.onComplete()
+            emitter.onSuccess(event)
         }
     }
 
