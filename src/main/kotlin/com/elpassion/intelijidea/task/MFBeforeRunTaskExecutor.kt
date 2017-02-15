@@ -42,12 +42,12 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
     }
 
     private val executeAsync: (ExecutionEnvironment) -> Observable<ProcessEvent> = { env ->
-        val publisher = PublishSubject.create<ProcessEvent>()
-        env.runner.execute(env) { descriptor ->
-            val processHandler = descriptor.processHandler
-            processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(publisher))
+        PublishSubject.create<ProcessEvent>().apply {
+            env.runner.execute(env) { descriptor ->
+                val processHandler = descriptor.processHandler
+                processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(this))
+            }
         }
-        publisher
     }
 
     private class EmitOnTerminatedProcessAdapter(private val publisher: PublishSubject<ProcessEvent>) : ProcessAdapter() {
