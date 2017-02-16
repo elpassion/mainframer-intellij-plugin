@@ -8,4 +8,8 @@ Installation
 2. Find **mainframer-plugin** in JetBrains plugins repository.
 3. Install plugin and restart IDE to apply changes.
 
+**Alternative way:**
+
+If you want to install a specific version of plugin visit [mainframer-plugin website](https://plugins.jetbrains.com/idea/plugin/9447-mainframer-plugin), download zipped file and click *Install plugin from disk...* providing correct path.
+
 ![](readme/plugins.png)
