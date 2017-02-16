@@ -10,6 +10,6 @@ Installation
 
 **Alternative way:**
 
-If you want to install a specific version of plugin visit [mainframer-plugin website](https://plugins.jetbrains.com/idea/plugin/9447-mainframer-plugin), download zipped file and click *Install plugin from disk...* providing correct path.
+If you want to install a specific version of the plugin visit [mainframer-plugin website](https://plugins.jetbrains.com/idea/plugin/9447-mainframer-plugin), download zip file and click *Install plugin from disk...* providing path to it.
 
 ![](readme/plugins.png)
