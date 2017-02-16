@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.action.configure.chooser
+package com.elpassion.intelijidea.action.configure.configurator
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

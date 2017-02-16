@@ -1,10 +1,10 @@
-package com.elpassion.intelijidea.action.configure.chooser
+package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.intellij.openapi.project.Project
 
 fun mfVersionChooser(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
-    MFVersionChooserDialog(project, versionsList)
+    MFConfiguratorDialog(project, versionsList)
             .applyDefaultValues(provider.taskData)
             .showAsObservable()
             .doAfterNext { dataFromUi ->

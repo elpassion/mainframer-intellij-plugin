@@ -1,8 +1,8 @@
-package com.elpassion.intelijidea.action.configure.chooser.ui;
+package com.elpassion.intelijidea.action.configure.configurator.ui;
 
 import javax.swing.*;
 
-public class MFVersionChooserForm {
+public class MConfiguratorForm {
     public JPanel panel;
     public JComboBox<String> versionComboBox;
     public JTextField buildCommandField;

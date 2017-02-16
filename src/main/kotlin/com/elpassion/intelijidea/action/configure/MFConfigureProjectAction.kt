@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.configure
 
-import com.elpassion.intelijidea.action.configure.chooser.mfVersionChooser
+import com.elpassion.intelijidea.action.configure.configurator.mfVersionChooser
 import com.elpassion.intelijidea.action.configure.downloader.mfFileDownloader
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubApi
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubRetrofit
