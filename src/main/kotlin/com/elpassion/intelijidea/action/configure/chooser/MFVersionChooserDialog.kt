@@ -3,9 +3,10 @@ package com.elpassion.intelijidea.action.configure.chooser
 import com.elpassion.intelijidea.action.configure.chooser.ui.MFVersionChooserForm
 import com.elpassion.intelijidea.common.RxDialogWrapper
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.ValidationInfo
 import javax.swing.JComponent
 
-class MFVersionChooserDialog(project: Project, val releaseVersionsList: List<String>) : RxDialogWrapper<String>(project) {
+class MFVersionChooserDialog(project: Project, val releaseVersionsList: List<String>) : RxDialogWrapper<MFConfiguratorViewModel>(project) {
 
     private val form = MFVersionChooserForm()
 
@@ -32,5 +33,9 @@ class MFVersionChooserDialog(project: Project, val releaseVersionsList: List<Str
         }
         return null
     }
-    override fun getSuccessResult() = form.versionComboBox.selectedItem.toString()
+
+    override fun getSuccessResult() = MFConfiguratorViewModel(
+            version = form.versionComboBox.selectedItem.toString(),
+            buildCommand = form.buildCommandField.text,
+            taskName = form.taskNameField.text)
 }
