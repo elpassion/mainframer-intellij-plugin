@@ -8,7 +8,7 @@ This plugin makes integration with Mainframer tool easy and seamless. Plugin use
 
 #### Features
 <ul>
-  <li>BeforeTasks which delegates tasks to mainframer</li>
+  <li>BeforeTasks which delegate tasks to mainframer</li>
   <li>Injecting/Restoring before tasks to all configurations</li>
   <li>Configuring mainframer in project</li>
   <li>RunConfiguration for mainframer</li>
