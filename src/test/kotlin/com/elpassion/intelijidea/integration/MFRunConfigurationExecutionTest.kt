@@ -28,13 +28,12 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
-        val data = createConfigurationData()
-        createTool(path = data.mainframerPath)
+        val data = createConfigurationData().withToolFile()
         buildProjectAndExecute(configurationData = data)
     }
 
-    private fun createTool(path: String?) {
-        FileUtil.createTempFile(File(path), "mainframer", ".sh")
+    private fun MFRunConfigurationData.withToolFile() = apply {
+        FileUtil.createTempFile(File(mainframerPath), "mainframer", ".sh")
     }
 
     private fun createRunConfiguration(configurationData: MFRunConfigurationData?) =
