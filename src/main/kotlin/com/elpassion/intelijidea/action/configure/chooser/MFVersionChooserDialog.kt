@@ -19,5 +19,18 @@ class MFVersionChooserDialog(project: Project, val releaseVersionsList: List<Str
         return form.panel
     }
 
+    override fun doValidate(): ValidationInfo? {
+        form.taskNameField.run {
+            if (text.isEmpty()) {
+                return ValidationInfo("Task name cannot be empty!", this)
+            }
+        }
+        form.buildCommandField.run {
+            if (text.isEmpty()) {
+                return ValidationInfo("Build command cannot be empty!", this)
+            }
+        }
+        return null
+    }
     override fun getSuccessResult() = form.versionComboBox.selectedItem.toString()
 }
