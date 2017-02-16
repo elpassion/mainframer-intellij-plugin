@@ -32,3 +32,7 @@ This is an initial action you need to perform to configure Mainframer in your cu
 With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **MainframerBefore** task:
 
 ![](readme/injecting.png)
+
+#### Restore default before run tasks
+
+Whenever you decide to build your project locally, this action will restore default *before run* tasks in all run configurations defined.
