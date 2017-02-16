@@ -40,7 +40,7 @@ sourceSets {
 }
 
 intellij {
-    def intellijVersion = '171.3019.7'
+    def intellijVersion = '171.3224.1'
     version intellijVersion
     pluginName 'mainframer-plugin'
     publish {
