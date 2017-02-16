@@ -13,3 +13,12 @@ Installation
 If you want to install a specific version of the plugin visit [mainframer-plugin website](https://plugins.jetbrains.com/idea/plugin/9447-mainframer-plugin), download zip file and click *Install plugin from disk...* providing path to it.
 
 ![](readme/plugins.png)
+
+Usage
+-----
+
+#### Actions
+
+Launch *Enter action dialog* with (<kbd>command</kbd> or <kbd>ctrl</kbd>) + <kbd>shift</kbd> + <kbd>A</kbd> and find *Mainframer* action. Press *Enter* to show group of all actions available with plugin.
+
+![](readme/tasks.png)
