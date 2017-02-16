@@ -1,6 +1,19 @@
 # mainframer-intellij-plugin [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=master)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin)
 An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 
+About
+-----
+
+This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new runConfiguration to run mainframer tasks.
+
+#### Features
+<ul>
+  <li>BeforeTasks which delegates tasks to mainframer</li>
+  <li>Injecting/Restoring before tasks to all configurations</li>
+  <li>Configuring mainframer in project</li>
+  <li>RunConfiguration for mainframer</li>
+</ul>
+
 Installation
 ------------
 
