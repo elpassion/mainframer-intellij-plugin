@@ -17,8 +17,12 @@ If you want to install a specific version of the plugin visit [mainframer-plugin
 Usage
 -----
 
-#### Actions
+### Actions
 
-Launch *Enter action dialog* with (<kbd>command</kbd> or <kbd>ctrl</kbd>) + <kbd>shift</kbd> + <kbd>A</kbd> and find *Mainframer* action. Press *Enter* to show group of all actions available with plugin.
+Launch *Enter action dialog* with (<kbd>command</kbd> or <kbd>ctrl</kbd>) + <kbd>shift</kbd> + <kbd>A</kbd> and find *Mainframer* action. Then press *Enter* to show group of all actions available with plugin:
 
 ![](readme/tasks.png)
+
+#### Configure Mainframer in Project
+
+This is an initial action you need to perform to configure Mainframer in your current project. It starts with fetching a list of all available tool releases. You can select a Mainframer tool version you are interested in. It will check if your opened project contains a *mainframer.sh* file and if not it will download it for you.
