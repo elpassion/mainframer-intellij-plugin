@@ -32,19 +32,14 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         buildProjectAndExecute(configurationData = data)
     }
 
-    private fun MFRunConfigurationData.withToolFile() = apply {
-        FileUtil.createTempFile(File(mainframerPath), "mainframer", ".sh")
-    }
-
-    private fun createRunConfiguration(configurationData: MFRunConfigurationData?) =
-            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
-                data = configurationData
-            }
-
     private fun createConfigurationData(): MFRunConfigurationData {
         with(FileUtil.createTempDirectory("", "mf")) {
             return MFRunConfigurationData(mainframerPath = absolutePath)
         }
+    }
+
+    private fun MFRunConfigurationData.withToolFile() = apply {
+        FileUtil.createTempFile(File(mainframerPath), "mainframer", ".sh")
     }
 
     private fun buildProjectAndExecute(configurationData: MFRunConfigurationData? = null) {
@@ -52,4 +47,9 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
         val executor = DefaultRunExecutor.getRunExecutorInstance()
         ExecutionEnvironmentBuilder.create(project, executor, config).buildAndExecute()
     }
+
+    private fun createRunConfiguration(configurationData: MFRunConfigurationData?) =
+            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
+                data = configurationData
+            }
 }
