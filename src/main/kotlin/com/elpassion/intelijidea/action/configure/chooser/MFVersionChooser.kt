@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 
 fun mfVersionChooser(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
     MFVersionChooserDialog(project, versionsList)
+            .applyDefaultValues(provider.taskData)
             .showAsObservable()
             .doAfterNext { dataFromUi ->
                 provider.saveConfiguration(dataFromUi, project.basePath)

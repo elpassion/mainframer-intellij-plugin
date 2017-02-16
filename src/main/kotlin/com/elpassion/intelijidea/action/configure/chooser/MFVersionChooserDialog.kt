@@ -2,6 +2,7 @@ package com.elpassion.intelijidea.action.configure.chooser
 
 import com.elpassion.intelijidea.action.configure.chooser.ui.MFVersionChooserForm
 import com.elpassion.intelijidea.common.RxDialogWrapper
+import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
 import javax.swing.JComponent
@@ -13,6 +14,14 @@ class MFVersionChooserDialog(project: Project, val releaseVersionsList: List<Str
     init {
         title = "Configure Mainframer in Project"
         init()
+    }
+
+    fun applyDefaultValues(taskData: MFTaskData): MFVersionChooserDialog {
+        with(taskData){
+            form.taskNameField.text = taskName
+            form.buildCommandField.text = buildCommand
+        }
+        return this
     }
 
     override fun createCenterPanel(): JComponent {
