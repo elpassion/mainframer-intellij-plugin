@@ -6,15 +6,15 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Observable
 
 fun mfConfigurator(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
-    showConfigurationDialog(project, versionsList, provider.taskData)
+    showConfigurationDialog(project, versionsList, createDefaultValues(provider.taskData))
             .doAfterNext { dataFromUi ->
                 provider.saveConfiguration(dataFromUi, project.basePath)
             }
             .map { it.version }
 }
 
-private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFTaskData): Observable<MFConfiguratorViewModel> =
-        Observable.create<MFConfiguratorViewModel> { emitter ->
+private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn): Observable<MFConfiguratorOut> =
+        Observable.create<MFConfiguratorOut> { emitter ->
             MFConfiguratorDialog(project, versionsList, defaultValues, {
                 emitter.onNext(it)
                 emitter.onComplete()
@@ -23,7 +23,11 @@ private fun showConfigurationDialog(project: Project, versionsList: List<String>
             }).show()
         }
 
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFConfiguratorViewModel, mainframerPath: String?) {
+fun createDefaultValues(taskData: MFTaskData): MFConfiguratorIn {
+    return MFConfiguratorIn("", taskName = taskData.taskName, buildCommand = taskData.buildCommand)
+}
+
+private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFConfiguratorOut, mainframerPath: String?) {
     taskData = taskData.copy(
             buildCommand = dataFromUi.buildCommand,
             taskName = dataFromUi.taskName,

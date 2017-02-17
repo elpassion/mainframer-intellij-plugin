@@ -7,4 +7,5 @@ public class MConfiguratorForm {
     public JComboBox<String> versionComboBox;
     public JTextField buildCommandField;
     public JTextField taskNameField;
+    public JTextField remoteMachineField;
 }

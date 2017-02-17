@@ -9,9 +9,9 @@ import javax.swing.JComponent
 
 class MFConfiguratorDialog(project: Project,
                            val releaseVersionsList: List<String>,
-                           val defaultValues: MFTaskData,
-                           doOnOk: (MFConfiguratorViewModel) -> Unit,
-                           doOnCancel: () -> Unit) : DialogWrapperAdapter<MFConfiguratorViewModel>(project, doOnOk, doOnCancel) {
+                           val defaultValues: MFConfiguratorIn,
+                           doOnOk: (MFConfiguratorOut) -> Unit,
+                           doOnCancel: () -> Unit) : DialogWrapperAdapter<MFConfiguratorOut>(project, doOnOk, doOnCancel) {
 
     private val form = MConfiguratorForm()
 
@@ -24,6 +24,7 @@ class MFConfiguratorDialog(project: Project,
         form.versionComboBox.model = MFVersionChooserViewModel(releaseVersionsList)
         form.buildCommandField.text = defaultValues.buildCommand
         form.taskNameField.text = defaultValues.taskName
+        form.remoteMachineField.text = defaultValues.taskName
         return form.panel
     }
 
@@ -38,11 +39,17 @@ class MFConfiguratorDialog(project: Project,
                 return ValidationInfo("Task name cannot be empty!", this)
             }
         }
+        form.remoteMachineField.run {
+            if (text.isEmpty()) {
+                return ValidationInfo("Task name cannot be empty!", this)
+            }
+        }
         return null
     }
 
-    override fun getSuccessResult() = MFConfiguratorViewModel(
+    override fun getSuccessResult() = MFConfiguratorOut(
             version = form.versionComboBox.selectedItem.toString(),
             buildCommand = form.buildCommandField.text,
-            taskName = form.taskNameField.text)
+            taskName = form.taskNameField.text,
+            remoteMachine = form.remoteMachineField.text)
 }
