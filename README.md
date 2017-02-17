@@ -25,6 +25,11 @@ If you want to install a specific version of the plugin visit [mainframer-plugin
 
 ![](readme/plugins.png)
 
+Setup
+-----
+
+Before you can start using **mainframer-plugin** you must configure your [remote machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_REMOTE.md) and [local machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_LOCAL.md) (omitting last *Configuration* section, because the plugin will do it for you).
+
 Usage
 -----
 
