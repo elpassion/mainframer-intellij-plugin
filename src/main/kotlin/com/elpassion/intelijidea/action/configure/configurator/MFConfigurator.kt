@@ -1,14 +1,18 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
+import com.elpassion.intelijidea.common.LocalProperties
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import io.reactivex.Observable
 
 fun mfConfigurator(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
-    showConfigurationDialog(project, versionsList, createDefaultValues(provider.taskData))
+    val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
+    showConfigurationDialog(project, versionsList, defaultValues)
             .doAfterNext { dataFromUi ->
-                provider.saveConfiguration(dataFromUi, project.basePath)
+                provider.saveConfiguration(createMFTaskData(project.basePath, dataFromUi))
+                project.setRemoteMachineName(dataFromUi.remoteMachine)
             }
             .map { it.version }
 }
@@ -23,13 +27,30 @@ private fun showConfigurationDialog(project: Project, versionsList: List<String>
             }).show()
         }
 
-fun createDefaultValues(taskData: MFTaskData): MFConfiguratorIn {
-    return MFConfiguratorIn("", taskName = taskData.taskName, buildCommand = taskData.buildCommand)
+fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
+    return MFConfiguratorIn(remoteName = remoteMachineName, taskName = taskData.taskName, buildCommand = taskData.buildCommand)
 }
 
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFConfiguratorOut, mainframerPath: String?) {
+fun createMFTaskData(basePath: String?, dataFromUi: MFConfiguratorOut): MFTaskData {
+    return MFTaskData(mainframerPath = basePath,
+            buildCommand = dataFromUi.buildCommand,
+            taskName = dataFromUi.taskName)
+}
+
+
+private fun Project.getRemoteMachineName() = ApplicationManager.getApplication().runReadAction<String> {
+    LocalProperties(basePath).readRemoteMachineName()
+}
+
+fun Project.setRemoteMachineName(name: String) {
+    ApplicationManager.getApplication().runWriteAction {
+        LocalProperties(basePath).writeRemoteMachineName(name)
+    }
+}
+
+private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFTaskData) {
     taskData = taskData.copy(
             buildCommand = dataFromUi.buildCommand,
             taskName = dataFromUi.taskName,
-            mainframerPath = mainframerPath)
+            mainframerPath = dataFromUi.mainframerPath)
 }
