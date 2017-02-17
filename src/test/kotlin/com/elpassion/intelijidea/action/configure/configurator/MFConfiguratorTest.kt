@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.android.commons.rxjavatest.thenJust
+import com.elpassion.intelijidea.common.LocalProperties
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
@@ -49,6 +50,20 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         configureMainframerInProject()
 
         verify(configurationFromUi).invoke(argThat { taskName == "build" })
+    }
+
+    fun testConfigurationFromUiRunWithRemoteMachineNameFromLocalProperties() {
+        LocalProperties(project.basePath).writeRemoteMachineName("test_value")
+        configureMainframerInProject()
+
+        verify(configurationFromUi).invoke(argThat { remoteName == "test_value" })
+    }
+
+    fun testConfigurationFromUiReallyRunWithRemoteMachineNameFromLocalProperties() {
+        LocalProperties(project.basePath).writeRemoteMachineName("test_2_value")
+        configureMainframerInProject()
+
+        verify(configurationFromUi).invoke(argThat { remoteName == "test_2_value" })
     }
 
     fun testShouldCreateLocalPropertiesFileWithRemoteMachineName() {
