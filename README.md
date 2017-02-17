@@ -50,6 +50,20 @@ With this action plugin will modify all your created run configurations. For eac
 
 Whenever you decide to build your project locally, this action will restore default *before run* tasks in all run configurations defined.
 
+### Run configurations
+
+You can use **mainframer-plugin** either to inject predefined *before launch* tasks or to create a custom run configuration. In case to add new mainframer configuration open run configurations dialog, click add button and select proper configuration type as below:
+
+![](readme/add_new_configuration.png)
+
+For created configuration you can set a build command and tasks to execute:
+
+![](readme/run_configurations.png)
+
+Now you are ready to run your custom mainframer configurations:
+
+![](readme/run_mainframer_configuration.png)
+
 License
 -------
 
