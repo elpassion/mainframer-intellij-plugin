@@ -4,22 +4,23 @@ import com.intellij.openapi.util.io.FileUtil
 import java.io.*
 import java.util.*
 
-class LocalProperties(private val projectDir: String?) {
+class LocalProperties(projectDir: String?) {
+
+    private val localPropertiesFile = File(projectDir, "local.properties")
+
     fun readRemoteMachineName(): String? {
-        return getLocalPropertiesFile().asProperties().getProperty(REMOTE_BUILD_MACHINE_KEY)
+        return localPropertiesFile.asProperties().getProperty(REMOTE_BUILD_MACHINE_KEY)
     }
 
     fun writeRemoteMachineName(name: String) {
-        getLocalPropertiesFile().run {
-            asProperties().apply {
-                setProperty(REMOTE_BUILD_MACHINE_KEY, name)
-            }.saveToFile(this)
-        }
+        val properties = localPropertiesFile.asProperties()
+        properties.setProperty(REMOTE_BUILD_MACHINE_KEY, name)
+        properties.saveToFile(localPropertiesFile)
     }
 
-    private fun getLocalPropertiesFile() = File(projectDir, "local.properties")
-
-    private val REMOTE_BUILD_MACHINE_KEY = "remote_build.machine"
+    companion object {
+        private val REMOTE_BUILD_MACHINE_KEY = "remote_build.machine"
+    }
 }
 
 private fun File.asProperties(): Properties {
