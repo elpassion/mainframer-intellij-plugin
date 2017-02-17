@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.action.configure.configurator.ui.MConfiguratorF
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.ui.CollectionComboBoxModel
 import javax.swing.JComponent
 
 class MFConfiguratorDialog(project: Project,
@@ -20,7 +21,7 @@ class MFConfiguratorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.versionComboBox.model = MFVersionChooserViewModel(releaseVersionsList)
+        form.versionComboBox.model = CollectionComboBoxModel(releaseVersionsList)
         form.buildCommandField.text = defaultValues.buildCommand
         form.taskNameField.text = defaultValues.taskName
         form.remoteMachineField.text = defaultValues.remoteName
