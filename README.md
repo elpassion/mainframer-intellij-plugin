@@ -7,12 +7,10 @@ About
 This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new runConfiguration to run mainframer tasks.
 
 #### Features
-<ul>
-  <li>BeforeTasks which delegate tasks to mainframer</li>
-  <li>Injecting/Restoring before tasks to all configurations</li>
-  <li>Configuring mainframer in project</li>
-  <li>RunConfiguration for mainframer</li>
-</ul>
+* BeforeTasks which delegate tasks to mainframer
+* Injecting/Restoring before tasks to all configurations
+* Configuring mainframer in project
+* RunConfiguration for mainframer
 
 Installation
 ------------
@@ -60,7 +58,7 @@ For created configuration you can set a build command and tasks to execute:
 
 ![](readme/run_configurations.png)
 
-Now you are ready to run your custom mainframer configurations:
+Now you are ready to run your custom mainframer configuration:
 
 ![](readme/run_mainframer_configuration.png)
 
