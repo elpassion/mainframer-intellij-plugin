@@ -44,7 +44,7 @@ private fun Project.getRemoteMachineName() = ApplicationManager.getApplication()
     LocalProperties(basePath).readRemoteMachineName()
 }
 
-fun Project.setRemoteMachineName(name: String) {
+private fun Project.setRemoteMachineName(name: String) {
     ApplicationManager.getApplication().runWriteAction {
         LocalProperties(basePath).writeRemoteMachineName(name)
     }
