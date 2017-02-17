@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.intelijidea.action.configure.configurator.ui.MConfiguratorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
-import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
 import javax.swing.JComponent
@@ -24,7 +23,7 @@ class MFConfiguratorDialog(project: Project,
         form.versionComboBox.model = MFVersionChooserViewModel(releaseVersionsList)
         form.buildCommandField.text = defaultValues.buildCommand
         form.taskNameField.text = defaultValues.taskName
-        form.remoteMachineField.text = defaultValues.taskName
+        form.remoteMachineField.text = defaultValues.remoteName
         return form.panel
     }
 
