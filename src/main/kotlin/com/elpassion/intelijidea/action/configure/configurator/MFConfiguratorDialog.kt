@@ -1,13 +1,17 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.intelijidea.action.configure.configurator.ui.MConfiguratorForm
-import com.elpassion.intelijidea.common.RxDialogWrapper
+import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ValidationInfo
 import javax.swing.JComponent
 
-class MFConfiguratorDialog(project: Project, val releaseVersionsList: List<String>) : RxDialogWrapper<MFConfiguratorViewModel>(project) {
+class MFConfiguratorDialog(project: Project,
+                           val releaseVersionsList: List<String>,
+                           val defaultValues: MFTaskData,
+                           doOnOk: (MFConfiguratorViewModel) -> Unit,
+                           doOnCancel: () -> Unit) : DialogWrapperAdapter<MFConfiguratorViewModel>(project, doOnOk, doOnCancel) {
 
     private val form = MConfiguratorForm()
 
@@ -16,16 +20,10 @@ class MFConfiguratorDialog(project: Project, val releaseVersionsList: List<Strin
         init()
     }
 
-    fun applyDefaultValues(taskData: MFTaskData): MFConfiguratorDialog {
-        with(taskData){
-            form.taskNameField.text = taskName
-            form.buildCommandField.text = buildCommand
-        }
-        return this
-    }
-
     override fun createCenterPanel(): JComponent {
         form.versionComboBox.model = MFVersionChooserViewModel(releaseVersionsList)
+        form.buildCommandField.text = defaultValues.buildCommand
+        form.taskNameField.text = defaultValues.taskName
         return form.panel
     }
 
