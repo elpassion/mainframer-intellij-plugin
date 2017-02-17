@@ -7,9 +7,14 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import io.reactivex.Observable
 
-fun mfConfigurator(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
+fun mfConfigurator(project: Project) = { versionsList: List<String> ->
+    mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
+}
+
+fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Observable<MFConfiguratorOut>): Observable<String> {
+    val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
-    showConfigurationDialog(project, versionsList, defaultValues)
+    return configurationFromUi(defaultValues)
             .doAfterNext { dataFromUi ->
                 provider.saveConfiguration(createMFTaskData(project.basePath, dataFromUi))
                 project.setRemoteMachineName(dataFromUi.remoteMachine)
