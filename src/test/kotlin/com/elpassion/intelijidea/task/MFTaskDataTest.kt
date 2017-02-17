@@ -9,7 +9,7 @@ import org.junit.rules.TemporaryFolder
 
 class IntegrationTest {
 
-    @get: Rule
+    @get:Rule
     var temporaryFolder = TemporaryFolder()
 
     @Test
