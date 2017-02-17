@@ -5,7 +5,7 @@ import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
 import io.reactivex.Observable
 
-fun mfVersionChooser(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
+fun mfConfigurator(project: Project, provider: MFBeforeTaskDefaultSettingsProvider) = { versionsList: List<String> ->
     showConfigurationDialog(project, versionsList, provider.taskData)
             .doAfterNext { dataFromUi ->
                 provider.saveConfiguration(dataFromUi, project.basePath)
