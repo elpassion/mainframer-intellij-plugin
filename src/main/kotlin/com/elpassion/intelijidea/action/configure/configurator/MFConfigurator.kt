@@ -28,7 +28,9 @@ private fun showConfigurationDialog(project: Project, versionsList: List<String>
         }
 
 fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
-    return MFConfiguratorIn(remoteName = remoteMachineName, taskName = taskData.taskName, buildCommand = taskData.buildCommand)
+    return MFConfiguratorIn(remoteName = remoteMachineName,
+            taskName = taskData.taskName,
+            buildCommand = taskData.buildCommand)
 }
 
 fun createMFTaskData(basePath: String?, dataFromUi: MFConfiguratorOut): MFTaskData {
