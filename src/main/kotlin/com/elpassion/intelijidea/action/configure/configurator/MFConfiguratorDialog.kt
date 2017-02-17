@@ -28,14 +28,14 @@ class MFConfiguratorDialog(project: Project,
     }
 
     override fun doValidate(): ValidationInfo? {
-        form.taskNameField.run {
-            if (text.isEmpty()) {
-                return ValidationInfo("Task name cannot be empty!", this)
-            }
-        }
         form.buildCommandField.run {
             if (text.isEmpty()) {
                 return ValidationInfo("Build command cannot be empty!", this)
+            }
+        }
+        form.taskNameField.run {
+            if (text.isEmpty()) {
+                return ValidationInfo("Task name cannot be empty!", this)
             }
         }
         return null
