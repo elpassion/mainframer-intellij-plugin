@@ -1,5 +1,8 @@
 package com.elpassion.intelijidea.common
 
+import com.elpassion.intelijidea.common.ContainsAllMatcher.Companion.containsAll
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -11,6 +14,7 @@ class LocalPropertiesTest {
     @get:Rule
     val temporaryFolder = TemporaryFolder()
     val localProperties by lazy { LocalProperties(temporaryFolder.root.path) }
+    val localPropertiesFile by lazy { File(temporaryFolder.root.path, "local.properties") }
 
     @Test
     fun shouldReturnEmptyMachineNameIfLocalPropertiesDoesNotExists() {
@@ -38,7 +42,6 @@ class LocalPropertiesTest {
     @Test
     fun shouldCreateLocalPropertiesFileWhileWritingToIt() {
         localProperties.writeRemoteMachineName("not_local")
-        val localPropertiesFile = File(temporaryFolder.root.path, "local.properties")
 
         assertTrue(localPropertiesFile.exists())
         assertTrue(localPropertiesFile.readLines().any { it == "remote_build.machine=not_local" })
@@ -47,8 +50,29 @@ class LocalPropertiesTest {
     @Test
     fun shouldWriteCorrectValueToLocalProperties() {
         localProperties.writeRemoteMachineName("not_even_remote")
-        val localPropertiesFile = File(temporaryFolder.root.path, "local.properties")
-
         assertTrue(localPropertiesFile.readLines().any { it == "remote_build.machine=not_even_remote" })
+    }
+
+    @Test
+    fun shouldAppendRemoteMachineNameToExistingProperties() {
+        temporaryFolder.newFile("local.properties").writeText("some_property=secret_value")
+        localProperties.writeRemoteMachineName("remote_name")
+
+        assertThat(localPropertiesFile.readLines(),
+                containsAll("some_property=secret_value", "remote_build.machine=remote_name"))
+    }
+}
+
+class ContainsAllMatcher<T>(private val expected: List<T>) : TypeSafeMatcher<List<T>>() {
+    override fun matchesSafely(actual: List<T>): Boolean {
+        return actual.containsAll(expected)
+    }
+
+    override fun describeTo(description: Description) {
+        description.appendText("contains").appendValue(expected)
+    }
+
+    companion object {
+        fun <T> containsAll(vararg expected: T) = ContainsAllMatcher(expected.toList())
     }
 }
