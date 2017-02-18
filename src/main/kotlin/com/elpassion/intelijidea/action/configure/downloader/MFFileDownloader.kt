@@ -7,7 +7,6 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.platform.templates.github.DownloadUtil
 import com.intellij.platform.templates.github.Outcome
-import io.reactivex.Observable
 import java.io.File
 
 fun mfFileDownloader(project: Project) = { version: String ->
