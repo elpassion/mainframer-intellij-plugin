@@ -33,13 +33,13 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun canExecuteTask(configuration: RunConfiguration?, task: MFBeforeRunTask): Boolean = task.isValid()
 
-    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
+    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment, task: MFBeforeRunTask): Boolean {
         SwingUtilities.invokeAndWait {
             configuration?.let {
                 showInfo(it.project, "Mainframer is executing task: ${it.name}")
             }
         }
-        return MFBeforeRunTaskExecutor(project).executeSync(task)
+        return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {

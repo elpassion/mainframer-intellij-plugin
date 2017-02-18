@@ -18,8 +18,8 @@ import org.jetbrains.rpc.LOG
 
 class MFBeforeRunTaskExecutor(private val project: Project) {
 
-    fun executeSync(task: MFBeforeRunTask): Boolean {
-        return Single.fromCallable { createExecutionEnv(task) }
+    fun executeSync(task: MFBeforeRunTask, executionId: Long): Boolean {
+        return Single.fromCallable { createExecutionEnv(task, executionId) }
                 .subscribeOn(UINonModalScheduler)
                 .doAfterSuccess { saveAllDocuments() }
                 .flatMap(executeAsync)
@@ -31,12 +31,12 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
                 .blockingGet()
     }
 
-    private fun createExecutionEnv(task: MFBeforeRunTask): ExecutionEnvironment {
+    private fun createExecutionEnv(task: MFBeforeRunTask, executionId: Long): ExecutionEnvironment {
         return ExecutionEnvironmentBuilder(project, DefaultRunExecutor.getRunExecutorInstance())
                 .runProfile(MFBeforeRunTaskProfile(task))
                 .build()
                 .apply {
-                    executionId = 0L
+                    this.executionId = executionId
                 }
     }
 
