@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.configuration.ui;
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
@@ -8,6 +7,8 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.util.IconUtil;
 
 import javax.swing.*;
+
+import static com.elpassion.intelijidea.common.MFToolFileDescriptorKt.getMfToolDescriptor;
 
 public class MFSettingsEditorPanel {
     private final Project project;
@@ -24,7 +25,7 @@ public class MFSettingsEditorPanel {
     private void createUIComponents() {
         mainframerTool = new TextFieldWithBrowseButton();
         mainframerTool.setButtonIcon(IconUtil.getAddIcon());
-        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
+        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(getMfToolDescriptor(), project);
         mainframerTool.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerTool);

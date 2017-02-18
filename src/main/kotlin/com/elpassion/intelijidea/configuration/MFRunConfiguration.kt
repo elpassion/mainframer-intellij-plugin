@@ -15,7 +15,6 @@ import org.jdom.Element
 import java.io.File
 import java.io.Serializable
 
-
 class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String,
                          val showToolNotFoundError: (mainframerPath: String?) -> Unit)
     : LocatableConfigurationBase(project, configurationFactory, name) {
@@ -37,7 +36,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         }
     }
 
-    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
+    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it).exists() } ?: false
 
     override fun checkConfiguration() = with(data) {
         when {

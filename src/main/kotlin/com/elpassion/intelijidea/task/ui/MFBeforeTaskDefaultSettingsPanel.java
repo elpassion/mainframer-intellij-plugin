@@ -1,8 +1,8 @@
 package com.elpassion.intelijidea.task.ui;
 
+import com.elpassion.intelijidea.common.MFToolFileDescriptorKt;
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider;
 import com.elpassion.intelijidea.task.MFTaskData;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
@@ -30,7 +30,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
     private void createUIComponents() {
         mainframerToolField = new TextFieldWithBrowseButton();
         mainframerToolField.setButtonIcon(IconUtil.getAddIcon());
-        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFolderDescriptor(), project);
+        TextBrowseFolderListener textBrowseFolderListener = new TextBrowseFolderListener(MFToolFileDescriptorKt.getMfToolDescriptor(), project);
         mainframerToolField.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerToolField);

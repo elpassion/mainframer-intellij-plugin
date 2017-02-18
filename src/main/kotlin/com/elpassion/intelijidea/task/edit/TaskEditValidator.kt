@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.task.edit
 
-import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
 import java.io.File
@@ -15,7 +14,7 @@ fun validateTaskFormFields(taskField: JTextField, buildCommandField: JTextField,
             else -> null
         }
 
-private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text, mfFilename).exists().not()
+private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text).exists().not()
 
 private fun TextFieldWithBrowseButton.isBlank() = text.isBlank()
 

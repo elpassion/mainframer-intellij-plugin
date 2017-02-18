@@ -33,13 +33,11 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     }
 
     private fun createConfigurationData(): MFRunConfigurationData {
-        with(FileUtil.createTempDirectory("", "mf")) {
-            return MFRunConfigurationData(mainframerPath = absolutePath)
-        }
+        return MFRunConfigurationData(mainframerPath = File(project.basePath, "mainframer.sh").absolutePath)
     }
 
     private fun MFRunConfigurationData.withToolFile() = apply {
-        FileUtil.createTempFile(File(mainframerPath), "mainframer", ".sh")
+        FileUtil.createTempFile(File(project.basePath), "mainframer.sh", null)
     }
 
     private fun buildProjectAndExecute(configurationData: MFRunConfigurationData? = null) {

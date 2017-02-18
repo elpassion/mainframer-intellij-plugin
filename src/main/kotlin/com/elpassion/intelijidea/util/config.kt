@@ -5,4 +5,4 @@ val mfFilename = "mainframer.sh"
 
 fun getLatestMfToolDownloadUrl() = getMfToolDownloadUrl(mfVersion)
 
-fun getMfToolDownloadUrl(version: String) = "https://github.com/gojuno/mainframer/releases/download/v$version/$mfFilename"
+fun getMfToolDownloadUrl(version: String) = "https://github.com/gojuno/mainframer/releases/download/v$version/mainframer.sh"

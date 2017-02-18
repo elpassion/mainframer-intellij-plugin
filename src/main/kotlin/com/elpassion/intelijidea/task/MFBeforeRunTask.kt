@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.task
 
-import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.execution.BeforeRunTask
 import java.io.File
 import java.io.Serializable
@@ -16,5 +15,5 @@ data class MFTaskData(val mainframerPath: String? = null,
 
     fun isValid(): Boolean = listOf(mainframerPath, buildCommand, taskName).none { it.isNullOrBlank() } && isMfFileExistent()
 
-    private fun isMfFileExistent() = File(mainframerPath, mfFilename).exists()
+    private fun isMfFileExistent() = File(mainframerPath).exists()
 }
