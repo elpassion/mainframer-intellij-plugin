@@ -7,15 +7,16 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Observable
+import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
 
 class MFConfigureProjectActionControllerTest {
 
-    private val mainframerReleasesFetcher = mock<() -> Observable<List<String>>>()
-    private val mainframerVersionChooser = mock<(List<String>) -> Observable<String>>()
-    private val mainframerFileDownloader = mock<(String) -> Observable<Unit>>()
+    private val mainframerReleasesFetcher = mock<() -> Single<List<String>>>()
+    private val mainframerVersionChooser = mock<(List<String>) -> Maybe<String>>()
+    private val mainframerFileDownloader = mock<(String) -> Maybe<Unit>>()
     private val showMessage = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()

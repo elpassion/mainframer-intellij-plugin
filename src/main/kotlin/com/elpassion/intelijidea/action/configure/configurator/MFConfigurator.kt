@@ -5,27 +5,27 @@ import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
-import io.reactivex.Observable
+import io.reactivex.Maybe
 
 fun mfConfigurator(project: Project) = { versionsList: List<String> ->
     mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
 }
 
-fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Observable<MFConfiguratorOut>): Observable<String> {
+fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<String> {
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
     return configurationFromUi(defaultValues)
-            .doAfterNext { dataFromUi ->
+            .doAfterSuccess { dataFromUi ->
                 provider.saveConfiguration(createMFTaskData(project.basePath, dataFromUi))
                 project.setRemoteMachineName(dataFromUi.remoteMachine)
             }
             .map { it.version }
 }
 
-private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn): Observable<MFConfiguratorOut> =
-        Observable.create<MFConfiguratorOut> { emitter ->
+private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn) =
+        Maybe.create<MFConfiguratorOut> { emitter ->
             MFConfiguratorDialog(project, versionsList, defaultValues, {
-                emitter.onNext(it)
+                emitter.onSuccess(it)
                 emitter.onComplete()
             }, {
                 emitter.onComplete()

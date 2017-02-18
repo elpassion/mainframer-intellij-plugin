@@ -6,13 +6,13 @@ import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
 import com.nhaarman.mockito_kotlin.*
-import io.reactivex.Observable
+import io.reactivex.Maybe
 import org.junit.Assert
 import java.io.File
 
 class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
-    private val configurationFromUi = mock<(MFConfiguratorIn) -> Observable<MFConfiguratorOut>>()
+    private val configurationFromUi = mock<(MFConfiguratorIn) -> Maybe<MFConfiguratorOut>>()
 
     override fun setUp() {
         super.setUp()

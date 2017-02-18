@@ -1,12 +1,13 @@
 package com.elpassion.intelijidea.action.configure
 
-import io.reactivex.Observable
+import io.reactivex.Maybe
 import io.reactivex.Scheduler
+import io.reactivex.Single
 
 class MFConfigureProjectActionController(
-        val mainframerReleasesFetcher: () -> Observable<List<String>>,
-        val mainframerConfigurator: (List<String>) -> Observable<String>,
-        val mainframerFileDownloader: (String) -> Observable<Unit>,
+        val mainframerReleasesFetcher: () -> Single<List<String>>,
+        val mainframerConfigurator: (List<String>) -> Maybe<String>,
+        val mainframerFileDownloader: (String) -> Maybe<Unit>,
         val showMessage: (String) -> Unit,
         val uiScheduler: Scheduler,
         val progressScheduler: Scheduler) {
@@ -15,7 +16,7 @@ class MFConfigureProjectActionController(
         mainframerReleasesFetcher()
                 .subscribeOn(progressScheduler)
                 .observeOn(uiScheduler)
-                .flatMap(mainframerConfigurator)
+                .flatMapMaybe(mainframerConfigurator)
                 .flatMap(mainframerFileDownloader)
                 .subscribe({
                     showMessage("Mainframer configured in your project!")
