@@ -45,5 +45,4 @@ class IntegrationTest {
         temporaryFolder.newFile(mfFilename)
         return MFTaskData(folderPath, buildCommand, taskName)
     }
-
 }
