@@ -4,23 +4,23 @@ import com.intellij.openapi.util.io.FileUtil
 import java.io.*
 import java.util.*
 
-class LocalProperties(projectDir: String?) {
+class MFToolConfiguration(projectDir: String?) {
 
-    private val localPropertiesFile = File(projectDir, "local.properties")
+    private val configurationFile = File(File(projectDir, ".mainframer"), "config")
 
     fun readRemoteMachineName(): String? {
-        return localPropertiesFile.asProperties().getProperty(REMOTE_BUILD_MACHINE_KEY)
+        return configurationFile.asProperties().getProperty(REMOTE_BUILD_MACHINE_KEY)
     }
 
     fun writeRemoteMachineName(name: String) {
-        localPropertiesFile.asProperties().run {
+        configurationFile.asProperties().run {
             setProperty(REMOTE_BUILD_MACHINE_KEY, name)
-            saveToFile(localPropertiesFile)
+            saveToFile(configurationFile)
         }
     }
 
     companion object {
-        private val REMOTE_BUILD_MACHINE_KEY = "remote_build.machine"
+        private val REMOTE_BUILD_MACHINE_KEY = "remote_machine"
     }
 }
 

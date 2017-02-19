@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.android.commons.rxjavatest.thenJust
-import com.elpassion.intelijidea.common.LocalProperties
+import com.elpassion.intelijidea.common.MFToolConfiguration
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
@@ -53,14 +53,14 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     fun testConfigurationFromUiRunWithRemoteMachineNameFromLocalProperties() {
-        LocalProperties(project.basePath).writeRemoteMachineName("test_value")
+        MFToolConfiguration(project.basePath).writeRemoteMachineName("test_value")
         configureMainframerInProject()
 
         verify(configurationFromUi).invoke(argThat { remoteName == "test_value" })
     }
 
     fun testConfigurationFromUiReallyRunWithRemoteMachineNameFromLocalProperties() {
-        LocalProperties(project.basePath).writeRemoteMachineName("test_2_value")
+        MFToolConfiguration(project.basePath).writeRemoteMachineName("test_2_value")
         configureMainframerInProject()
 
         verify(configurationFromUi).invoke(argThat { remoteName == "test_2_value" })
@@ -70,9 +70,9 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         stubConfigurationFromUi(remoteName = "remote")
         configureMainframerInProject()
 
-        val localPropertiesFile = File(project.basePath, "local.properties")
-        Assert.assertTrue(localPropertiesFile.exists())
-        Assert.assertTrue(localPropertiesFile.readLines().any { it == "remote_build.machine=remote" })
+        val configurationFile = File(File(project.basePath, ".mainframer"), "config")
+        Assert.assertTrue(configurationFile.exists())
+        Assert.assertTrue(configurationFile.readLines().any { it == "remote_machine=remote" })
     }
 
     fun testShouldSaveChosenBuildCommandToSettingsProvider() {
