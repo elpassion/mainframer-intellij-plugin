@@ -1,13 +1,15 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.util.*
+import com.elpassion.intelijidea.util.fromJson
+import com.elpassion.intelijidea.util.toJson
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.LocatableConfigurationBase
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RuntimeConfigurationError
+import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
@@ -32,7 +34,13 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
                 showToolNotFoundError(data?.mainframerPath)
                 throw ExecutionException("Mainframer tool cannot be found")
             }
-            else -> MFCommandLineState(environment, mainframerPath, buildCommand, taskName)
+            else -> createCommandLineState(environment, this)
+        }
+    }
+
+    private fun createCommandLineState(environment: ExecutionEnvironment, data: MFRunConfigurationData): MFCommandLineState {
+        return MFCommandLineState(environment, data.mainframerPath, data.buildCommand, data.taskName).apply {
+            consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project)
         }
     }
 
