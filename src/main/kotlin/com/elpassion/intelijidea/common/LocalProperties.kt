@@ -13,9 +13,10 @@ class LocalProperties(projectDir: String?) {
     }
 
     fun writeRemoteMachineName(name: String) {
-        val properties = localPropertiesFile.asProperties()
-        properties.setProperty(REMOTE_BUILD_MACHINE_KEY, name)
-        properties.saveToFile(localPropertiesFile)
+        localPropertiesFile.asProperties().run {
+            setProperty(REMOTE_BUILD_MACHINE_KEY, name)
+            saveToFile(localPropertiesFile)
+        }
     }
 
     companion object {
