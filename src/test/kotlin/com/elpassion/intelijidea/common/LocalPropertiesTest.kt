@@ -53,10 +53,14 @@ class LocalPropertiesTest {
 
     @Test
     fun shouldAppendRemoteMachineNameToExistingProperties() {
-        temporaryFolder.newFile("local.properties").writeText("some_property=secret_value")
+        setupLocalPropertiesWithText("some_property=secret_value")
         localProperties.writeRemoteMachineName("remote_name")
 
         Assertions.assertThat(localPropertiesFile.readLines())
                 .contains("some_property=secret_value", "remote_build.machine=remote_name")
+    }
+
+    private fun setupLocalPropertiesWithText(text: String) {
+        temporaryFolder.newFile("local.properties").writeText(text)
     }
 }
