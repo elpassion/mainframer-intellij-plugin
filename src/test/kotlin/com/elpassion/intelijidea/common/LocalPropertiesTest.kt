@@ -1,8 +1,6 @@
 package com.elpassion.intelijidea.common
 
-import com.elpassion.intelijidea.common.ContainsAllMatcher.Companion.containsAll
-import org.hamcrest.Description
-import org.hamcrest.TypeSafeMatcher
+import org.assertj.core.api.Assertions
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -58,21 +56,7 @@ class LocalPropertiesTest {
         temporaryFolder.newFile("local.properties").writeText("some_property=secret_value")
         localProperties.writeRemoteMachineName("remote_name")
 
-        assertThat(localPropertiesFile.readLines(),
-                containsAll("some_property=secret_value", "remote_build.machine=remote_name"))
-    }
-}
-
-class ContainsAllMatcher<T>(private val expected: List<T>) : TypeSafeMatcher<List<T>>() {
-    override fun matchesSafely(actual: List<T>): Boolean {
-        return actual.containsAll(expected)
-    }
-
-    override fun describeTo(description: Description) {
-        description.appendText("contains").appendValue(expected)
-    }
-
-    companion object {
-        fun <T> containsAll(vararg expected: T) = ContainsAllMatcher(expected.toList())
+        Assertions.assertThat(localPropertiesFile.readLines())
+                .contains("some_property=secret_value", "remote_build.machine=remote_name")
     }
 }
