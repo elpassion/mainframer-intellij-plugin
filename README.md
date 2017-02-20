@@ -25,7 +25,7 @@ If you want to install a specific version of the plugin visit [mainframer-plugin
 
 ![](readme/plugins.png)
 
-**Nightly builds:**
+**:warning: Nightly builds:**
 
 If you prefer to follow latest features of **mainframer-plugin** (being under development), you can switch to nightly channel. However, keep in mind that these versions are not stable so you can encounter some unexpected bugs. To make a switch follow these steps: 
 
