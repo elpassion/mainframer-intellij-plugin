@@ -31,9 +31,8 @@ private fun File.asProperties(): Properties {
     if (!exists()) {
         return Properties()
     }
-    val properties = Properties()
-    InputStreamReader(BufferedInputStream(FileInputStream(this)), Charsets.UTF_8).use { reader -> properties.load(reader) }
-    return properties
+    val inputStreamReader = InputStreamReader(BufferedInputStream(FileInputStream(this)), Charsets.UTF_8)
+    return Properties().apply { inputStreamReader.use { load(it) } }
 }
 
 private fun Properties.saveToFile(filePath: File) {
