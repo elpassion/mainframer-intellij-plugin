@@ -38,7 +38,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunConfiguration>() 
         configuration.data.let {
             mainEditorPanel.buildCommand.text = it?.buildCommand
             mainEditorPanel.taskName.text = it?.taskName
-            mainEditorPanel.mainframerTool.text = it?.mainframerPath
+            mainEditorPanel.mainframerTool.text = it?.mainframerPath ?: ""
         }
     }
 }
