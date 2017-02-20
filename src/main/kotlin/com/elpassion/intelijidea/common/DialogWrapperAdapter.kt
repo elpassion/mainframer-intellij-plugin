@@ -4,7 +4,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import io.reactivex.functions.Cancellable
 
-abstract class DialogWrapperAdapter<T>(project: Project, val doOnOk: (T)->Unit, val doOnCancel: ()->Unit) : DialogWrapper(project, false), Cancellable {
+abstract class DialogWrapperAdapter<T>(project: Project,
+                                       val doOnOk: (T) -> Unit,
+                                       val doOnCancel: () -> Unit) : DialogWrapper(project, false), Cancellable {
 
     abstract fun getSuccessResult(): T
 
