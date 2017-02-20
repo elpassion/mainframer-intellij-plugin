@@ -49,7 +49,7 @@ class MFConfiguratorDialog(project: Project,
 
     override fun getSuccessResult() = MFConfiguratorOut(
             version = form.versionComboBox.selectedItem.toString(),
-            buildCommand = form.buildCommandField.text,
-            taskName = form.taskNameField.text,
-            remoteMachine = form.remoteMachineField.text)
+            buildCommand = form.buildCommandField.text.trim(),
+            taskName = form.taskNameField.text.trim(),
+            remoteMachine = form.remoteMachineField.text.trim())
 }
