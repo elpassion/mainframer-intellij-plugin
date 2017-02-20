@@ -42,9 +42,8 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
 
     private val executeAsync: (ExecutionEnvironment) -> Single<ProcessEvent> = { env ->
         Single.create { emitter ->
-            env.runner.execute(env) { descriptor ->
-                val processHandler = descriptor.processHandler
-                processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(emitter))
+            env.runner.execute(env) {
+                it.processHandler?.addProcessListener(EmitOnTerminatedProcessAdapter(emitter))
             }
         }
     }
