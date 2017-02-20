@@ -31,8 +31,7 @@ private fun File.asProperties(): Properties {
     if (!exists()) {
         return Properties()
     }
-    val inputStreamReader = InputStreamReader(BufferedInputStream(FileInputStream(this)), Charsets.UTF_8)
-    return Properties().apply { inputStreamReader.use { load(it) } }
+    return loadProperties()
 }
 
 private fun Properties.saveToFile(filePath: File) {
@@ -40,4 +39,9 @@ private fun Properties.saveToFile(filePath: File) {
     FileOutputStream(filePath).use { out ->
         store(out, null)
     }
+}
+
+private fun File.loadProperties(): Properties {
+    val inputStreamReader = InputStreamReader(BufferedInputStream(FileInputStream(this)), Charsets.UTF_8)
+    return Properties().apply { inputStreamReader.use { load(it) } }
 }
