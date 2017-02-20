@@ -3,9 +3,11 @@ package com.elpassion.intelijidea.action.configure.configurator
 import com.elpassion.intelijidea.common.MFToolConfiguration
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
+import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
+import java.io.File
 
 fun mfConfigurator(project: Project) = { versionsList: List<String> ->
     mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
@@ -39,7 +41,7 @@ fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFCon
 }
 
 fun createMFTaskData(basePath: String?, dataFromUi: MFConfiguratorOut): MFTaskData {
-    return MFTaskData(mainframerPath = basePath,
+    return MFTaskData(mainframerPath = File(basePath, mfFilename).absolutePath,
             buildCommand = dataFromUi.buildCommand,
             taskName = dataFromUi.taskName)
 }

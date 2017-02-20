@@ -99,6 +99,11 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         Assert.assertEquals("taskName2", settingsProviderTask().taskName)
     }
 
+    fun testShouldSaveMainframerPathToSettingsProvider() {
+        configureMainframerInProject()
+        Assert.assertEquals(File(project.basePath, "mainframer.sh").absolutePath, settingsProviderTask().mainframerPath)
+    }
+
     private fun configureMainframerInProject() {
         mfConfiguratorImpl(project, configurationFromUi).subscribe()
     }
