@@ -25,6 +25,18 @@ If you want to install a specific version of the plugin visit [mainframer-plugin
 
 ![](readme/plugins.png)
 
+**Nightly builds:**
+
+If you prefer to follow latest features of **mainframer-plugin** (being under development), you can switch to nightly channel. However, keep in mind that these versions are not stable so you can encounter some unexpected bugs. To make a switch follow these steps: 
+
+1. Inside plugins window click *Browse repositories...*
+2. In the next window click *Manage repositories...*
+3. Click *add* icon.
+4. Paste a repository URL: `https://plugins.jetbrains.com/plugins/nightly/9447`
+5. Confirm and browse **mainframer-plugin** again to install nightly version.
+
+When you decide to return to stable channel simply delete provided repository URL.
+
 Setup
 -----
 
