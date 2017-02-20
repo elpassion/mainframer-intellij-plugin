@@ -58,6 +58,15 @@ class MFToolConfigurationTest {
     }
 
     @Test
+    fun shouldOverwriteValueOnNextWriteToLocalProperties() {
+        toolConfiguration.writeRemoteMachineName("machine_1")
+        toolConfiguration.writeRemoteMachineName("machine_2")
+
+        assertTrue(configurationFile.readLines().none { it == "remote_machine=machine_1" })
+        assertTrue(configurationFile.readLines().any { it == "remote_machine=machine_2" })
+    }
+
+    @Test
     fun shouldAppendRemoteMachineNameToExistingProperties() {
         configurationFile.writeText("some_property=secret_value")
         toolConfiguration.writeRemoteMachineName("remote_name")
