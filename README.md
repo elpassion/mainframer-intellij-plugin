@@ -31,7 +31,7 @@ If you prefer to follow latest features of **mainframer-plugin** (being under de
 
 1. Inside plugins window click *Browse repositories...*
 2. In the next window click *Manage repositories...*
-3. Click *add* icon.
+3. Click :heavy_plus_sign: icon.
 4. Paste a repository URL: `https://plugins.jetbrains.com/plugins/nightly/9447`
 5. Confirm and browse **mainframer-plugin** again to install nightly version.
 
