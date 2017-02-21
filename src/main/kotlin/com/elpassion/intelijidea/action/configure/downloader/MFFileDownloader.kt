@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.action.configure.downloader
 
+import com.elpassion.intelijidea.action.configure.configurator.MFToolInfo
 import com.elpassion.intelijidea.util.asResultObservable
 import com.elpassion.intelijidea.util.getMfToolDownloadUrl
 import com.intellij.openapi.progress.ProgressManager
@@ -8,8 +9,8 @@ import com.intellij.platform.templates.github.DownloadUtil
 import com.intellij.platform.templates.github.Outcome
 import java.io.File
 
-fun mfFileDownloader(project: Project) = { version: String, outputFile: File ->
-    downloadFileToProject(project, getMfToolDownloadUrl(version), outputFile).asResultObservable()
+fun mfFileDownloader(project: Project) = { mfToolInfo: MFToolInfo ->
+    downloadFileToProject(project, getMfToolDownloadUrl(mfToolInfo.version), mfToolInfo.file).asResultObservable()
 }
 
 //TODO: Make private and remove @Deprecated annotation

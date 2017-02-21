@@ -13,7 +13,7 @@ fun mfConfigurator(project: Project) = { versionsList: List<String> ->
     mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
 }
 
-fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<Pair<String, File>> {
+fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<MFToolInfo> {
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
     return configurationFromUi(defaultValues)
@@ -26,7 +26,7 @@ fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn)
                 provider.saveConfiguration(createMFTaskData(dataFromUi, defaultMfLocation))
                 project.setRemoteMachineName(dataFromUi.remoteMachine)
             }
-            .map { it.first.version to it.second }
+            .map { MFToolInfo(it.first.version, it.second) }
 }
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)

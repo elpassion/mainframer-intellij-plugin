@@ -22,12 +22,12 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReturnChosenVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.first == "1.0.0" }
+        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.version == "1.0.0" }
     }
 
     fun testShouldReturnDefaultMainframerPathVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.second == File(project.basePath, mfFilename) }
+        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.file == File(project.basePath, mfFilename) }
     }
 
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {
