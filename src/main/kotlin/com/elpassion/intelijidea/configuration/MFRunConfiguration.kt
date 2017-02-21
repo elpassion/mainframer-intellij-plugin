@@ -44,7 +44,11 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         }
     }
 
-    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it).exists() } ?: false
+    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { isValidMFScript(it) } ?: false
+
+    private fun isValidMFScript(path: String) = File(path).let {
+        it.exists() && it.isFile && it.canExecute()
+    }
 
     override fun checkConfiguration() = with(data) {
         when {
