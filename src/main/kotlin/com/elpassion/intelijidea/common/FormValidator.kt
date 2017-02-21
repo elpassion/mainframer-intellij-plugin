@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.common
 
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
-import com.intellij.util.containers.stream
 import java.io.File
 import javax.swing.JTextField
 
@@ -38,7 +37,7 @@ private fun validateEmpty(jTextField: JTextField, message: String) = if (jTextFi
 
 private fun TextFieldWithBrowseButton.isScriptNotExecutable() = File(text).canExecute().not()
 
-private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text).exists().not()
+private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text).let { !it.exists() || !it.isFile }
 
 private fun TextFieldWithBrowseButton.isBlank() = text.isBlank()
 

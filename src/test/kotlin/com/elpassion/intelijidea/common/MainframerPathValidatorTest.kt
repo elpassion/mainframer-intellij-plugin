@@ -32,8 +32,17 @@ class MainframerPathValidatorTest {
     }
 
     @Test
+    fun shouldReturnProperValidationInfoIfFileIsFolder() {
+        whenever(mainframerPathField.text).thenReturn(temporaryFolder.newFolder().path)
+        val result = MainframerPathValidator(mainframerPathField).validate()
+        assertEquals("Cannot find mainframer script in path", result?.message)
+    }
+
+    @Test
     fun shouldReturnNullInfoIfPathsValid() {
-        whenever(mainframerPathField.text).thenReturn("build")
+        val mfScript = createMFScript()
+        mfScript.setExecutable(true)
+        whenever(mainframerPathField.text).thenReturn(mfScript.path)
         val result = MainframerPathValidator(mainframerPathField).validate()
         assertNull(result)
     }
