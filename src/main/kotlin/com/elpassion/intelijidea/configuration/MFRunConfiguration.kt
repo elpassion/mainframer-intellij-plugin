@@ -50,7 +50,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         when {
             this == null -> throw RuntimeConfigurationError("Configuration incorrect")
             buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
-            taskName.isNullOrBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
+            taskName.isBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
             else -> Unit
         }
     }
