@@ -52,21 +52,21 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         verify(configurationFromUi).invoke(argThat { taskName == "build" })
     }
 
-    fun testConfigurationFromUiRunWithRemoteMachineNameFromLocalProperties() {
+    fun testConfigurationFromUiRunWithRemoteMachineNameFromMfToolProperties() {
         MFToolConfiguration(project.basePath).writeRemoteMachineName("test_value")
         configureMainframerInProject()
 
         verify(configurationFromUi).invoke(argThat { remoteName == "test_value" })
     }
 
-    fun testConfigurationFromUiReallyRunWithRemoteMachineNameFromLocalProperties() {
+    fun testConfigurationFromUiReallyRunWithRemoteMachineNameFromMfToolProperties() {
         MFToolConfiguration(project.basePath).writeRemoteMachineName("test_2_value")
         configureMainframerInProject()
 
         verify(configurationFromUi).invoke(argThat { remoteName == "test_2_value" })
     }
 
-    fun testShouldCreateLocalPropertiesFileWithRemoteMachineName() {
+    fun testShouldCreateMfToolPropertiesFileWithRemoteMachineName() {
         stubConfigurationFromUi(remoteName = "remote")
         configureMainframerInProject()
 
