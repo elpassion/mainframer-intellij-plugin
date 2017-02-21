@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.elpassion.intelijidea</id>
     <name>mainframer-plugin</name>
-    <vendor email="android@elpassion.pl" url="http://www.elpassion.com/">El Passion</vendor>
+    <vendor email="android@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
