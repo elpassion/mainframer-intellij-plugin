@@ -53,3 +53,5 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     }
 }
 
+val Project.mfBeforeRunTaskProvider: MFBeforeRunTaskProvider
+    get() = BeforeRunTaskProvider.getProvider(this, MFBeforeRunTaskProvider.ID) as MFBeforeRunTaskProvider
