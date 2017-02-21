@@ -2,6 +2,7 @@ package com.elpassion.intelijidea.common
 
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.util.containers.stream
 import java.io.File
 import javax.swing.JTextField
 
@@ -20,11 +21,13 @@ class BuildCommandValidator(private val buildCommandField: JTextField) : FieldVa
 }
 
 class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrowseButton) : FieldValidator {
-    override fun validate(): ValidationInfo? {
-        return if (mainframerPathField.isBlank()) ValidationInfo("Path cannot be empty", mainframerPathField)
-        else if (mainframerPathField.isPathToScriptInvalid()) ValidationInfo("Cannot find mainframer script in path", mainframerPathField)
-        else null
-    }
+    override fun validate() =
+            when {
+                mainframerPathField.isBlank() -> ValidationInfo("Path cannot be empty", mainframerPathField)
+                mainframerPathField.isPathToScriptInvalid() -> ValidationInfo("Cannot find mainframer script in path", mainframerPathField)
+                mainframerPathField.isScriptNotExecutable() -> ValidationInfo("Mainframer script in not executable", mainframerPathField)
+                else -> null
+            }
 }
 
 class RemoteMachineFieldValidator(private val remoteMachineField: JTextField) : FieldValidator {
@@ -32,6 +35,8 @@ class RemoteMachineFieldValidator(private val remoteMachineField: JTextField) : 
 }
 
 private fun validateEmpty(jTextField: JTextField, message: String) = if (jTextField.isBlank()) ValidationInfo(message, jTextField) else null
+
+private fun TextFieldWithBrowseButton.isScriptNotExecutable() = File(text).canExecute().not()
 
 private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text).exists().not()
 
