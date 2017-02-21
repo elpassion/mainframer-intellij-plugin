@@ -12,15 +12,11 @@ interface FieldValidator {
 }
 
 class TaskFieldValidator(private val taskField: JTextField) : FieldValidator {
-    override fun validate(): ValidationInfo? {
-        return if (taskField.isBlank()) ValidationInfo("Task cannot be empty", taskField) else null
-    }
+    override fun validate() = validateEmpty(taskField, "Task cannot be empty")
 }
 
 class BuildCommandValidator(private val buildCommandField: JTextField) : FieldValidator {
-    override fun validate(): ValidationInfo? {
-        return if (buildCommandField.isBlank()) ValidationInfo("Build command cannot be empty", buildCommandField) else null
-    }
+    override fun validate() = validateEmpty(buildCommandField, "Build command cannot be empty")
 }
 
 class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrowseButton) : FieldValidator {
@@ -32,10 +28,10 @@ class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrow
 }
 
 class RemoteMachineFieldValidator(private val remoteMachineField: JTextField) : FieldValidator {
-    override fun validate(): ValidationInfo? {
-        return if (remoteMachineField.text.isEmpty()) ValidationInfo("Remote machine name cannot be empty!", remoteMachineField) else null
-    }
+    override fun validate() = validateEmpty(jTextField = remoteMachineField, message = "Remote machine name cannot be empty!")
 }
+
+private fun validateEmpty(jTextField: JTextField, message: String) = if (jTextField.isBlank()) ValidationInfo(message, jTextField) else null
 
 private fun TextFieldWithBrowseButton.isPathToScriptInvalid() = File(text).exists().not()
 
