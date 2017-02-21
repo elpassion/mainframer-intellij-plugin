@@ -37,7 +37,7 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     }
 
     private fun MFRunConfigurationData.withToolFile() = apply {
-        FileUtil.createTempFile(File(project.basePath), "mainframer.sh", null)
+        FileUtil.createTempFile(File(project.basePath), "mainframer.sh", null).setExecutable(true)
     }
 
     private fun buildProjectAndExecute(configurationData: MFRunConfigurationData? = null) {
