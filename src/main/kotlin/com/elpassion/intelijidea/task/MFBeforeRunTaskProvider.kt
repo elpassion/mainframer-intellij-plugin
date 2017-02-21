@@ -36,18 +36,10 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment, task: MFBeforeRunTask): Boolean {
         if (!task.isValid()) {
-            configuration?.project?.let {
-                SwingUtilities.invokeAndWait {
-                    showError(it, "Cannot execute task with invalid data")
-                }
-            }
+            configuration?.project?.showInvalidDataError()
             return false
         }
-        configuration?.project?.let {
-            SwingUtilities.invokeAndWait {
-                showInfo(it, "Mainframer is executing task: ${it.name}")
-            }
-        }
+        configuration?.project?.showStartExecutionInfo()
         return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
     }
 
@@ -59,6 +51,14 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     companion object {
         val ID = Key.create<MFBeforeRunTask>("MainFrame.BeforeRunTask")
         val TASK_NAME = "MainframerBefore"
+    }
+
+    private fun Project.showInvalidDataError() = SwingUtilities.invokeAndWait {
+        showError(this, "Cannot execute task with invalid data")
+    }
+
+    private fun Project.showStartExecutionInfo() = SwingUtilities.invokeAndWait {
+        showInfo(this, "Mainframer is executing task: $name")
     }
 }
 
