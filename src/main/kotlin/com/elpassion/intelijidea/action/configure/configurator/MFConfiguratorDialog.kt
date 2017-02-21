@@ -2,8 +2,11 @@ package com.elpassion.intelijidea.action.configure.configurator
 
 import com.elpassion.intelijidea.action.configure.configurator.ui.MConfiguratorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
+import com.elpassion.intelijidea.common.BuildCommandValidator
+import com.elpassion.intelijidea.common.RemoteMachineFieldValidator
+import com.elpassion.intelijidea.common.TaskFieldValidator
+import com.elpassion.intelijidea.common.validateForm
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.ui.CollectionComboBoxModel
 import javax.swing.JComponent
 
@@ -28,23 +31,8 @@ class MFConfiguratorDialog(project: Project,
         return form.panel
     }
 
-    override fun doValidate(): ValidationInfo? {
-        form.buildCommandField.run {
-            if (text.isEmpty()) {
-                return ValidationInfo("Build command cannot be empty!", this)
-            }
-        }
-        form.taskNameField.run {
-            if (text.isEmpty()) {
-                return ValidationInfo("Task name cannot be empty!", this)
-            }
-        }
-        form.remoteMachineField.run {
-            if (text.isEmpty()) {
-                return ValidationInfo("Task name cannot be empty!", this)
-            }
-        }
-        return null
+    override fun doValidate() = with(form) {
+        validateForm(RemoteMachineFieldValidator(remoteMachineField), BuildCommandValidator(buildCommandField), TaskFieldValidator(taskNameField))
     }
 
     override fun getSuccessResult() = MFConfiguratorOut(

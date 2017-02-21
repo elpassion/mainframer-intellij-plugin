@@ -1,12 +1,14 @@
 package com.elpassion.intelijidea.task.ui;
 
-import com.elpassion.intelijidea.common.MFToolFileDescriptorKt;
+import com.elpassion.intelijidea.common.*;
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider;
 import com.elpassion.intelijidea.task.MFTaskData;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.openapi.util.Comparing;
 import com.intellij.util.IconUtil;
 
@@ -45,7 +47,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
                 !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), configureBeforeTaskOnStartup);
     }
 
-    public void save() {
+    private void save() {
         MFTaskData taskData = new MFTaskData(
                 mainframerToolField.getText(),
                 buildCommandField.getText(),
@@ -60,5 +62,21 @@ public class MFBeforeTaskDefaultSettingsPanel {
         mainframerToolField.setText(taskData.getMainframerPath());
         taskNameField.setText(taskData.getTaskName());
         configureBeforeTasksOnStartupField.setSelected(settingsProvider.getState().getConfigureBeforeTaskOnStartup());
+    }
+
+    public void apply() throws ConfigurationException {
+        ValidationInfo validationInfo = validate();
+        if (validationInfo != null) {
+            throw new ConfigurationException(validationInfo.message);
+        } else {
+            save();
+        }
+    }
+
+    private ValidationInfo validate() {
+        return FormValidatorKt.validateForm(
+                new TaskFieldValidator(taskNameField),
+                new BuildCommandValidator(buildCommandField),
+                new MainframerPathValidator(mainframerToolField));
     }
 }
