@@ -4,6 +4,7 @@ import com.elpassion.android.commons.rxjavatest.thenJust
 import com.elpassion.intelijidea.common.MFToolConfiguration
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
+import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
@@ -21,7 +22,12 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReturnChosenVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue("1.0.0")
+        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.first == "1.0.0" }
+    }
+
+    fun testShouldReturnDefaultMainframerPathVersion() {
+        stubConfigurationFromUi(version = "1.0.0")
+        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.second == File(project.basePath, mfFilename) }
     }
 
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {

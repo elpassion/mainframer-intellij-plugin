@@ -13,16 +13,23 @@ fun mfConfigurator(project: Project) = { versionsList: List<String> ->
     mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
 }
 
-fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<String> {
+fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<Pair<String, File>> {
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
     return configurationFromUi(defaultValues)
-            .doAfterSuccess { dataFromUi ->
-                provider.saveConfiguration(createMFTaskData(project.basePath, dataFromUi))
+            .map { dataFromUi ->
+                dataFromUi to createDefaultMfLocation(project)
+            }
+            .doAfterSuccess { data ->
+                val dataFromUi = data.first
+                val defaultMfLocation = data.second
+                provider.saveConfiguration(createMFTaskData(dataFromUi, defaultMfLocation))
                 project.setRemoteMachineName(dataFromUi.remoteMachine)
             }
-            .map { it.version }
+            .map { it.first.version to it.second }
 }
+
+private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
 private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn) =
         Maybe.create<MFConfiguratorOut> { emitter ->
@@ -40,8 +47,8 @@ fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFCon
             buildCommand = taskData.buildCommand)
 }
 
-fun createMFTaskData(basePath: String?, dataFromUi: MFConfiguratorOut): MFTaskData {
-    return MFTaskData(mainframerPath = File(basePath, mfFilename).absolutePath,
+fun createMFTaskData(dataFromUi: MFConfiguratorOut, file: File): MFTaskData {
+    return MFTaskData(mainframerPath = file.absolutePath,
             buildCommand = dataFromUi.buildCommand,
             taskName = dataFromUi.taskName)
 }
