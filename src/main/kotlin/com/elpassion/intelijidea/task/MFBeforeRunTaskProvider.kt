@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.edit.MFBeforeRunTaskDialog
+import com.elpassion.intelijidea.util.showError
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.configurations.RunConfiguration
@@ -35,11 +36,16 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment, task: MFBeforeRunTask): Boolean {
         if (!task.isValid()) {
+            configuration?.project?.let {
+                SwingUtilities.invokeAndWait {
+                    showError(it, "Cannot execute task with invalid data")
+                }
+            }
             return false
         }
-        SwingUtilities.invokeAndWait {
-            configuration?.let {
-                showInfo(it.project, "Mainframer is executing task: ${it.name}")
+        configuration?.project?.let {
+            SwingUtilities.invokeAndWait {
+                showInfo(it, "Mainframer is executing task: ${it.name}")
             }
         }
         return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
