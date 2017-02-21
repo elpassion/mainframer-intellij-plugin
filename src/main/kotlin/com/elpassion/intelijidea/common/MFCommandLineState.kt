@@ -14,7 +14,9 @@ class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val buildCommand: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
 
-    override fun startProcess(): ProcessHandler = ColoredProcessHandler(createCommandLine())
+    override fun startProcess(): ProcessHandler = ColoredProcessHandler(createCommandLine()).apply {
+        ProcessTerminatedListener.attach(this)
+    }
 
     private fun createCommandLine() = createMfCommandLine(mainframerPath, buildCommand, taskName)
             .withWorkDirectory(executionEnvironment.project.basePath)

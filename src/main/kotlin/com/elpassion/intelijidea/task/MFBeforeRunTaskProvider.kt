@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.edit.MFBeforeRunTaskDialog
+import com.elpassion.intelijidea.util.showError
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.configurations.RunConfiguration
@@ -22,7 +23,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun configureTask(runConfiguration: RunConfiguration?, task: MFBeforeRunTask): Boolean {
         MFBeforeRunTaskDialog(project).run {
-            restoreMainframerTask(task.data)
+            restoreMainframerTaskData(task.data)
             if (showAndGet()) {
                 task.data = createMFTaskDataFromForms()
                 return true
@@ -33,13 +34,13 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     override fun canExecuteTask(configuration: RunConfiguration?, task: MFBeforeRunTask): Boolean = task.isValid()
 
-    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment?, task: MFBeforeRunTask): Boolean {
-        SwingUtilities.invokeAndWait {
-            configuration?.let {
-                showInfo(it.project, "Mainframer is executing task: ${it.name}")
-            }
+    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment, task: MFBeforeRunTask): Boolean {
+        if (!task.isValid()) {
+            configuration?.project?.showInvalidDataError()
+            return false
         }
-        return MFBeforeRunTaskExecutor(project).executeSync(task)
+        configuration?.project?.showStartExecutionInfo()
+        return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
@@ -51,5 +52,15 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         val ID = Key.create<MFBeforeRunTask>("MainFrame.BeforeRunTask")
         val TASK_NAME = "MainframerBefore"
     }
+
+    private fun Project.showInvalidDataError() = SwingUtilities.invokeAndWait {
+        showError(this, "Cannot execute task with invalid data")
+    }
+
+    private fun Project.showStartExecutionInfo() = SwingUtilities.invokeAndWait {
+        showInfo(this, "Mainframer is executing task: $name")
+    }
 }
 
+val Project.mfBeforeRunTaskProvider: MFBeforeRunTaskProvider
+    get() = BeforeRunTaskProvider.getProvider(this, MFBeforeRunTaskProvider.ID) as MFBeforeRunTaskProvider

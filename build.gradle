@@ -40,6 +40,8 @@ sourceSets {
 }
 
 intellij {
+    def intellijVersion = '171.3224.1'
+    version intellijVersion
     pluginName 'mainframer-plugin'
     publish {
         username project.findProperty("MF_PUBLISH_USER_NAME")
@@ -49,6 +51,7 @@ intellij {
     patchPluginXml {
         version readVersion()
         sinceBuild "145"
+        untilBuild intellijVersion
     }
 }
 

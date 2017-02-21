@@ -7,6 +7,7 @@ import com.elpassion.intelijidea.util.showError
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.openapi.project.Project
+import java.io.File
 import javax.swing.event.HyperlinkEvent
 
 class MFConfigurationFactory(configurationType: ConfigurationType) : ConfigurationFactory(configurationType) {
@@ -18,7 +19,7 @@ class MFConfigurationFactory(configurationType: ConfigurationType) : Configurati
             showToolNotFoundError = { mainframerPath ->
                 showError(project, fileNotFoundErrorMessage(mainframerPath)) {
                     if (it.eventType == HyperlinkEvent.EventType.ACTIVATED) {
-                        downloadFileToProject(project, it.url.toString(), mfFilename)
+                        downloadFileToProject(project, it.url.toString(), File(project.basePath, mfFilename))
                     }
                 }
             })

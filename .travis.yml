@@ -33,4 +33,3 @@ deploy:
   on:
     repo: elpassion/mainframer-intellij-plugin
     branch: master
-    tags: true

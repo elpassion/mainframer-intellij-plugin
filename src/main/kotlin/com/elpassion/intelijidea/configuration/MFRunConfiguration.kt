@@ -1,20 +1,21 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.MFCommandLineState
-import com.elpassion.intelijidea.util.*
+import com.elpassion.intelijidea.util.fromJson
+import com.elpassion.intelijidea.util.toJson
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.LocatableConfigurationBase
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RuntimeConfigurationError
+import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import org.jdom.Element
 import java.io.File
 import java.io.Serializable
-
 
 class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String,
                          val showToolNotFoundError: (mainframerPath: String?) -> Unit)
@@ -33,17 +34,27 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
                 showToolNotFoundError(data?.mainframerPath)
                 throw ExecutionException("Mainframer tool cannot be found")
             }
-            else -> MFCommandLineState(environment, mainframerPath, buildCommand, taskName)
+            else -> createCommandLineState(environment, this)
         }
     }
 
-    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { File(it, mfFilename).exists() } ?: false
+    private fun createCommandLineState(environment: ExecutionEnvironment, data: MFRunConfigurationData): MFCommandLineState {
+        return MFCommandLineState(environment, data.mainframerPath, data.buildCommand, data.taskName).apply {
+            consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project)
+        }
+    }
+
+    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { isValidMFScript(it) } ?: false
+
+    private fun isValidMFScript(path: String) = File(path).let {
+        it.exists() && it.isFile && it.canExecute()
+    }
 
     override fun checkConfiguration() = with(data) {
         when {
             this == null -> throw RuntimeConfigurationError("Configuration incorrect")
             buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
-            taskName.isNullOrBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
+            taskName.isBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
             else -> Unit
         }
     }

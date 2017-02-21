@@ -6,10 +6,11 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.File
 
 class IntegrationTest {
 
-    @get: Rule
+    @get:Rule
     var temporaryFolder = TemporaryFolder()
 
     @Test
@@ -34,16 +35,37 @@ class IntegrationTest {
     }
 
     @Test
+    fun shouldTaskDataInvalidWhenFileOnPathDoesNotExist() {
+        val taskDataWithoutFolder = createTaskData()
+
+        assertFalse(taskDataWithoutFolder.isValid())
+    }
+
+    @Test
+    fun shouldTaskDataInvalidWhenFileIsADirectory() {
+        val taskDataWithoutFolder = createTaskData().copy(mainframerPath = temporaryFolder.root.absolutePath)
+
+        assertFalse(taskDataWithoutFolder.isValid())
+    }
+
+    @Test
+    fun shouldTaskDataInvalidWhenFileDoesNotHaveExecutablePremissions() {
+        val taskDataWithoutFolder = createTaskData().copy()
+        temporaryFolder.newFile(mfFilename)
+
+        assertFalse(taskDataWithoutFolder.isValid())
+    }
+
+    @Test
     fun shouldTaskDataValidWhenAllDataIsValid() {
         val taskDataWithoutFolder = createTaskData()
+        temporaryFolder.newFile(mfFilename).setExecutable(true)
 
         assertTrue(taskDataWithoutFolder.isValid())
     }
 
     private fun createTaskData(buildCommand: String = "./gradlew", taskName: String = "build"): MFTaskData {
-        val folderPath = temporaryFolder.root.path
-        temporaryFolder.newFile(mfFilename)
+        val folderPath = File(temporaryFolder.root.absolutePath, mfFilename).absolutePath
         return MFTaskData(folderPath, buildCommand, taskName)
     }
-
 }

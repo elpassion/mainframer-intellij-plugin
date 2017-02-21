@@ -3,19 +3,19 @@ package com.elpassion.intelijidea.action.configure
 import com.elpassion.android.commons.rxjavatest.thenError
 import com.elpassion.android.commons.rxjavatest.thenJust
 import com.elpassion.android.commons.rxjavatest.thenNever
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Observable
+import com.elpassion.intelijidea.action.configure.configurator.MFToolInfo
+import com.nhaarman.mockito_kotlin.*
+import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Test
+import java.io.File
 
 class MFConfigureProjectActionControllerTest {
 
-    private val mainframerReleasesFetcher = mock<() -> Observable<List<String>>>()
-    private val mainframerVersionChooser = mock<(List<String>) -> Observable<String>>()
-    private val mainframerFileDownloader = mock<(String) -> Observable<Unit>>()
+    private val mainframerReleasesFetcher = mock<() -> Single<List<String>>>()
+    private val mainframerVersionChooser = mock<(List<String>) -> Maybe<MFToolInfo>>()
+    private val mainframerFileDownloader = mock<(MFToolInfo) -> Maybe<Unit>>()
     private val showMessage = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()
@@ -24,7 +24,7 @@ class MFConfigureProjectActionControllerTest {
     @Test
     fun shouldConfigureMainframerInProject() {
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust("2.0.0")
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(MFToolInfo("2.0.0", File("")))
         whenever(mainframerFileDownloader.invoke(any())).thenJust(Unit)
 
         controller.configureMainframer()
@@ -36,12 +36,24 @@ class MFConfigureProjectActionControllerTest {
     fun shouldConfigureChosenVersionOfMainframer() {
         val chosenVersion = "2.0.0"
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust(chosenVersion)
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(MFToolInfo(chosenVersion, File("")))
         whenever(mainframerFileDownloader.invoke(any())).thenNever()
 
         controller.configureMainframer()
 
-        verify(mainframerFileDownloader).invoke(chosenVersion)
+        verify(mainframerFileDownloader).invoke(argThat { version == chosenVersion })
+    }
+
+    @Test
+    fun shouldPassDefaultMainframerPathToDownloader() {
+        val defaultPath = File("defaultPath")
+        whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(MFToolInfo("2.0.0", defaultPath))
+        whenever(mainframerFileDownloader.invoke(any())).thenNever()
+
+        controller.configureMainframer()
+
+        verify(mainframerFileDownloader).invoke(argThat { file.path == defaultPath.path })
     }
 
     @Test
@@ -58,7 +70,7 @@ class MFConfigureProjectActionControllerTest {
     @Test
     fun shouldShowErrorWhenDownloadFails() {
         whenever(mainframerReleasesFetcher.invoke()).thenJust("2.0.0")
-        whenever(mainframerVersionChooser.invoke(any())).thenJust("2.0.0")
+        whenever(mainframerVersionChooser.invoke(any())).thenJust(MFToolInfo("2.0.0", File("")))
         whenever(mainframerFileDownloader.invoke(any())).thenError()
 
         controller.configureMainframer()

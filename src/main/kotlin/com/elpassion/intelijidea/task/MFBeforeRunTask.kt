@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.task
 
-import com.elpassion.intelijidea.util.mfFilename
 import com.intellij.execution.BeforeRunTask
 import java.io.File
 import java.io.Serializable
@@ -14,7 +13,9 @@ data class MFTaskData(val mainframerPath: String? = null,
                       val buildCommand: String? = null,
                       val taskName: String? = null) : Serializable {
 
-    fun isValid(): Boolean = listOf(mainframerPath, buildCommand, taskName).none { it.isNullOrBlank() } && isMfFileExistent()
+    fun isValid(): Boolean = listOf(mainframerPath, buildCommand, taskName).none { it.isNullOrBlank() } && isScriptValid()
 
-    private fun isMfFileExistent() = File(mainframerPath, mfFilename).exists()
+    private fun isScriptValid() = File(mainframerPath).let {
+        it.exists() && it.isFile && it.canExecute()
+    }
 }
