@@ -19,6 +19,13 @@ class TaskFieldValidatorTest {
     }
 
     @Test
+    fun shouldReturnProperValidationInfoIfBuildCommandIsBlank() {
+        whenever(taskNameField.text).thenReturn("")
+        val result = TaskFieldValidator(taskNameField).validate()
+        assertEquals("Task cannot be empty", result?.message)
+    }
+
+    @Test
     fun shouldReturnNullInfoIfBuildCommandIsValid() {
         whenever(taskNameField.text).thenReturn("aTask")
         val result = TaskFieldValidator(taskNameField).validate()

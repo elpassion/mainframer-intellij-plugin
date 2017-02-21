@@ -19,6 +19,13 @@ class RemoteMachineNameValidatorTest {
     }
 
     @Test
+    fun shouldReturnProperValidationInfoIfBuildCommandIsBlank() {
+        whenever(remoteMachineField.text).thenReturn("  ")
+        val result = RemoteMachineFieldValidator(remoteMachineField).validate()
+        assertEquals("Remote machine name cannot be empty!", result?.message)
+    }
+
+    @Test
     fun shouldReturnNullInfoIfBuildCommandIsValid() {
         whenever(remoteMachineField.text).thenReturn("remote")
         val result = RemoteMachineFieldValidator(remoteMachineField).validate()

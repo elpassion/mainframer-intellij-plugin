@@ -19,6 +19,13 @@ class BuildCommandValidatorTest {
     }
 
     @Test
+    fun shouldReturnProperValidationInfoIfBuildCommandIsBlank() {
+        whenever(buildCommandField.text).thenReturn("  ")
+        val result = BuildCommandValidator(buildCommandField).validate()
+        assertEquals("Build command cannot be empty", result?.message)
+    }
+
+    @Test
     fun shouldReturnNullInfoIfBuildCommandIsValid() {
         whenever(buildCommandField.text).thenReturn("build")
         val result = BuildCommandValidator(buildCommandField).validate()

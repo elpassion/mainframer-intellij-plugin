@@ -25,6 +25,13 @@ class MainframerPathValidatorTest {
     }
 
     @Test
+    fun shouldReturnProperValidationInfoIfPathIsBlank() {
+        whenever(mainframerPathField.text).thenReturn("   ")
+        val result = MainframerPathValidator(mainframerPathField).validate()
+        assertEquals("Path cannot be empty", result?.message)
+    }
+
+    @Test
     fun shouldReturnProperValidationInfoIfFileDoesNotExist() {
         whenever(mainframerPathField.text).thenReturn("asd/asd/asd")
         val result = MainframerPathValidator(mainframerPathField).validate()
