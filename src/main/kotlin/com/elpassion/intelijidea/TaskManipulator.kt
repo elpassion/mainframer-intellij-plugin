@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManagerEx
@@ -7,18 +8,18 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: BeforeRunTaskProvider<*>) {
+fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBeforeRunTaskProvider) {
     runManagerEx.getConfigurations()
             .filterIsInstance<RunConfigurationBase>()
             .filter { it.isCompileBeforeLaunchAddedByDefault }
             .forEach {
-                val task = mfTaskProvider.createTask(it)
-                if (task != null) {
-                    task.isEnabled = true
-                    runManagerEx.setBeforeRunTasks(it, listOf<BeforeRunTask<*>>(task), false)
-                }
+                val task = mfTaskProvider.createEnabledTask(it)
+                runManagerEx.setBeforeRunTasks(it, listOf(task), false)
             }
 }
+
+private fun MFBeforeRunTaskProvider.createEnabledTask(runConfiguration: RunConfigurationBase) = createTask(runConfiguration)
+        .apply { isEnabled = true }
 
 fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
     runManager.getConfigurations()
