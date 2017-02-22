@@ -21,6 +21,7 @@ fun downloadFileToProject(project: Project, url: String, outputFile: File): Outc
     val action = {
         val progressIndicator = ProgressManager.getInstance().progressIndicator
         DownloadUtil.downloadAtomically(progressIndicator, url, outputFile)
+        outputFile.setExecutable(true)
         project.baseDir.refresh(true, false)
     }
     return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
