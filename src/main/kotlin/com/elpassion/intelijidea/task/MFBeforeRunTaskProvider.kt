@@ -57,11 +57,11 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         val TASK_NAME = "Mainframer Make"
     }
 
-    private fun Project.showInvalidDataError() = SwingUtilities.invokeAndWait {
+    private fun Project.showInvalidDataError() {
         showError(this, "Cannot execute task with invalid data")
     }
 
-    private fun Project.showStartExecutionInfo() = SwingUtilities.invokeAndWait {
+    private fun Project.showStartExecutionInfo() {
         showInfo(this, "Mainframer is executing task: $name")
     }
 }
