@@ -16,9 +16,9 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
         return mfSettingsPanel?.isModified ?: false
     }
 
-    override fun getId(): String = "mainframer"
+    override fun getId() = ID
 
-    override fun getDisplayName(): String = "Mainframer"
+    override fun getDisplayName() = DISPLAY_NAME
 
     override fun apply() {
         mfSettingsPanel?.apply()
@@ -41,5 +41,10 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
 
     override fun disposeUIResources() {
         Disposer.dispose(this)
+    }
+
+    companion object {
+        val ID = "mainframer"
+        val DISPLAY_NAME = "Mainframer"
     }
 }
