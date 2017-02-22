@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.edit.MFBeforeRunTaskDialog
+import com.elpassion.intelijidea.util.MFIcons
 import com.elpassion.intelijidea.util.showError
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
@@ -9,6 +10,7 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
+import javax.swing.Icon
 import javax.swing.SwingUtilities
 
 class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvider<MFBeforeRunTask>() {
@@ -18,6 +20,8 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     override fun getDescription(task: MFBeforeRunTask): String = TASK_NAME
 
     override fun getName(): String = TASK_NAME
+
+    override fun getIcon(): Icon = MFIcons.mainframerIcon
 
     override fun isConfigurable(): Boolean = true
 
@@ -50,7 +54,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     companion object {
         val ID = Key.create<MFBeforeRunTask>("MainFrame.BeforeRunTask")
-        val TASK_NAME = "MainframerBefore"
+        val TASK_NAME = "Mainframer Make"
     }
 
     private fun Project.showInvalidDataError() = SwingUtilities.invokeAndWait {

@@ -49,7 +49,7 @@
             </action>
             <separator />
             <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject" />
-            <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore" />
+            <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore"  />
             <add-to-group group-id="ToolsMenu" />
         </group>
     </actions>
