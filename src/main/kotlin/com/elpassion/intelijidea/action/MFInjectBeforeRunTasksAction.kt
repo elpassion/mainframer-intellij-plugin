@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.injectMainframerBeforeTasks
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.elpassion.intelijidea.util.showError
+import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.RunManagerEx
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -27,7 +28,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
     private fun Project.injectMainFramer() {
         val runManagerEx = RunManagerEx.getInstanceEx(this)
         injectMainframerBeforeTasks(runManagerEx, mfBeforeRunTaskProvider)
-        Messages.showInfoMessage("Mainframer injected!", MF_INJECT_BEFORE_RUN_TASK_ACTION)
+        showInfo(this, "Mainframer injected!")
     }
 
     private fun Project.showInvalidSettingsError() = showError(this, "Mainframer settings is invalid")
