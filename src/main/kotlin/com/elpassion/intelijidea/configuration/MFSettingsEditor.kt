@@ -26,9 +26,9 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunConfiguration>() 
 
     private fun updatedConfigurationData(configuration: MFRunConfiguration) =
             configuration.data?.copy(
-                    buildCommand = mainEditorPanel.buildCommand.text.trim(),
-                    taskName = mainEditorPanel.taskName.text.trim(),
-                    mainframerPath = mainEditorPanel.mainframerTool.text.trim())
+                    buildCommand = mainEditorPanel.buildCommand.text,
+                    taskName = mainEditorPanel.taskName.text,
+                    mainframerPath = mainEditorPanel.mainframerTool.text)
 
     private fun doValidate() = with(mainEditorPanel) {
         validateForm(BuildCommandValidator(buildCommand), TaskFieldValidator(taskName), MainframerPathValidator(mainframerTool))?.let { throw ConfigurationException(it.message) }

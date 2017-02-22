@@ -31,7 +31,7 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
     }
 
     fun createMFTaskDataFromForms() = MFTaskData(
-            mainframerPath = form.mainframerToolField.text.trim(),
-            buildCommand = form.buildCommandField.text.trim(),
-            taskName = form.taskField.text.trim())
+            mainframerPath = form.mainframerToolField.text,
+            buildCommand = form.buildCommandField.text,
+            taskName = form.taskField.text)
 }
