@@ -1,14 +1,6 @@
 sudo: false
 language: java
 jdk: oraclejdk8
-cache:
-  directories:
-  - $HOME/.gradle
-before_cache:
-  - rm -f $HOME/.gradle/caches/*.lock
-  - rm -f $HOME/.gradle/caches/*.bin
-  - rm -rf $HOME/.gradle/daemon
-  - rm -rf $HOME/.gradle/native
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_192b72faab89_key -iv $encrypted_192b72faab89_iv -in gradle.properties.enc -out gradle.properties -d
