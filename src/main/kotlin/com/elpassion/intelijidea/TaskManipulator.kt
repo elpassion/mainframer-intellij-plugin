@@ -14,9 +14,11 @@ fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBe
             .filterIsInstance<RunConfigurationBase>()
             .filter { it.isCompileBeforeLaunchAddedByDefault }
             .forEach { configuration ->
-                val task = mfTaskProvider.createEnabledTask(configuration)
                 val oldTask = runManagerEx.getFirstMFBeforeRunTask(configuration)
-                val taskToInject = if (replaceAll) task else oldTask ?: task
+                val taskToInject = when {
+                    replaceAll || oldTask == null -> mfTaskProvider.createEnabledTask(configuration)
+                    else -> oldTask
+                }
                 runManagerEx.setBeforeRunTasks(configuration, listOf(taskToInject), false)
             }
 }
