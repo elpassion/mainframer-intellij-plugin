@@ -57,7 +57,7 @@ This is an initial action you need to perform to configure Mainframer in your cu
 
 #### Inject mainframer before run task
 
-With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **MainframerBefore** task:
+With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **Mainframer Make** task:
 
 ![](readme/injecting.png)
 
