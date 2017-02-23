@@ -13,14 +13,10 @@ fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBe
     runManagerEx.getConfigurations()
             .filterIsInstance<RunConfigurationBase>()
             .filter { it.isCompileBeforeLaunchAddedByDefault }
-            .forEach {
-                val task = mfTaskProvider.createEnabledTask(it)
-                val oldTask = runManagerEx.getBeforeRunTasks(it).filterIsInstance<MFBeforeRunTask>().firstOrNull()
-                if (oldTask == null) {
-                    runManagerEx.setBeforeRunTasks(it, listOf(task), false)
-                } else {
-                    runManagerEx.setBeforeRunTasks(it, listOf(oldTask), false)
-                }
+            .forEach { configuration ->
+                val task = mfTaskProvider.createEnabledTask(configuration)
+                val oldTask = runManagerEx.getFirstMFBeforeRunTask(configuration)
+                runManagerEx.setBeforeRunTasks(configuration, listOf(oldTask ?: task), false)
             }
 }
 
@@ -37,12 +33,15 @@ fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
 
 private fun RunManagerEx.getConfigurations() = allConfigurationsList + getTemplateConfigurations()
 
-private fun getHardcodedBeforeRunTasks(settings: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
+private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
+        getBeforeRunTasks(configuration).filterIsInstance<MFBeforeRunTask>().firstOrNull()
+
+private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = BeforeRunTaskProvider.EXTENSION_POINT_NAME.getExtensions(project)
-    return beforeRunProviders.associate { provider -> provider.id to provider.createTask(settings) }
+    return beforeRunProviders.associate { provider -> provider.id to provider.createTask(configuration) }
             .filterValues { task -> task != null && task.isEnabled }
             .map {
-                settings.factory.configureBeforeRunTaskDefaults(it.key, it.value)
+                configuration.factory.configureBeforeRunTaskDefaults(it.key, it.value)
                 it.value
             }
             .filterNotNull()
