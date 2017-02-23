@@ -9,7 +9,7 @@ import com.intellij.ui.awt.RelativePoint
 import javax.swing.SwingUtilities
 import javax.swing.event.HyperlinkEvent
 
-fun showInfo(project: Project, message: String, hyperlinkListener: ((HyperlinkEvent) -> Unit)? = null)  {
+fun showInfo(project: Project, message: String, hyperlinkListener: ((HyperlinkEvent) -> Unit)? = null) {
     showBalloon(project, message, MessageType.INFO, hyperlinkListener)
 }
 
@@ -18,7 +18,7 @@ fun showError(project: Project, message: String, hyperlinkListener: ((HyperlinkE
 }
 
 private fun showBalloon(project: Project, message: String, messageType: MessageType,
-                        hyperlinkListener: ((HyperlinkEvent) -> Unit)?) = SwingUtilities.invokeAndWait {
+                        hyperlinkListener: ((HyperlinkEvent) -> Unit)?) = invokeOnUi {
     val statusBar = WindowManager.getInstance().getStatusBar(project)
     JBPopupFactory.getInstance()
             .createHtmlTextBalloonBuilder(message, messageType, hyperlinkListener)
@@ -26,3 +26,10 @@ private fun showBalloon(project: Project, message: String, messageType: MessageT
             .createBalloon()
             .show(RelativePoint.getCenterOf(statusBar.component), Balloon.Position.above)
 }
+
+private fun invokeOnUi(action: () -> Unit) =
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeAndWait(action)
+        } else {
+            action()
+        }
