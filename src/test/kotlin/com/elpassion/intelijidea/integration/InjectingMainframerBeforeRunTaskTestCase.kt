@@ -5,6 +5,8 @@ import com.elpassion.intelijidea.injectMainframerBeforeTasks
 import com.elpassion.intelijidea.restoreDefaultBeforeRunTasks
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
+import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
+import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.execution.Executor
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.RunnerAndConfigurationSettings
@@ -72,6 +74,17 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
         verifyBeforeRunTasks(runConfiguration)
                 .isEmpty()
+    }
+
+    fun testShouldNotReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
+        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+        injectMainframer()
+        val oldTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
+        injectMainframer()
+        val newTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+
+        assertEquals(oldTaskData, newTaskData)
     }
 
     private fun createTestConfigurationType(compileBeforeRun: Boolean) = TestConfigurationType(randomString(), compileBeforeRun)

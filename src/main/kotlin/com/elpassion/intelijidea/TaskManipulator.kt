@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
@@ -14,7 +15,12 @@ fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBe
             .filter { it.isCompileBeforeLaunchAddedByDefault }
             .forEach {
                 val task = mfTaskProvider.createEnabledTask(it)
-                runManagerEx.setBeforeRunTasks(it, listOf(task), false)
+                val oldTask = runManagerEx.getBeforeRunTasks(it).filterIsInstance<MFBeforeRunTask>().firstOrNull()
+                if (oldTask == null) {
+                    runManagerEx.setBeforeRunTasks(it, listOf(task), false)
+                } else {
+                    runManagerEx.setBeforeRunTasks(it, listOf(oldTask), false)
+                }
             }
 }
 
