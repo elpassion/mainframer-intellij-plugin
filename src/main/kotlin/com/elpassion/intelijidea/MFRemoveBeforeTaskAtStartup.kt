@@ -17,6 +17,6 @@ class MFRemoveBeforeTaskAtStartup : StartupActivity {
 
     private fun injectBeforeRunTask(project: Project) {
         val runManagerEx = RunManagerEx.getInstanceEx(project)
-        injectMainframerBeforeTasks(runManagerEx, project.mfBeforeRunTaskProvider)
+        injectMainframerBeforeTasks(runManagerEx, project.mfBeforeRunTaskProvider, replaceAll = true)
     }
 }

@@ -27,7 +27,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
 
     private fun Project.injectMainFramer() {
         val runManagerEx = RunManagerEx.getInstanceEx(this)
-        injectMainframerBeforeTasks(runManagerEx, mfBeforeRunTaskProvider)
+        injectMainframerBeforeTasks(runManagerEx, mfBeforeRunTaskProvider, replaceAll = true)
         showInfo(this, "Mainframer injected!")
     }
 

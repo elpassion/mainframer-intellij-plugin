@@ -18,6 +18,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Assert.assertNotEquals
 import java.util.*
 
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
@@ -87,6 +88,17 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         assertEquals(oldTaskData, newTaskData)
     }
 
+    fun testShouldReplaceMainframerMakeDataOnNextInjectionWhenReplacingAllMfTasks() {
+        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+        injectMainframerReplacingAllMfTasks()
+        val oldTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
+        injectMainframerReplacingAllMfTasks()
+        val newTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+
+        assertNotEquals(oldTaskData, newTaskData)
+    }
+
     private fun createTestConfigurationType(compileBeforeRun: Boolean) = TestConfigurationType(randomString(), compileBeforeRun)
 
     private fun addTestConfiguration(testConfigurationType: TestConfigurationType): RunnerAndConfigurationSettings {
@@ -131,7 +143,11 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframer() {
-        injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project))
+        injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project), replaceAll = false)
+    }
+
+    private fun injectMainframerReplacingAllMfTasks() {
+        injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project), replaceAll = true)
     }
 
     private fun restoreConfigurations() {

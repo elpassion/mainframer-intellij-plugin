@@ -9,14 +9,15 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBeforeRunTaskProvider) {
+fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBeforeRunTaskProvider, replaceAll: Boolean) {
     runManagerEx.getConfigurations()
             .filterIsInstance<RunConfigurationBase>()
             .filter { it.isCompileBeforeLaunchAddedByDefault }
             .forEach { configuration ->
                 val task = mfTaskProvider.createEnabledTask(configuration)
                 val oldTask = runManagerEx.getFirstMFBeforeRunTask(configuration)
-                runManagerEx.setBeforeRunTasks(configuration, listOf(oldTask ?: task), false)
+                val taskToInject = if (replaceAll) task else oldTask ?: task
+                runManagerEx.setBeforeRunTasks(configuration, listOf(taskToInject), false)
             }
 }
 
