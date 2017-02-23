@@ -4,13 +4,13 @@ An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 About
 -----
 
-This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new runConfiguration to run mainframer tasks.
+This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new run configuration type to run mainframer tasks.
 
 #### Features
-* BeforeTasks which delegate tasks to mainframer
+* Mainframer Make tasks which delegate tasks to mainframer
 * Injecting/Restoring before tasks to all configurations
 * Configuring mainframer in project
-* RunConfiguration for mainframer
+* Custom run configuration for mainframer
 
 Installation
 ------------
