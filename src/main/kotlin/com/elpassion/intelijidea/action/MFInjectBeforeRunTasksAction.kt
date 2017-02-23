@@ -26,7 +26,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
     }
 
     private fun Project.showInjectionDialog() {
-        val result = Messages.showYesNoCancelDialog(this, "MainFramer", "Reset current mainframer task?", null)
+        val result = Messages.showYesNoCancelDialog(this, "Reset current mainframer task?", "MainFramer", null)
         when (result) {
             Messages.YES -> injectMainFramer(true)
             Messages.NO -> injectMainFramer(false)
