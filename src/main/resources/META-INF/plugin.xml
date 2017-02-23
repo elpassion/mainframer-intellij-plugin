@@ -21,7 +21,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      Release 0.2.3: Add support for remote machine configuration and validation for task's configuration
+      Release 0.2.3: Add support for remote machine configuration and validation for task's configuration.<br>
       Release 0.2.2: Fixing minor problems + refactoring.<br>
       Release 0.2.0: Add general settings for before tasks.<br>
       Release 0.0.11: Refactor injecting before tasks feature.<br>
