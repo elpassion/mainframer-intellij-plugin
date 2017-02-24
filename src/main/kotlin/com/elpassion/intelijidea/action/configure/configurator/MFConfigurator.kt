@@ -17,33 +17,25 @@ fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> 
                 dataFromUi to createDefaultMfLocation(project)
             }
             .doAfterSuccess { data ->
-                val dataFromUi = data.first
-                val defaultMfLocation = data.second
-                provider.saveConfiguration(createMFTaskData(dataFromUi, defaultMfLocation))
-                project.setRemoteMachineName(dataFromUi.remoteName)
+                provider.saveConfiguration(data)
+                project.setRemoteMachineName(data.first.remoteName)
             }
             .map { MFToolInfo(it.first.version, it.second) }
 }
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-fun createDefaultValues(versionList: List<String>, taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
+private fun createDefaultValues(versionList: List<String>, taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
     return MFConfiguratorIn(versionList = versionList,
             remoteName = remoteMachineName,
             taskName = taskData.taskName,
             buildCommand = taskData.buildCommand)
 }
 
-fun createMFTaskData(dataFromUi: MFConfiguratorOut, file: File): MFTaskData {
-    return MFTaskData(mainframerPath = file.absolutePath,
-            buildCommand = dataFromUi.buildCommand,
-            taskName = dataFromUi.taskName)
-}
-
-
 private fun Project.getRemoteMachineName() = ApplicationManager.getApplication().runReadAction<String> {
     MFToolConfiguration(basePath).readRemoteMachineName()
 }
+
 
 private fun Project.setRemoteMachineName(name: String) {
     ApplicationManager.getApplication().runWriteAction {
@@ -51,9 +43,16 @@ private fun Project.setRemoteMachineName(name: String) {
     }
 }
 
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFTaskData) {
+private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: Pair<MFConfiguratorOut, File>) {
+    val dataFromUi = createMFTaskData(data.first, data.second)
     taskData = taskData.copy(
             buildCommand = dataFromUi.buildCommand,
             taskName = dataFromUi.taskName,
             mainframerPath = dataFromUi.mainframerPath)
+}
+
+private fun createMFTaskData(dataFromUi: MFConfiguratorOut, file: File): MFTaskData {
+    return MFTaskData(mainframerPath = file.absolutePath,
+            buildCommand = dataFromUi.buildCommand,
+            taskName = dataFromUi.taskName)
 }
