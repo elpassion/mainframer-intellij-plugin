@@ -8,6 +8,16 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Observable
 import io.reactivex.Single
 
+fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Observable<MFSelectorItem> =
+        Observable.create<MFSelectorItem> { emitter ->
+            MFSelectorDialog(project, selectorItems, {
+                selectorItems.forEach { emitter.onNext(it) }
+                emitter.onComplete()
+            }, {
+                emitter.onComplete()
+            }).show()
+        }
+
 fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Observable<MFSelectorItem>): Single<List<MFSelectorItem>> {
     val runManager = RunManagerEx.getInstanceEx(project)
     val selectorItems = runManager.getConfigurations()
