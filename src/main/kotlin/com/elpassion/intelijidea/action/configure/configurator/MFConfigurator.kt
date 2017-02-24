@@ -6,24 +6,21 @@ import io.reactivex.Maybe
 import java.io.File
 
 fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
-    val mfStorage = MFStorage(project)
-    val defaultValues = createDefaultValues(versionList, mfStorage)
+    val mfStorage = MFPluginConfigurationRepository(project)
+    val defaultValues = createDefaultValues(versionList, mfStorage.getConfiguration())
+    val file = createDefaultMfLocation(project)
     configurationFromUi(defaultValues)
-            .map { dataFromUi ->
-                dataFromUi to createDefaultMfLocation(project)
-            }
             .doAfterSuccess { data ->
-                mfStorage.saveConfiguration(data = data.first, file = data.second)
-                mfStorage.setRemoteMachineName(data.first.remoteName)
+                mfStorage.saveConfiguration(MFPluginConfiguration(data.taskName, data.buildCommand, data.remoteName, file.absolutePath))
             }
-            .map { MFToolInfo(it.first.version, it.second) }
+            .map { MFToolInfo(it.version, file) }
 }
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-private fun createDefaultValues(versionList: List<String>, storage: MFStorage): MFConfiguratorIn {
+private fun createDefaultValues(versionList: List<String>, mfPluginConfiguration: MFPluginConfiguration): MFConfiguratorIn {
     return MFConfiguratorIn(versionList = versionList,
-            remoteName = storage.getRemoteMachineName(),
-            taskName = storage.getConfiguration().taskName,
-            buildCommand = storage.getConfiguration().buildCommand)
+            remoteName = mfPluginConfiguration.remoteName,
+            taskName = mfPluginConfiguration.taskName,
+            buildCommand = mfPluginConfiguration.buildCommand)
 }
