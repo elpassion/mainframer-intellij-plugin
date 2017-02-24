@@ -1,52 +1,29 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
-import com.elpassion.intelijidea.common.MFToolConfiguration
-import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
-import com.elpassion.intelijidea.task.MFTaskData
 import com.elpassion.intelijidea.util.mfFilename
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 import java.io.File
 
 fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
-    val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-    val defaultValues = createDefaultValues(versionList, provider.getConfiguration(), project.getRemoteMachineName())
+    val mfStorage = MFStorage(project)
+    val defaultValues = createDefaultValues(versionList, mfStorage)
     configurationFromUi(defaultValues)
             .map { dataFromUi ->
                 dataFromUi to createDefaultMfLocation(project)
             }
             .doAfterSuccess { data ->
-                provider.saveConfiguration(data = data.first, file = data.second)
-                project.setRemoteMachineName(data.first.remoteName)
+                mfStorage.saveConfiguration(data = data.first, file = data.second)
+                mfStorage.setRemoteMachineName(data.first.remoteName)
             }
             .map { MFToolInfo(it.first.version, it.second) }
 }
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-private fun createDefaultValues(versionList: List<String>, taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
+private fun createDefaultValues(versionList: List<String>, storage: MFStorage): MFConfiguratorIn {
     return MFConfiguratorIn(versionList = versionList,
-            remoteName = remoteMachineName,
-            taskName = taskData.taskName,
-            buildCommand = taskData.buildCommand)
-}
-
-private fun Project.getRemoteMachineName() = ApplicationManager.getApplication().runReadAction<String> {
-    MFToolConfiguration(basePath).readRemoteMachineName()
-}
-
-private fun Project.setRemoteMachineName(name: String) {
-    ApplicationManager.getApplication().runWriteAction {
-        MFToolConfiguration(basePath).writeRemoteMachineName(name)
-    }
-}
-
-private fun MFBeforeTaskDefaultSettingsProvider.getConfiguration() = taskData
-
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: MFConfiguratorOut, file: File) {
-    taskData = taskData.copy(
-            buildCommand = data.buildCommand,
-            taskName = data.taskName,
-            mainframerPath = file.absolutePath)
+            remoteName = storage.getRemoteMachineName(),
+            taskName = storage.getConfiguration().taskName,
+            buildCommand = storage.getConfiguration().buildCommand)
 }
