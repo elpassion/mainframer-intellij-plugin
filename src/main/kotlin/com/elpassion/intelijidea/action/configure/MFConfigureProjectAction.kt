@@ -17,7 +17,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
         event.project?.let { project ->
             MFConfigureProjectActionController(
                     mainframerReleasesFetcher = mfReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
-                    mainframerConfigurator = mfConfigurator(project, { defaultValues, versionList -> showConfigurationDialog(project, versionList, defaultValues) }),
+                    mainframerConfigurator = mfConfigurator(project, { defaultValues -> showConfigurationDialog(project, defaultValues) }),
                     mainframerFileDownloader = mfFileDownloader(project),
                     showMessage = { message -> Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT) },
                     uiScheduler = UIScheduler,

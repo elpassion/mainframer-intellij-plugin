@@ -9,10 +9,10 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 import java.io.File
 
-fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn, List<String>) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
+fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-    val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
-    configurationFromUi(defaultValues, versionList)
+    val defaultValues = createDefaultValues(versionList, provider.taskData, project.getRemoteMachineName())
+    configurationFromUi(defaultValues)
             .map { dataFromUi ->
                 dataFromUi to createDefaultMfLocation(project)
             }
@@ -27,9 +27,9 @@ fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn, Lis
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn): Maybe<MFConfiguratorOut> =
+fun showConfigurationDialog(project: Project, defaultValues: MFConfiguratorIn): Maybe<MFConfiguratorOut> =
         Maybe.create<MFConfiguratorOut> { emitter ->
-            MFConfiguratorDialog(project, versionsList, defaultValues, {
+            MFConfiguratorDialog(project, defaultValues, {
                 emitter.onSuccess(it)
                 emitter.onComplete()
             }, {
@@ -37,8 +37,9 @@ fun showConfigurationDialog(project: Project, versionsList: List<String>, defaul
             }).show()
         }
 
-fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
-    return MFConfiguratorIn(remoteName = remoteMachineName,
+fun createDefaultValues(versionList: List<String>, taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
+    return MFConfiguratorIn(versionList = versionList,
+            remoteName = remoteMachineName,
             taskName = taskData.taskName,
             buildCommand = taskData.buildCommand)
 }
