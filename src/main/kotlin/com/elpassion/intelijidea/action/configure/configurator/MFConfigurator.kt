@@ -11,7 +11,7 @@ import java.io.File
 
 fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-    val defaultValues = createDefaultValues(versionList, provider.taskData, project.getRemoteMachineName())
+    val defaultValues = createDefaultValues(versionList, provider.getConfiguration(), project.getRemoteMachineName())
     configurationFromUi(defaultValues)
             .map { dataFromUi ->
                 dataFromUi to createDefaultMfLocation(project)
@@ -36,12 +36,13 @@ private fun Project.getRemoteMachineName() = ApplicationManager.getApplication()
     MFToolConfiguration(basePath).readRemoteMachineName()
 }
 
-
 private fun Project.setRemoteMachineName(name: String) {
     ApplicationManager.getApplication().runWriteAction {
         MFToolConfiguration(basePath).writeRemoteMachineName(name)
     }
 }
+
+private fun MFBeforeTaskDefaultSettingsProvider.getConfiguration() = taskData
 
 private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: Pair<MFConfiguratorOut, File>) {
     val dataFromUi = createMFTaskData(data.first, data.second)
