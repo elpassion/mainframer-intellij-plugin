@@ -13,12 +13,12 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReturnEmptyItemsListWhenNoConfigurationInProject() {
         whenever(selectorFromUi.invoke(any())).thenReturn(Observable.empty())
-        mfSelector(project, selectorFromUi).test().assertNoValues()
+        mfSelector(project, selectorFromUi).test().assertValue { it.isEmpty() }
     }
 
     fun testShouldReturnNotSelectedConfigurationWhenNoChangeInSelector() {
         val selectorItem = MFSelectorItem(mock(), false)
         whenever(selectorFromUi.invoke(any())).thenReturn(Observable.just(selectorItem))
-        mfSelector(project, selectorFromUi).test().assertValue { it == selectorItem }
+        mfSelector(project, selectorFromUi).test().assertValue { it == listOf(selectorItem) }
     }
 }
