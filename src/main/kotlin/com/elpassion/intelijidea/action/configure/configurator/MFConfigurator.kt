@@ -27,16 +27,6 @@ fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> 
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-fun showConfigurationDialog(project: Project, defaultValues: MFConfiguratorIn): Maybe<MFConfiguratorOut> =
-        Maybe.create<MFConfiguratorOut> { emitter ->
-            MFConfiguratorDialog(project, defaultValues, {
-                emitter.onSuccess(it)
-                emitter.onComplete()
-            }, {
-                emitter.onComplete()
-            }).show()
-        }
-
 fun createDefaultValues(versionList: List<String>, taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
     return MFConfiguratorIn(versionList = versionList,
             remoteName = remoteMachineName,

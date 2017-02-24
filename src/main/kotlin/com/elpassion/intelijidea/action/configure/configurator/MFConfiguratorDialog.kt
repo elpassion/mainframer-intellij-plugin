@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.action.configure.configurator.ui.MConfiguratorF
 import com.elpassion.intelijidea.common.*
 import com.intellij.openapi.project.Project
 import com.intellij.ui.CollectionComboBoxModel
+import io.reactivex.Maybe
 import javax.swing.JComponent
 
 class MFConfiguratorDialog(project: Project,
@@ -36,3 +37,19 @@ class MFConfiguratorDialog(project: Project,
             taskName = form.taskNameField.text,
             remoteName = form.remoteMachineField.text)
 }
+
+fun mfConfigurationDialog(project: Project): (MFConfiguratorIn) -> Maybe<MFConfiguratorOut> {
+    return { defaultValues ->
+        showConfigurationDialog(project, defaultValues)
+    }
+}
+
+private fun showConfigurationDialog(project: Project, defaultValues: MFConfiguratorIn): Maybe<MFConfiguratorOut> =
+        Maybe.create<MFConfiguratorOut> { emitter ->
+            MFConfiguratorDialog(project, defaultValues, {
+                emitter.onSuccess(it)
+                emitter.onComplete()
+            }, {
+                emitter.onComplete()
+            }).show()
+        }
