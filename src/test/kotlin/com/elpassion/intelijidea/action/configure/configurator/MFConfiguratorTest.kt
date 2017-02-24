@@ -128,7 +128,7 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
                 MFConfiguratorOut(version = version,
                         taskName = taskName,
                         buildCommand = buildCommand,
-                        remoteMachine = remoteName))
+                        remoteName = remoteName))
     }
 
     override fun tearDown() {

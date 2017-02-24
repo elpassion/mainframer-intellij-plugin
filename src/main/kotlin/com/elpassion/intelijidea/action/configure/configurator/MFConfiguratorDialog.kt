@@ -39,5 +39,5 @@ class MFConfiguratorDialog(project: Project,
             version = form.versionComboBox.selectedItem.toString(),
             buildCommand = form.buildCommandField.text,
             taskName = form.taskNameField.text,
-            remoteMachine = form.remoteMachineField.text)
+            remoteName = form.remoteMachineField.text)
 }

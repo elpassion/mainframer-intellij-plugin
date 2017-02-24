@@ -24,7 +24,7 @@ fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn)
                 val dataFromUi = data.first
                 val defaultMfLocation = data.second
                 provider.saveConfiguration(createMFTaskData(dataFromUi, defaultMfLocation))
-                project.setRemoteMachineName(dataFromUi.remoteMachine)
+                project.setRemoteMachineName(dataFromUi.remoteName)
             }
             .map { MFToolInfo(it.first.version, it.second) }
 }
