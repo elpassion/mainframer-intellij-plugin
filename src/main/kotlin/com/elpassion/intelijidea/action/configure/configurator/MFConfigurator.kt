@@ -9,14 +9,10 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 import java.io.File
 
-fun mfConfigurator(project: Project) = { versionsList: List<String> ->
-    mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
-}
-
-fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<MFToolInfo> {
+fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn, List<String>) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
-    return configurationFromUi(defaultValues)
+    configurationFromUi(defaultValues, emptyList())
             .map { dataFromUi ->
                 dataFromUi to createDefaultMfLocation(project)
             }
@@ -31,7 +27,7 @@ fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn)
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn) =
+fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn): Maybe<MFConfiguratorOut> =
         Maybe.create<MFConfiguratorOut> { emitter ->
             MFConfiguratorDialog(project, versionsList, defaultValues, {
                 emitter.onSuccess(it)

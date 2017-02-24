@@ -13,7 +13,7 @@ import java.io.File
 
 class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
-    private val configurationFromUi = mock<(MFConfiguratorIn) -> Maybe<MFConfiguratorOut>>()
+    private val configurationFromUi = mock<(MFConfiguratorIn, List<String>) -> Maybe<MFConfiguratorOut>>()
 
     override fun setUp() {
         super.setUp()
@@ -22,54 +22,54 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReturnChosenVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.version == "1.0.0" }
+        mfConfigurator(project, configurationFromUi)(emptyList()).test().assertValue { it.version == "1.0.0" }
     }
 
     fun testShouldReturnDefaultMainframerPathVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.file == File(project.basePath, mfFilename) }
+        mfConfigurator(project, configurationFromUi)(emptyList()).test().assertValue { it.file == File(project.basePath, mfFilename) }
     }
 
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(buildCommand = "./gradlew"))
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { buildCommand == "./gradlew" })
+        verify(configurationFromUi).invoke(argThat { buildCommand == "./gradlew" }, any())
     }
 
     fun testConfigurationFromUiRunReallyWithBuildCommandFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(buildCommand = "./buckw"))
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { buildCommand == "./buckw" })
+        verify(configurationFromUi).invoke(argThat { buildCommand == "./buckw" }, any())
     }
 
     fun testConfigurationFromUiRunWithTaskNameFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(taskName = null))
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { taskName == null })
+        verify(configurationFromUi).invoke(argThat { taskName == null }, any())
     }
 
     fun testConfigurationFromUiRunReallyWithTaskNameFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(taskName = "build"))
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { taskName == "build" })
+        verify(configurationFromUi).invoke(argThat { taskName == "build" }, any())
     }
 
     fun testConfigurationFromUiRunWithRemoteMachineNameFromMfToolProperties() {
         MFToolConfiguration(project.basePath).writeRemoteMachineName("test_value")
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { remoteName == "test_value" })
+        verify(configurationFromUi).invoke(argThat { remoteName == "test_value" }, any())
     }
 
     fun testConfigurationFromUiReallyRunWithRemoteMachineNameFromMfToolProperties() {
         MFToolConfiguration(project.basePath).writeRemoteMachineName("test_2_value")
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { remoteName == "test_2_value" })
+        verify(configurationFromUi).invoke(argThat { remoteName == "test_2_value" }, any())
     }
 
     fun testShouldCreateMfToolPropertiesFileWithRemoteMachineName() {
@@ -111,7 +111,7 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     private fun configureMainframerInProject() {
-        mfConfiguratorImpl(project, configurationFromUi).subscribe()
+        mfConfigurator(project, configurationFromUi)(emptyList()).subscribe()
     }
 
     private fun stubMfTaskSettingsProvider(mfTaskData: MFTaskData) {
@@ -124,7 +124,7 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
                                         buildCommand: String = "./gradlew",
                                         taskName: String = "assemble",
                                         remoteName: String = "not_local") {
-        whenever(configurationFromUi.invoke(any())).thenJust(
+        whenever(configurationFromUi.invoke(any(), any())).thenJust(
                 MFConfiguratorOut(version = version,
                         taskName = taskName,
                         buildCommand = buildCommand,
