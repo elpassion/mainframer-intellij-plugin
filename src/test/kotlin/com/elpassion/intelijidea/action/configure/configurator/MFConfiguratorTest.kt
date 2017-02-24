@@ -36,6 +36,11 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         verify(configurationFromUi).invoke(any(), eq(listOf("1.0.0")))
     }
 
+    fun testConfigurationFromUiRunReallyWithGivenVersionList() {
+        configureMainframerInProject(versionList = listOf("1.1.0"))
+
+        verify(configurationFromUi).invoke(any(), eq(listOf("1.1.0")))
+    }
 
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(buildCommand = "./gradlew"))
