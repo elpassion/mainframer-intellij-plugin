@@ -17,7 +17,7 @@ fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> 
                 dataFromUi to createDefaultMfLocation(project)
             }
             .doAfterSuccess { data ->
-                provider.saveConfiguration(data)
+                provider.saveConfiguration(data = data.first, file = data.second)
                 project.setRemoteMachineName(data.first.remoteName)
             }
             .map { MFToolInfo(it.first.version, it.second) }
@@ -44,9 +44,9 @@ private fun Project.setRemoteMachineName(name: String) {
 
 private fun MFBeforeTaskDefaultSettingsProvider.getConfiguration() = taskData
 
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: Pair<MFConfiguratorOut, File>) {
+private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: MFConfiguratorOut, file: File) {
     taskData = taskData.copy(
-            buildCommand = data.first.buildCommand,
-            taskName = data.first.taskName,
-            mainframerPath = data.second.absolutePath)
+            buildCommand = data.buildCommand,
+            taskName = data.taskName,
+            mainframerPath = file.absolutePath)
 }
