@@ -1,14 +1,13 @@
 package com.elpassion.intelijidea.integration
 
+import com.elpassion.intelijidea.MFTaskInjector
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
-import com.elpassion.intelijidea.injectMainframerBeforeTasks
-import com.elpassion.intelijidea.restoreDefaultBeforeRunTasks
+import com.elpassion.intelijidea.allConfigurationMapMFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.execution.Executor
-import com.intellij.execution.RunManagerEx
 import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
@@ -22,7 +21,9 @@ import org.junit.Assert.assertNotEquals
 import java.util.*
 
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
-    private val runManager by lazy { RunManagerEx.getInstanceEx(project) }
+
+    private val taskInjector by lazy { MFTaskInjector(project, MFBeforeRunTaskProvider(project)) }
+    private val runManager by lazy { taskInjector.runManager }
 
     fun testShouldAddMainframerToConfigurationWhichRequiresCompilationBeforeLaunch() {
         val runConfiguration = addTestConfiguration(createTestConfigurationType(compileBeforeRun = true))
@@ -143,15 +144,15 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframer() {
-        injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project), replaceAll = false)
+        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(true), false)
     }
 
     private fun injectMainframerReplacingAllMfTasks() {
-        injectMainframerBeforeTasks(runManager, MFBeforeRunTaskProvider(project), replaceAll = true)
+        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(true), true)
     }
 
     private fun restoreConfigurations() {
-        restoreDefaultBeforeRunTasks(runManager, project)
+        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(false), true)
     }
 
     private fun verifyBeforeRunTasks(runConfiguration: RunnerAndConfigurationSettings) = assertThat(runManager.getBeforeRunTasks(runConfiguration.configuration))

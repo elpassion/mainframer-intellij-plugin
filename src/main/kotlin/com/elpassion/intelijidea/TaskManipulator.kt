@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.action.configure.selector.MFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
@@ -10,35 +11,50 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-fun injectMainframerBeforeTasks(runManagerEx: RunManagerEx, mfTaskProvider: MFBeforeRunTaskProvider, replaceAll: Boolean) {
-    runManagerEx.getConfigurations()
-            .filterIsInstance<RunConfigurationBase>()
-            .filter { it.isCompileBeforeLaunchAddedByDefault }
-            .forEach { configuration ->
-                val oldTask = runManagerEx.getFirstMFBeforeRunTask(configuration)
-                val taskToInject = when {
-                    replaceAll || oldTask == null -> mfTaskProvider.createEnabledTask(configuration)
-                    else -> oldTask
+class MFTaskInjector(val project: Project, val mfTaskProvider: MFBeforeRunTaskProvider) {
+    val runManager: RunManagerEx = RunManagerEx.getInstanceEx(project)
+
+    fun injectMainframerBeforeTasks(mfConfigurations: List<MFSelectorItem>, replaceAll: Boolean) {
+        mfConfigurations
+                .forEach { selector ->
+                    val configuration = selector.configuration
+                    if (selector.isSelected) {
+                        injectMFTasks(configuration, replaceAll)
+                    } else {
+                        restoreDefaultBeforeRunTasks(configuration)
+                    }
                 }
-                runManagerEx.setBeforeRunTasks(configuration, listOf(taskToInject), false)
-            }
+    }
+
+    private fun injectMFTasks(configuration: RunConfiguration, replaceAll: Boolean) {
+        val oldTask = runManager.getFirstMFBeforeRunTask(configuration)
+        val taskToInject = when {
+            replaceAll || oldTask == null -> mfTaskProvider.createEnabledTask(configuration)
+            else -> oldTask
+        }
+        runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
+    }
+
+    private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
+            getBeforeRunTasks(configuration).filterIsInstance<MFBeforeRunTask>().firstOrNull()
+
+    private fun MFBeforeRunTaskProvider.createEnabledTask(runConfiguration: RunConfiguration) = createTask(runConfiguration)
+            .apply { isEnabled = true }
+
+    private fun restoreDefaultBeforeRunTasks(configuration: RunConfiguration) {
+        val beforeRunTasks = getHardcodedBeforeRunTasks(configuration, project)
+        runManager.setBeforeRunTasks(configuration, beforeRunTasks, false)
+    }
+
 }
 
-private fun MFBeforeRunTaskProvider.createEnabledTask(runConfiguration: RunConfigurationBase) = createTask(runConfiguration)
-        .apply { isEnabled = true }
+fun RunManager.getConfigurations() = (allConfigurationsList + getTemplateConfigurations())
+        .filterIsInstance<RunConfigurationBase>()
+        .filter { it.isCompileBeforeLaunchAddedByDefault }
 
-fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
-    runManager.getConfigurations()
-            .associate { it to getHardcodedBeforeRunTasks(it, project) }
-            .forEach {
-                runManager.setBeforeRunTasks(it.key, it.value, false)
-            }
-}
-
-fun RunManager.getConfigurations() = allConfigurationsList + getTemplateConfigurations()
-
-private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
-        getBeforeRunTasks(configuration).filterIsInstance<MFBeforeRunTask>().firstOrNull()
+@Deprecated("Remove when configuration dialog completed", ReplaceWith("List of MFSelectorItem"))
+fun RunManagerEx.allConfigurationMapMFSelectorItem(restore: Boolean) = getConfigurations()
+        .map { MFSelectorItem(it, restore) }
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = BeforeRunTaskProvider.EXTENSION_POINT_NAME.getExtensions(project)
