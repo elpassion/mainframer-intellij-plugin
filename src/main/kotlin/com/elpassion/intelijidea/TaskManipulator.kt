@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
+import com.intellij.execution.RunManager
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
@@ -34,7 +35,7 @@ fun restoreDefaultBeforeRunTasks(runManager: RunManagerEx, project: Project) {
             }
 }
 
-private fun RunManagerEx.getConfigurations() = allConfigurationsList + getTemplateConfigurations()
+fun RunManager.getConfigurations() = allConfigurationsList + getTemplateConfigurations()
 
 private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
         getBeforeRunTasks(configuration).filterIsInstance<MFBeforeRunTask>().firstOrNull()
@@ -51,7 +52,7 @@ private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project:
             .filter { it.isEnabled }
 }
 
-private fun RunManagerEx.getTemplateConfigurations(): List<RunConfiguration> {
+private fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
     val configurationTypes = TemplateConfigurationsProvider.get()
     return configurationTypes.flatMap { it.configurationFactories.toList() }
             .map { getConfigurationTemplate(it) }
