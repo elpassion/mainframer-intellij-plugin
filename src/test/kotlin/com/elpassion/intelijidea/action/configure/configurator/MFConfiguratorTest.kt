@@ -30,6 +30,13 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         mfConfigurator(project, configurationFromUi)(emptyList()).test().assertValue { it.file == File(project.basePath, mfFilename) }
     }
 
+    fun testConfigurationFromUiRunWithGivenVersionList() {
+        configureMainframerInProject(versionList = listOf("1.0.0"))
+
+        verify(configurationFromUi).invoke(any(), eq(listOf("1.0.0")))
+    }
+
+
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {
         stubMfTaskSettingsProvider(MFTaskData(buildCommand = "./gradlew"))
         configureMainframerInProject()
@@ -110,8 +117,8 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         Assert.assertEquals(File(project.basePath, "mainframer.sh").absolutePath, settingsProviderTask().mainframerPath)
     }
 
-    private fun configureMainframerInProject() {
-        mfConfigurator(project, configurationFromUi)(emptyList()).subscribe()
+    private fun configureMainframerInProject(versionList: List<String> = emptyList()) {
+        mfConfigurator(project, configurationFromUi)(versionList).subscribe()
     }
 
     private fun stubMfTaskSettingsProvider(mfTaskData: MFTaskData) {

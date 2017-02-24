@@ -12,7 +12,7 @@ import java.io.File
 fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn, List<String>) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
     val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
     val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
-    configurationFromUi(defaultValues, emptyList())
+    configurationFromUi(defaultValues, listOf("1.0.0"))
             .map { dataFromUi ->
                 dataFromUi to createDefaultMfLocation(project)
             }
