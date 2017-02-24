@@ -45,15 +45,8 @@ private fun Project.setRemoteMachineName(name: String) {
 private fun MFBeforeTaskDefaultSettingsProvider.getConfiguration() = taskData
 
 private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(data: Pair<MFConfiguratorOut, File>) {
-    val dataFromUi = createMFTaskData(data.first, data.second)
     taskData = taskData.copy(
-            buildCommand = dataFromUi.buildCommand,
-            taskName = dataFromUi.taskName,
-            mainframerPath = dataFromUi.mainframerPath)
-}
-
-private fun createMFTaskData(dataFromUi: MFConfiguratorOut, file: File): MFTaskData {
-    return MFTaskData(mainframerPath = file.absolutePath,
-            buildCommand = dataFromUi.buildCommand,
-            taskName = dataFromUi.taskName)
+            buildCommand = data.first.buildCommand,
+            taskName = data.first.taskName,
+            mainframerPath = data.second.absolutePath)
 }
