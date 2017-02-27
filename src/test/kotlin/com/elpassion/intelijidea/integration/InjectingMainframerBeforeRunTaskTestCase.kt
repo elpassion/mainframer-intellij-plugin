@@ -25,8 +25,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     private val taskInjector by lazy { MFTaskInjector(project, MFBeforeRunTaskProvider(project)) }
     private val runManager by lazy { taskInjector.runManager }
 
-    fun testShouldAddMainframerToConfigurationWhichRequiresCompilationBeforeLaunch() {
-        val runConfiguration = addTestConfiguration(createTestConfigurationType(compileBeforeRun = true))
+    fun testShouldAddMainframerToConfiguration() {
+        val runConfiguration = addTestConfiguration(createTestConfigurationType())
         injectMainframer()
 
         verifyBeforeRunTasks(runConfiguration)
@@ -34,16 +34,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
                 .allMatch { it is MFBeforeRunTask }
     }
 
-    fun testShouldNotAddMainframerToConfigurationWhichDoesNotRequireCompilationBeforeLaunch() {
-        val runConfiguration = addTestConfiguration(createTestConfigurationType(compileBeforeRun = false))
-        injectMainframer()
-
-        verifyBeforeRunTasks(runConfiguration)
-                .isEmpty()
-    }
-
     fun testShouldRemoveMainframerFromConfiguration() {
-        val runConfiguration = addTestConfiguration(createTestConfigurationType(compileBeforeRun = true))
+        val runConfiguration = addTestConfiguration(createTestConfigurationType())
         injectMainframer()
         restoreConfigurations()
 
@@ -51,8 +43,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
                 .isEmpty()
     }
 
-    fun testShouldAddMainframerToTemplateConfigurationWhichRequiresCompilationBeforeLaunch() {
-        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+    fun testShouldAddMainframerToTemplateConfiguration() {
+        val runConfiguration = addTestTemplateConfiguration()
 
         injectMainframer()
 
@@ -61,16 +53,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
                 .allMatch { it is MFBeforeRunTask }
     }
 
-    fun testShouldNotAddMainframerToTemplateConfigurationWhichDoesNotRequireCompilationBeforeLaunch() {
-        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = false)
-        injectMainframer()
-
-        verifyBeforeRunTasks(runConfiguration)
-                .isEmpty()
-    }
-
     fun testShouldRemoveMainframerFromTemplateConfiguration() {
-        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+        val runConfiguration = addTestTemplateConfiguration()
         injectMainframer()
         restoreConfigurations()
 
@@ -79,7 +63,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     fun testShouldNotReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
-        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+        val runConfiguration = addTestTemplateConfiguration()
         injectMainframer()
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
@@ -90,7 +74,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     fun testShouldReplaceMainframerMakeDataOnNextInjectionWhenReplacingAllMfTasks() {
-        val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
+        val runConfiguration = addTestTemplateConfiguration()
         injectMainframerReplacingAllMfTasks()
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
@@ -102,7 +86,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     private fun firstMFBeforeRunTaskData(runConfiguration: RunConfiguration) = (runManager.getBeforeRunTasks(runConfiguration).first() as MFBeforeRunTask).data
 
-    private fun createTestConfigurationType(compileBeforeRun: Boolean) = TestConfigurationType(randomString(), compileBeforeRun)
+    private fun createTestConfigurationType() = TestConfigurationType(randomString(), true)
 
     private fun addTestConfiguration(testConfigurationType: TestConfigurationType): RunConfiguration {
         val testConfigurationFactory = testConfigurationType.configurationFactories.first()
@@ -111,8 +95,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         return runConfiguration.configuration
     }
 
-    private fun addTestTemplateConfiguration(compileBeforeRun: Boolean): RunConfiguration {
-        val testConfigurationType = createTestConfigurationType(compileBeforeRun)
+    private fun addTestTemplateConfiguration(): RunConfiguration {
+        val testConfigurationType = createTestConfigurationType()
         TemplateConfigurationsProvider.testValue = listOf(testConfigurationType)
         val configurationFactory = testConfigurationType.configurationFactories.first()
         return runManager.getConfigurationTemplate(configurationFactory).configuration
