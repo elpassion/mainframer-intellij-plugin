@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.configuration
 
-import com.elpassion.intelijidea.configuration.common.assertThrows
+import com.elpassion.intelijidea.common.assertThrows
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project

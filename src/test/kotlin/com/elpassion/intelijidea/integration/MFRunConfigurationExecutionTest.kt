@@ -4,7 +4,7 @@ import com.elpassion.intelijidea.configuration.MFConfigurationFactory
 import com.elpassion.intelijidea.configuration.MFRunConfiguration
 import com.elpassion.intelijidea.configuration.MFRunConfigurationData
 import com.elpassion.intelijidea.configuration.MFRunConfigurationType
-import com.elpassion.intelijidea.configuration.common.assertThrows
+import com.elpassion.intelijidea.common.assertThrows
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.runners.ExecutionEnvironmentBuilder
