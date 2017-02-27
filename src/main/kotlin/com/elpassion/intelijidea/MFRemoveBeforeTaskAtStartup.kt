@@ -15,9 +15,9 @@ class MFRemoveBeforeTaskAtStartup : StartupActivity {
     }
 
     private fun injectBeforeRunTask(project: Project) {
-        MFTaskInjector(project, project.mfBeforeRunTaskProvider).let {
-            val allConfigurationToInject = it.runManager.allConfigurationMapMFSelectorItem(true)
-            it.injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = true)
+        MFTaskInjector(project, project.mfBeforeRunTaskProvider).run {
+            val allConfigurationToInject = runManager.allConfigurationMapMFSelectorItem(true)
+            injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = true)
         }
     }
 }

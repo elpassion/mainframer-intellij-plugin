@@ -11,9 +11,9 @@ class MFRestoreDefaultBeforeRunTasksAction : AnAction(MF_RESTORE_DEFAULT_BEFORE_
 
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let {
-            MFTaskInjector(it, it.mfBeforeRunTaskProvider).let {
-                val allConfigurationToInject = it.runManager.allConfigurationMapMFSelectorItem(false)
-                it.injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = true)
+            MFTaskInjector(it, it.mfBeforeRunTaskProvider).run {
+                val allConfigurationToInject = runManager.allConfigurationMapMFSelectorItem(false)
+                injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = true)
             }
             showInfo(it, "Restored default configuration of before run tasks.")
         }
