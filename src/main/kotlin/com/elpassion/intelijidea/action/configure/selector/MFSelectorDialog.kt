@@ -19,8 +19,10 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.setListData(items.toTypedArray())
-        form.items.setCellRenderer(MFSelectorCellRenderer())
+        form.items.run {
+            setListData(items.toTypedArray())
+            setCellRenderer(MFSelectorCellRenderer())
+        }
         return form.panel
     }
 
