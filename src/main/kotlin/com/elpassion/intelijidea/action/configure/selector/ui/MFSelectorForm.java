@@ -4,5 +4,5 @@ import javax.swing.*;
 
 public class MFSelectorForm {
     public JPanel panel;
-    public JList items;
+    public MFSelectorList items;
 }

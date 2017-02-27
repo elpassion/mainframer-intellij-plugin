@@ -1,10 +1,10 @@
 package com.elpassion.intelijidea.action.configure.selector
 
-import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorCellRenderer
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
 import com.jgoodies.common.collect.ArrayListModel
+import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
@@ -20,10 +20,7 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.run {
-            model = ArrayListModel(items)
-            setCellRenderer(MFSelectorCellRenderer())
-        }
+        form.items.model = ArrayListModel(items.map { JCheckBox(it.configuration.toString()) })
         return form.panel
     }
 
