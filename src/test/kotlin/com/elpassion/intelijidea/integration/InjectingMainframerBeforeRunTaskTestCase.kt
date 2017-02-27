@@ -8,9 +8,9 @@ import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.execution.Executor
-import com.intellij.execution.RunnerAndConfigurationSettings
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
+import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.icons.AllIcons
@@ -81,10 +81,10 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     fun testShouldNotReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
         val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
         injectMainframer()
-        val oldTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
         injectMainframer()
-        val newTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
         assertEquals(oldTaskData, newTaskData)
     }
@@ -92,27 +92,30 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     fun testShouldReplaceMainframerMakeDataOnNextInjectionWhenReplacingAllMfTasks() {
         val runConfiguration = addTestTemplateConfiguration(compileBeforeRun = true)
         injectMainframerReplacingAllMfTasks()
-        val oldTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
         injectMainframerReplacingAllMfTasks()
-        val newTaskData = (runManager.getBeforeRunTasks(runConfiguration.configuration).first() as MFBeforeRunTask).data
+        val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
         assertNotEquals(oldTaskData, newTaskData)
     }
 
+    private fun firstMFBeforeRunTaskData(runConfiguration: RunConfiguration) = (runManager.getBeforeRunTasks(runConfiguration).first() as MFBeforeRunTask).data
+
     private fun createTestConfigurationType(compileBeforeRun: Boolean) = TestConfigurationType(randomString(), compileBeforeRun)
 
-    private fun addTestConfiguration(testConfigurationType: TestConfigurationType): RunnerAndConfigurationSettings {
+    private fun addTestConfiguration(testConfigurationType: TestConfigurationType): RunConfiguration {
         val testConfigurationFactory = testConfigurationType.configurationFactories.first()
         val runConfiguration = runManager.createRunConfiguration(randomString(), testConfigurationFactory)
         runManager.addConfiguration(runConfiguration, false)
-        return runConfiguration
+        return runConfiguration.configuration
     }
 
-    private fun addTestTemplateConfiguration(compileBeforeRun: Boolean): RunnerAndConfigurationSettings {
+    private fun addTestTemplateConfiguration(compileBeforeRun: Boolean): RunConfiguration {
         val testConfigurationType = createTestConfigurationType(compileBeforeRun)
         TemplateConfigurationsProvider.testValue = listOf(testConfigurationType)
-        return runManager.getConfigurationTemplate(testConfigurationType.configurationFactories.first())
+        val configurationFactory = testConfigurationType.configurationFactories.first()
+        return runManager.getConfigurationTemplate(configurationFactory).configuration
     }
 
     private class TestConfigurationFactory(testConfigurationType: TestConfigurationType, val uuid: String, val compileBeforeLaunch: Boolean) : ConfigurationFactory(testConfigurationType) {
@@ -155,7 +158,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(false), true)
     }
 
-    private fun verifyBeforeRunTasks(runConfiguration: RunnerAndConfigurationSettings) = assertThat(runManager.getBeforeRunTasks(runConfiguration.configuration))
+    private fun verifyBeforeRunTasks(configuration: RunConfiguration) = assertThat(runManager.getBeforeRunTasks(configuration))
 
     private fun randomString() = UUID.randomUUID().toString()
 }
