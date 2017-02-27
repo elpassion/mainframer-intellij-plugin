@@ -2,7 +2,7 @@ package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.MFTaskInjector
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
-import com.elpassion.intelijidea.getConfigurationsAsSelectorItems
+import com.elpassion.intelijidea.action.configure.selector.MFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
@@ -27,7 +27,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     fun testShouldAddMainframerToConfiguration() {
         val runConfiguration = addTestConfiguration(createTestConfigurationType())
-        injectMainframer()
+        injectMainframer(runConfiguration)
 
         verifyBeforeRunTasks(runConfiguration)
                 .hasSize(1)
@@ -36,8 +36,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     fun testShouldRemoveMainframerFromConfiguration() {
         val runConfiguration = addTestConfiguration(createTestConfigurationType())
-        injectMainframer()
-        restoreConfigurations()
+        injectMainframer(runConfiguration)
+        restoreConfigurations(runConfiguration)
 
         verifyBeforeRunTasks(runConfiguration)
                 .isEmpty()
@@ -46,7 +46,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     fun testShouldAddMainframerToTemplateConfiguration() {
         val runConfiguration = addTestTemplateConfiguration()
 
-        injectMainframer()
+        injectMainframer(runConfiguration)
 
         verifyBeforeRunTasks(runConfiguration)
                 .hasSize(1)
@@ -55,8 +55,8 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     fun testShouldRemoveMainframerFromTemplateConfiguration() {
         val runConfiguration = addTestTemplateConfiguration()
-        injectMainframer()
-        restoreConfigurations()
+        injectMainframer(runConfiguration)
+        restoreConfigurations(runConfiguration)
 
         verifyBeforeRunTasks(runConfiguration)
                 .isEmpty()
@@ -64,10 +64,10 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     fun testShouldNotReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
         val runConfiguration = addTestTemplateConfiguration()
-        injectMainframer()
+        injectMainframer(runConfiguration)
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
-        injectMainframer()
+        injectMainframer(runConfiguration)
         val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
         assertEquals(oldTaskData, newTaskData)
@@ -75,10 +75,10 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
 
     fun testShouldReplaceMainframerMakeDataOnNextInjectionWhenReplacingAllMfTasks() {
         val runConfiguration = addTestTemplateConfiguration()
-        injectMainframerReplacingAllMfTasks()
+        injectMainframerReplacingAllMfTasks(runConfiguration)
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = MFTaskData("path2")
-        injectMainframerReplacingAllMfTasks()
+        injectMainframerReplacingAllMfTasks(runConfiguration)
         val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
         assertNotEquals(oldTaskData, newTaskData)
@@ -130,16 +130,21 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         override fun getConfigurationFactories() = arrayOf<ConfigurationFactory>(elements)
     }
 
-    private fun injectMainframer() {
-        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(true), false)
+    private fun injectMainframerReplacingAllMfTasks(runConfiguration: RunConfiguration) {
+        inject(runConfiguration, true, true)
     }
 
-    private fun injectMainframerReplacingAllMfTasks() {
-        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(true), true)
+    private fun restoreConfigurations(runConfiguration: RunConfiguration) {
+        inject(runConfiguration, false, false)
     }
 
-    private fun restoreConfigurations() {
-        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(false), true)
+    private fun injectMainframer(runConfiguration: RunConfiguration) {
+        inject(runConfiguration, true, false)
+    }
+
+    private fun inject(runConfiguration: RunConfiguration, shouldInject: Boolean, replaceAll: Boolean) {
+        val mfSelectorItem = MFSelectorItem(runConfiguration, shouldInject)
+        taskInjector.injectMainframerBeforeTasks(listOf(mfSelectorItem), replaceAll)
     }
 
     private fun verifyBeforeRunTasks(configuration: RunConfiguration) = assertThat(runManager.getBeforeRunTasks(configuration))
