@@ -46,15 +46,6 @@ class MainframerPathValidatorTest {
     }
 
     @Test
-    fun shouldReturnNullInfoIfPathsValid() {
-        val mfScript = createMFScript()
-        mfScript.setExecutable(true)
-        whenever(mainframerPathField.text).thenReturn(mfScript.path)
-        val result = MainframerPathValidator(mainframerPathField).validate()
-        assertNull(result)
-    }
-
-    @Test
     fun shouldReturnProperValidationInfoIfNotExecutable() {
         val mfScript = createMFScript()
         mfScript.setExecutable(false)
@@ -64,7 +55,7 @@ class MainframerPathValidatorTest {
     }
 
     @Test
-    fun shouldReturnNullInfoIfExecutable() {
+    fun shouldReturnNullInfoIfExecutableAndPathsValid() {
         val mfScript = createMFScript()
         mfScript.setExecutable(true)
         whenever(mainframerPathField.text).thenReturn(mfScript.path)
