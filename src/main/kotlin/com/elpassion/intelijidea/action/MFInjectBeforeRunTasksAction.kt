@@ -41,7 +41,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
         showInfo(this, "Mainframer injected!")
     }
 
-    private fun Project.showInvalidSettingsError() = showError(this, "Mainframer settings is invalid")
+    private fun Project.showInvalidSettingsError() = showError(this, "Mainframer settings are invalid")
 
     companion object {
         private val MF_INJECT_BEFORE_RUN_TASK_ACTION = "Inject mainframer before run task"
