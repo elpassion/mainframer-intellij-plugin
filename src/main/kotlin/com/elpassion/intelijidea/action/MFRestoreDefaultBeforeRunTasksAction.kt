@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.action
 
 import com.elpassion.intelijidea.MFTaskInjector
-import com.elpassion.intelijidea.allConfigurationMapMFSelectorItem
+import com.elpassion.intelijidea.getConfigurationsAsSelectorItems
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.openapi.actionSystem.AnAction
@@ -12,7 +12,7 @@ class MFRestoreDefaultBeforeRunTasksAction : AnAction(MF_RESTORE_DEFAULT_BEFORE_
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let {
             MFTaskInjector(it, it.mfBeforeRunTaskProvider).run {
-                val allConfigurationToInject = runManager.allConfigurationMapMFSelectorItem(false)
+                val allConfigurationToInject = runManager.getConfigurationsAsSelectorItems(false)
                 injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = true)
             }
             showInfo(it, "Restored default configuration of before run tasks.")

@@ -53,7 +53,7 @@ fun RunManager.getConfigurations() = (allConfigurationsList + getTemplateConfigu
         .filter { it.isCompileBeforeLaunchAddedByDefault }
 
 @Deprecated("Remove when configuration dialog completed", ReplaceWith("List of MFSelectorItem"))
-fun RunManagerEx.allConfigurationMapMFSelectorItem(restore: Boolean) = getConfigurations()
+fun RunManagerEx.getConfigurationsAsSelectorItems(restore: Boolean) = getConfigurations()
         .map { MFSelectorItem(it, restore) }
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {

@@ -2,7 +2,7 @@ package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.MFTaskInjector
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
-import com.elpassion.intelijidea.allConfigurationMapMFSelectorItem
+import com.elpassion.intelijidea.getConfigurationsAsSelectorItems
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
@@ -144,15 +144,15 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframer() {
-        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(true), false)
+        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(true), false)
     }
 
     private fun injectMainframerReplacingAllMfTasks() {
-        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(true), true)
+        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(true), true)
     }
 
     private fun restoreConfigurations() {
-        taskInjector.injectMainframerBeforeTasks(runManager.allConfigurationMapMFSelectorItem(false), true)
+        taskInjector.injectMainframerBeforeTasks(runManager.getConfigurationsAsSelectorItems(false), true)
     }
 
     private fun verifyBeforeRunTasks(runConfiguration: RunnerAndConfigurationSettings) = assertThat(runManager.getBeforeRunTasks(runConfiguration.configuration))
