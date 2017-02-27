@@ -48,7 +48,6 @@ class MainframerPathValidatorTest {
     @Test
     fun shouldReturnProperValidationInfoIfNotExecutable() {
         val mfScript = createMFScript()
-        mfScript.setExecutable(false)
         whenever(mainframerPathField.text).thenReturn(mfScript.path)
         val result = MainframerPathValidator(mainframerPathField).validate()
         assertEquals("Mainframer script in not executable", result?.message)
