@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorCellRend
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
+import com.jgoodies.common.collect.ArrayListModel
 import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
@@ -20,7 +21,7 @@ class MFSelectorDialog(project: Project,
 
     override fun createCenterPanel(): JComponent {
         form.items.run {
-            setListData(items.toTypedArray())
+            model = ArrayListModel(items)
             setCellRenderer(MFSelectorCellRenderer())
         }
         return form.panel
