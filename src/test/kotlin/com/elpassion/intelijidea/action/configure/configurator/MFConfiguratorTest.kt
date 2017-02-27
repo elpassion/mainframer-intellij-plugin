@@ -22,12 +22,24 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReturnChosenVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.version == "1.0.0" }
+        mfConfigurator(project, configurationFromUi)(emptyList()).test().assertValue { it.version == "1.0.0" }
     }
 
     fun testShouldReturnDefaultMainframerPathVersion() {
         stubConfigurationFromUi(version = "1.0.0")
-        mfConfiguratorImpl(project, configurationFromUi).test().assertValue{ it.file == File(project.basePath, mfFilename) }
+        mfConfigurator(project, configurationFromUi)(emptyList()).test().assertValue { it.file == File(project.basePath, mfFilename) }
+    }
+
+    fun testConfigurationFromUiRunWithGivenVersionList() {
+        configureMainframerInProject(versionList = listOf("1.0.0"))
+
+        verify(configurationFromUi).invoke(argThat { versionList == listOf("1.0.0") })
+    }
+
+    fun testConfigurationFromUiRunReallyWithGivenVersionList() {
+        configureMainframerInProject(versionList = listOf("1.1.0"))
+
+        verify(configurationFromUi).invoke(argThat { versionList == listOf("1.1.0") })
     }
 
     fun testConfigurationFromUiRunWithBuildCommandFromProvider() {
@@ -110,8 +122,8 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
         Assert.assertEquals(File(project.basePath, "mainframer.sh").absolutePath, settingsProviderTask().mainframerPath)
     }
 
-    private fun configureMainframerInProject() {
-        mfConfiguratorImpl(project, configurationFromUi).subscribe()
+    private fun configureMainframerInProject(versionList: List<String> = emptyList()) {
+        mfConfigurator(project, configurationFromUi)(versionList).subscribe()
     }
 
     private fun stubMfTaskSettingsProvider(mfTaskData: MFTaskData) {

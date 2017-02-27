@@ -1,72 +1,41 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
-import com.elpassion.intelijidea.common.MFToolConfiguration
-import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
-import com.elpassion.intelijidea.task.MFTaskData
 import com.elpassion.intelijidea.util.mfFilename
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 import java.io.File
 
-fun mfConfigurator(project: Project) = { versionsList: List<String> ->
-    mfConfiguratorImpl(project, { defaultValues -> showConfigurationDialog(project, versionsList, defaultValues) })
-}
-
-fun mfConfiguratorImpl(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>): Maybe<MFToolInfo> {
-    val provider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
-    val defaultValues = createDefaultValues(provider.taskData, project.getRemoteMachineName())
-    return configurationFromUi(defaultValues)
-            .map { dataFromUi ->
-                dataFromUi to createDefaultMfLocation(project)
-            }
+fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> Maybe<MFConfiguratorOut>) = { versionList: List<String> ->
+    val mfStorage = MFPluginConfigurationRepository(project)
+    val defaultValues = createDefaultValues(versionList, mfStorage.getConfiguration())
+    val file = createDefaultMfLocation(project)
+    configurationFromUi(defaultValues)
             .doAfterSuccess { data ->
-                val dataFromUi = data.first
-                val defaultMfLocation = data.second
-                provider.saveConfiguration(createMFTaskData(dataFromUi, defaultMfLocation))
-                project.setRemoteMachineName(dataFromUi.remoteName)
+                mfStorage.saveConfiguration(MFPluginConfiguration(data.taskName, data.buildCommand, data.remoteName, file.absolutePath))
             }
-            .map { MFToolInfo(it.first.version, it.second) }
+            .map { MFToolInfo(it.version, file) }
 }
 
 private fun createDefaultMfLocation(project: Project) = File(project.basePath, mfFilename)
 
-private fun showConfigurationDialog(project: Project, versionsList: List<String>, defaultValues: MFConfiguratorIn) =
-        Maybe.create<MFConfiguratorOut> { emitter ->
-            MFConfiguratorDialog(project, versionsList, defaultValues, {
-                emitter.onSuccess(it)
-                emitter.onComplete()
-            }, {
-                emitter.onComplete()
-            }).show()
-        }
-
-fun createDefaultValues(taskData: MFTaskData, remoteMachineName: String?): MFConfiguratorIn {
-    return MFConfiguratorIn(remoteName = remoteMachineName,
-            taskName = taskData.taskName,
-            buildCommand = taskData.buildCommand)
+private fun createDefaultValues(versionList: List<String>, mfPluginConfiguration: MFPluginConfiguration): MFConfiguratorIn {
+    return MFConfiguratorIn(versionList = versionList,
+            remoteName = mfPluginConfiguration.remoteName,
+            taskName = mfPluginConfiguration.taskName,
+            buildCommand = mfPluginConfiguration.buildCommand)
 }
 
-fun createMFTaskData(dataFromUi: MFConfiguratorOut, file: File): MFTaskData {
-    return MFTaskData(mainframerPath = file.absolutePath,
-            buildCommand = dataFromUi.buildCommand,
-            taskName = dataFromUi.taskName)
-}
+data class MFConfiguratorIn(val versionList: List<String>,
+                            val remoteName: String?,
+                            val taskName: String?,
+                            val buildCommand: String?)
 
+data class MFConfiguratorOut(val version: String,
+                             val remoteName: String,
+                             val taskName: String,
+                             val buildCommand: String)
 
-private fun Project.getRemoteMachineName() = ApplicationManager.getApplication().runReadAction<String> {
-    MFToolConfiguration(basePath).readRemoteMachineName()
-}
-
-private fun Project.setRemoteMachineName(name: String) {
-    ApplicationManager.getApplication().runWriteAction {
-        MFToolConfiguration(basePath).writeRemoteMachineName(name)
-    }
-}
-
-private fun MFBeforeTaskDefaultSettingsProvider.saveConfiguration(dataFromUi: MFTaskData) {
-    taskData = taskData.copy(
-            buildCommand = dataFromUi.buildCommand,
-            taskName = dataFromUi.taskName,
-            mainframerPath = dataFromUi.mainframerPath)
-}
+data class MFPluginConfiguration(val taskName: String?,
+                                 val buildCommand: String?,
+                                 val remoteName: String?,
+                                 val mainframerPath: String?)

@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.action.configure
 
+import com.elpassion.intelijidea.action.configure.configurator.mfConfigurationDialog
 import com.elpassion.intelijidea.action.configure.configurator.mfConfigurator
 import com.elpassion.intelijidea.action.configure.downloader.mfFileDownloader
 import com.elpassion.intelijidea.action.configure.releases.api.provideGitHubApi
@@ -16,7 +17,7 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
         event.project?.let { project ->
             MFConfigureProjectActionController(
                     mainframerReleasesFetcher = mfReleasesFetcher(provideGitHubApi(provideGitHubRetrofit())),
-                    mainframerConfigurator = mfConfigurator(project),
+                    mainframerConfigurator = mfConfigurator(project, mfConfigurationDialog(project)),
                     mainframerFileDownloader = mfFileDownloader(project),
                     showMessage = { message -> Messages.showInfoMessage(message, MF_CONFIGURE_PROJECT) },
                     uiScheduler = UIScheduler,
