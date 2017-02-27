@@ -21,11 +21,13 @@ class BuildCommandValidator(private val buildCommandField: JTextField) : FieldVa
 
 class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrowseButton) : FieldValidator {
     override fun validate() =
-            when {
-                mainframerPathField.isBlank() -> ValidationInfo("Path cannot be empty", mainframerPathField)
-                mainframerPathField.isPathToScriptInvalid() -> ValidationInfo("Cannot find mainframer script in path", mainframerPathField)
-                mainframerPathField.isScriptNotExecutable() -> ValidationInfo("Mainframer script in not executable", mainframerPathField)
-                else -> null
+            with(mainframerPathField) {
+                when {
+                    isBlank() -> ValidationInfo("Path cannot be empty", this)
+                    isPathToScriptInvalid() -> ValidationInfo("Cannot find mainframer script in path", this)
+                    isScriptNotExecutable() -> ValidationInfo("Mainframer script in not executable", this)
+                    else -> null
+                }
             }
 }
 
