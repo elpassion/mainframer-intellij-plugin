@@ -4,7 +4,7 @@ import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
 import com.jgoodies.common.collect.ArrayListModel
-import io.reactivex.Single
+import io.reactivex.Maybe
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
@@ -36,11 +36,12 @@ class MFSelectorDialog(project: Project,
     }
 }
 
-fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Single<List<MFSelectorItem>> =
-        Single.create<List<MFSelectorItem>> { emitter ->
+fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<List<MFSelectorItem>> =
+        Maybe.create<List<MFSelectorItem>> { emitter ->
             MFSelectorDialog(project, selectorItems, {
                 emitter.onSuccess(it)
+                emitter.onComplete()
             }, {
-                emitter.onSuccess(emptyList())
+                emitter.onComplete()
             }).show()
         }

@@ -5,9 +5,9 @@ import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
-import io.reactivex.Single
+import io.reactivex.Maybe
 
-fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Single<List<MFSelectorItem>>): Single<List<MFSelectorItem>> =
+fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Maybe<List<MFSelectorItem>>): Maybe<List<MFSelectorItem>> =
         with(RunManagerEx.getInstanceEx(project)) {
             selectorFromUi(getConfigurationItems() + getTemplateConfigurationItems())
         }
