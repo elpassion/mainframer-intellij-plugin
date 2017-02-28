@@ -7,15 +7,6 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
 import io.reactivex.Single
 
-fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Single<List<MFSelectorItem>> =
-        Single.create<List<MFSelectorItem>> { emitter ->
-            MFSelectorDialog(project, selectorItems, {
-                emitter.onSuccess(it)
-            }, {
-                emitter.onSuccess(emptyList())
-            }).show()
-        }
-
 fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Single<List<MFSelectorItem>>): Single<List<MFSelectorItem>> =
         with(RunManagerEx.getInstanceEx(project)) {
             selectorFromUi(getConfigurationItems() + getTemplateConfigurationItems())

@@ -4,6 +4,7 @@ import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
 import com.jgoodies.common.collect.ArrayListModel
+import io.reactivex.Single
 import javax.swing.JCheckBox
 import javax.swing.JComponent
 
@@ -34,3 +35,12 @@ class MFSelectorDialog(project: Project,
         isSelected = item.isSelected
     }
 }
+
+fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Single<List<MFSelectorItem>> =
+        Single.create<List<MFSelectorItem>> { emitter ->
+            MFSelectorDialog(project, selectorItems, {
+                emitter.onSuccess(it)
+            }, {
+                emitter.onSuccess(emptyList())
+            }).show()
+        }
