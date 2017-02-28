@@ -4,5 +4,15 @@ import com.intellij.execution.configurations.RunConfiguration
 
 data class MFSelectorItem(val configuration: RunConfiguration, val isSelected: Boolean) {
 
-    fun getName(): String = configuration.toString()
+    val type: String
+        get() = configuration.type.displayName
+
+    val isTemplate: Boolean
+        get() = configuration.name.isBlank()
+
+    fun getName(): String = if (isTemplate) {
+        "$type template"
+    } else {
+        "[$type] ${configuration.name}"
+    }
 }
