@@ -26,7 +26,7 @@ class MFSelectorDialog(project: Project,
 
     override fun getSuccessResult(): List<MFSelectorItem> = items
 
-    private fun MFSelectorItem.asCheckBox() = JCheckBox(configuration.toString()).apply {
+    private fun MFSelectorItem.asCheckBox() = JCheckBox(getName()).apply {
         val item = this@asCheckBox
         isSelected = item.isSelected
     }
