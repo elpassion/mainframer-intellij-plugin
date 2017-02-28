@@ -20,14 +20,14 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.model = items.filterNot { it.isTemplate }.asModel()
-        form.templateItems.model = items.filter { it.isTemplate }.asModel()
+        form.items.model = items.filterNot { it.isTemplate }.asListModel()
+        form.templateItems.model = items.filter { it.isTemplate }.asListModel()
         return form.panel
     }
 
     override fun getSuccessResult(): List<MFSelectorItem> = items
 
-    private fun List<MFSelectorItem>.asModel() = ArrayListModel(sortedBy { it.getName() }.map { it.asCheckBox() })
+    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(sortedBy { it.getName() }.map { it.asCheckBox() })
 
     private fun MFSelectorItem.asCheckBox() = JCheckBox(getName()).apply {
         val item = this@asCheckBox
