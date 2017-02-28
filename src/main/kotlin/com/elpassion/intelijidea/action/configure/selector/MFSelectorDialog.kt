@@ -20,7 +20,7 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.model = ArrayListModel(items.map { JCheckBox(it.configuration.toString()) })
+        form.items.model = ArrayListModel(items.map { JCheckBox(it.configuration.toString()).apply { isSelected = it.isSelected } })
         return form.panel
     }
 
