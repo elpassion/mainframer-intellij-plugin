@@ -10,9 +10,5 @@ data class MFSelectorItem(val configuration: RunConfiguration, val isSelected: B
     val isTemplate: Boolean
         get() = configuration.name.isBlank()
 
-    fun getName(): String = if (isTemplate) {
-        "$type template"
-    } else {
-        "[$type] ${configuration.name}"
-    }
+    fun getName(): String = if (isTemplate) type else "[$type] ${configuration.name}"
 }
