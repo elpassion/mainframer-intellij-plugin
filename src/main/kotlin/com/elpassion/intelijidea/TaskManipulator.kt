@@ -60,16 +60,12 @@ fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
 }
 
 private fun RunManagerEx.getAllConfigurationsAsSelectorItems(restore: Boolean) =
-        allConfigurationsList
-                .filterIsInstance<RunConfigurationBase>()
-                .filter { it.isCompileBeforeLaunchAddedByDefault }
+        allConfigurationsList.filterInjectableConfigurations()
                 .map { MFSelectorItem(it, isTemplate = false, isSelected = restore) }
 
 
 private fun RunManagerEx.getTemplateConfigurationsAsSelectorItems(restore: Boolean) =
-        getTemplateConfigurations()
-                .filterIsInstance<RunConfigurationBase>()
-                .filter { it.isCompileBeforeLaunchAddedByDefault }
+        getTemplateConfigurations().filterInjectableConfigurations()
                 .map { MFSelectorItem(it, isTemplate = true, isSelected = restore) }
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
@@ -83,3 +79,6 @@ private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project:
             .filterNotNull()
             .filter { it.isEnabled }
 }
+
+private fun List<RunConfiguration>.filterInjectableConfigurations() = filterIsInstance<RunConfigurationBase>()
+        .filter { it.isCompileBeforeLaunchAddedByDefault }

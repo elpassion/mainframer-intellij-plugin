@@ -18,14 +18,17 @@ fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): O
             }).show()
         }
 
-fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Observable<MFSelectorItem>): Single<List<MFSelectorItem>> {
-    val runManager = RunManagerEx.getInstanceEx(project)
-    val selectorItems = runManager.allConfigurationsList
-            .map { MFSelectorItem(it, isTemplate = false, isSelected = runManager.hasMainframerTask(it)) } +
-            runManager.getTemplateConfigurations()
-                    .map { MFSelectorItem(it, isTemplate = true, isSelected = runManager.hasMainframerTask(it)) }
-    return selectorFromUi(selectorItems).toList()
-}
+fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Observable<MFSelectorItem>): Single<List<MFSelectorItem>> =
+        with(RunManagerEx.getInstanceEx(project)) {
+            val selectorItems = getConfigurationItems() + getTemplateConfigurationItems()
+            selectorFromUi(selectorItems).toList()
+        }
+
+private fun RunManagerEx.getConfigurationItems() = allConfigurationsList
+        .map { MFSelectorItem(it, isTemplate = false, isSelected = hasMainframerTask(it)) }
+
+private fun RunManagerEx.getTemplateConfigurationItems() = getTemplateConfigurations()
+        .map { MFSelectorItem(it, isTemplate = true, isSelected = hasMainframerTask(it)) }
 
 private fun RunManagerEx.hasMainframerTask(configuration: RunConfiguration) =
         getBeforeRunTasks(configuration).any { it is MFBeforeRunTask }
