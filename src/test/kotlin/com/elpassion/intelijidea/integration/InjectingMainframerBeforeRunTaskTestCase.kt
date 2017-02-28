@@ -143,7 +143,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun inject(runConfiguration: RunConfiguration, shouldInject: Boolean, replaceAll: Boolean) {
-        val mfSelectorItem = MFSelectorItem(runConfiguration, shouldInject)
+        val mfSelectorItem = MFSelectorItem(runConfiguration, false, shouldInject)
         taskInjector.injectMainframerBeforeTasks(listOf(mfSelectorItem), replaceAll)
     }
 

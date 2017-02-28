@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.configure.selector
 
-import com.elpassion.intelijidea.getConfigurations
+import com.elpassion.intelijidea.getTemplateConfigurations
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.RunConfiguration
@@ -20,8 +20,10 @@ fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): O
 
 fun mfSelector(project: Project, selectorFromUi: (List<MFSelectorItem>) -> Observable<MFSelectorItem>): Single<List<MFSelectorItem>> {
     val runManager = RunManagerEx.getInstanceEx(project)
-    val selectorItems = runManager.getConfigurations()
-            .map { MFSelectorItem(it, runManager.hasMainframerTask(it)) }
+    val selectorItems = runManager.allConfigurationsList
+            .map { MFSelectorItem(it, isTemplate = false, isSelected = runManager.hasMainframerTask(it)) } +
+            runManager.getTemplateConfigurations()
+                    .map { MFSelectorItem(it, isTemplate = true, isSelected = runManager.hasMainframerTask(it)) }
     return selectorFromUi(selectorItems).toList()
 }
 

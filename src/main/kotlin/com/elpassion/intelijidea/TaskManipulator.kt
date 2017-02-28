@@ -48,13 +48,29 @@ class MFTaskInjector(val project: Project, val mfTaskProvider: MFBeforeRunTaskPr
 
 }
 
-fun RunManager.getConfigurations() = (allConfigurationsList + getTemplateConfigurations())
-        .filterIsInstance<RunConfigurationBase>()
-        .filter { it.isCompileBeforeLaunchAddedByDefault }
-
 @Deprecated("Remove when configuration dialog completed", ReplaceWith("List of MFSelectorItem"))
-fun RunManagerEx.getConfigurationsAsSelectorItems(restore: Boolean) = getConfigurations()
-        .map { MFSelectorItem(it, restore) }
+fun RunManagerEx.getConfigurationsAsSelectorItems(restore: Boolean) =
+        (getAllConfigurationsAsSelectorItems(restore) + getTemplateConfigurationsAsSelectorItems(restore))
+
+fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
+    val configurationTypes = TemplateConfigurationsProvider.get()
+    return configurationTypes.flatMap { it.configurationFactories.toList() }
+            .map { getConfigurationTemplate(it) }
+            .map { it.configuration }
+}
+
+private fun RunManagerEx.getAllConfigurationsAsSelectorItems(restore: Boolean) =
+        allConfigurationsList
+                .filterIsInstance<RunConfigurationBase>()
+                .filter { it.isCompileBeforeLaunchAddedByDefault }
+                .map { MFSelectorItem(it, isTemplate = false, isSelected = restore) }
+
+
+private fun RunManagerEx.getTemplateConfigurationsAsSelectorItems(restore: Boolean) =
+        getTemplateConfigurations()
+                .filterIsInstance<RunConfigurationBase>()
+                .filter { it.isCompileBeforeLaunchAddedByDefault }
+                .map { MFSelectorItem(it, isTemplate = true, isSelected = restore) }
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = BeforeRunTaskProvider.EXTENSION_POINT_NAME.getExtensions(project)
@@ -66,11 +82,4 @@ private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project:
             }
             .filterNotNull()
             .filter { it.isEnabled }
-}
-
-private fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
-    val configurationTypes = TemplateConfigurationsProvider.get()
-    return configurationTypes.flatMap { it.configurationFactories.toList() }
-            .map { getConfigurationTemplate(it) }
-            .map { it.configuration }
 }
