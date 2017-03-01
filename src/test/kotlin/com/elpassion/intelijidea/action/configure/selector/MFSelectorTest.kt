@@ -5,20 +5,19 @@ import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCa
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import io.reactivex.Maybe
 
 class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
 
-    private val selectorFromUi = mock<(List<MFSelectorItem>) -> Maybe<List<MFSelectorItem>>>()
+    private val uiSelector = mock<MFUiSelector>()
 
     fun testShouldReturnEmptyItemsListWhenNoConfigurationInProject() {
-        whenever(selectorFromUi.invoke(any())).thenJust(emptyList())
-        mfSelector(project, selectorFromUi).test().assertValue { it.isEmpty() }
+        whenever(uiSelector.invoke(any())).thenJust(emptyList())
+        mfSelector(project, uiSelector).test().assertValue { it.isEmpty() }
     }
 
     fun testShouldReturnNotSelectedConfigurationWhenNoChangeInSelector() {
         val selectorItem = MFSelectorItem(mock(), false, false)
-        whenever(selectorFromUi.invoke(any())).thenJust(listOf(selectorItem))
-        mfSelector(project, selectorFromUi).test().assertValue { it == listOf(selectorItem) }
+        whenever(uiSelector.invoke(any())).thenJust(listOf(selectorItem))
+        mfSelector(project, uiSelector).test().assertValue { it == listOf(selectorItem) }
     }
 }
