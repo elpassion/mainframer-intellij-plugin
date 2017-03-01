@@ -15,9 +15,9 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
         mfSelector(project, uiSelector).test().assertValue { it.isEmpty() }
     }
 
-    fun testShouldReturnNotSelectedConfigurationWhenNoChangeInSelector() {
+    fun testShouldReturnSelectedConfigurationOnChangeInUi() {
         val selectorItem = MFSelectorItem(mock(), false, false)
-        whenever(uiSelector.invoke(any())).thenJust(listOf(selectorItem))
-        mfSelector(project, uiSelector).test().assertValue { it == listOf(selectorItem) }
+        whenever(uiSelector.invoke(any())).thenJust(listOf(selectorItem.copy(isSelected = true)))
+        mfSelector(project, uiSelector).test().assertValue { it == listOf(selectorItem.copy(isSelected = true)) }
     }
 }
