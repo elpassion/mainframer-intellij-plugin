@@ -42,5 +42,16 @@ class MFSelectorResultTest {
         assertEquals(listOf(item.configuration), toRestore)
     }
 
+    @Test
+    fun shouldReturnOnlyChangedConfigurationsOnChangesInUi() {
+        val item1 = createSelectorItem()
+        val item2 = createSelectorItem(isSelected = true)
+        val (toInject, toRestore) = getSelectorResult(
+                uiIn = listOf(item1, item2),
+                uiOut = listOf(item1, item2.copy(isSelected = false)))
+        assertTrue(toInject.isEmpty())
+        assertEquals(listOf(item2.configuration), toRestore)
+    }
+
     private fun createSelectorItem(isSelected: Boolean = false) = MFSelectorItem(mock(), false, isSelected)
 }
