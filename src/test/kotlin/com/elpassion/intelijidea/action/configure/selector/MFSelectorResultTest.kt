@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.action.configure.selector
 
-import com.intellij.execution.configurations.RunConfiguration
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -17,7 +16,7 @@ class MFSelectorResultTest {
 
     @Test
     fun shouldReturnEmptyResultWhenNoChangesInUi() {
-        val items = listOf(MFSelectorItem(mock(), false, false))
+        val items = listOf(createSelectorItem())
         val (toInject, toRestore) = getSelectorResult(items, items)
         assertTrue(toInject.isEmpty())
         assertTrue(toRestore.isEmpty())
@@ -25,23 +24,23 @@ class MFSelectorResultTest {
 
     @Test
     fun shouldReturnConfigurationToInjectWhenSelectedInUi() {
-        val configuration = mock<RunConfiguration>()
-        val item = MFSelectorItem(configuration, false, false)
+        val item = createSelectorItem()
         val (toInject, toRestore) = getSelectorResult(
                 uiIn = listOf(item),
                 uiOut = listOf(item.copy(isSelected = true)))
-        assertEquals(listOf(configuration), toInject)
+        assertEquals(listOf(item.configuration), toInject)
         assertTrue(toRestore.isEmpty())
     }
 
     @Test
     fun shouldReturnConfigurationToRestoreWhenUnselectedInUi() {
-        val configuration = mock<RunConfiguration>()
-        val item = MFSelectorItem(configuration, false, true)
+        val item = createSelectorItem(isSelected = true)
         val (toInject, toRestore) = getSelectorResult(
                 uiIn = listOf(item),
                 uiOut = listOf(item.copy(isSelected = false)))
         assertTrue(toInject.isEmpty())
-        assertEquals(listOf(configuration), toRestore)
+        assertEquals(listOf(item.configuration), toRestore)
     }
+
+    private fun createSelectorItem(isSelected: Boolean = false) = MFSelectorItem(mock(), false, isSelected)
 }
