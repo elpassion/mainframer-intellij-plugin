@@ -14,7 +14,13 @@ fun mfSelector(project: Project, uiSelector: MFUiSelector): Maybe<List<MFSelecto
             uiSelector(getConfigurationItems() + getTemplateConfigurationItems())
         }
 
-fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>): List<MFSelectorItem> = emptyList()
+fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>): List<MFSelectorItem> {
+    if (uiOut != uiIn) {
+        return uiOut
+    } else {
+        return emptyList()
+    }
+}
 
 private fun RunManagerEx.getConfigurationItems() = allConfigurationsList
         .map { MFSelectorItem(it, isTemplate = false, isSelected = hasMainframerTask(it)) }

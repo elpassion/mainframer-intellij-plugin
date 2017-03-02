@@ -31,4 +31,12 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
         val result = getSelectorResult(items, items)
         assertTrue(result.isEmpty())
     }
+
+    fun testShouldReturnSelectedItemOnChangeInUi() {
+        val item = MFSelectorItem(mock(), false, false)
+        val result = getSelectorResult(
+                uiIn = listOf(item),
+                uiOut = listOf(item.copy(isSelected = true)))
+        assertEquals(listOf(item.copy(isSelected = true)), result)
+    }
 }
