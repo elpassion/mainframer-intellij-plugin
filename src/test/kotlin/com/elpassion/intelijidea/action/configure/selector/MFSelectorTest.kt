@@ -25,4 +25,10 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
         val result = getSelectorResult(emptyList(), emptyList())
         assertTrue(result.isEmpty())
     }
+
+    fun testShouldReturnEmptyResultWhenNoChangesInUi() {
+        val items = listOf(MFSelectorItem(mock(), false, false))
+        val result = getSelectorResult(items, items)
+        assertTrue(result.isEmpty())
+    }
 }
