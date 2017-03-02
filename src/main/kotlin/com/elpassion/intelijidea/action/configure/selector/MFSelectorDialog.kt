@@ -10,8 +10,8 @@ import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
                        val items: List<MFSelectorItem>,
-                       doOnOk: (List<MFSelectorItem>) -> Unit,
-                       doOnCancel: () -> Unit) : DialogWrapperAdapter<List<MFSelectorItem>>(project, doOnOk, doOnCancel) {
+                       doOnOk: (MFSelectorResult) -> Unit,
+                       doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
 
@@ -26,7 +26,7 @@ class MFSelectorDialog(project: Project,
         return form.panel
     }
 
-    override fun getSuccessResult(): List<MFSelectorItem> = getSelectorResult(uiIn = items, uiOut = items.mapFromUi())
+    override fun getSuccessResult(): MFSelectorResult = getSelectorResult(uiIn = items, uiOut = items.mapFromUi())
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(sortedBy { it.getName() }.map { it.asCheckBox() })
 
@@ -40,8 +40,8 @@ class MFSelectorDialog(project: Project,
     }
 }
 
-fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<List<MFSelectorItem>> =
-        Maybe.create<List<MFSelectorItem>> { emitter ->
+fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<MFSelectorResult> =
+        Maybe.create<MFSelectorResult> { emitter ->
             MFSelectorDialog(project, selectorItems, {
                 emitter.onSuccess(it)
                 emitter.onComplete()

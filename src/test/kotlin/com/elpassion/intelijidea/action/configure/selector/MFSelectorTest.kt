@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.action.configure.selector
 
 import com.elpassion.android.commons.rxjavatest.thenJust
+import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCase
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -11,32 +12,38 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
     private val uiSelector = mock<MFUiSelector>()
 
     fun testShouldReturnEmptyItemsListWhenNoConfigurationInProject() {
-        whenever(uiSelector.invoke(any())).thenJust(emptyList())
-        mfSelector(project, uiSelector).test().assertValue { it.isEmpty() }
+        val result = MFSelectorResult(emptyList(), emptyList())
+        whenever(uiSelector.invoke(any())).thenJust(result)
+        mfSelector(project, uiSelector).test().assertValue { it == result }
     }
 
     fun testShouldReturnSelectedConfigurationOnChangeInUi() {
-        val selectorItem = MFSelectorItem(mock(), false, false)
-        whenever(uiSelector.invoke(any())).thenJust(listOf(selectorItem.copy(isSelected = true)))
-        mfSelector(project, uiSelector).test().assertValue { it == listOf(selectorItem.copy(isSelected = true)) }
+        val configuration = mock<RunConfiguration>()
+        val result = MFSelectorResult(listOf(configuration), emptyList())
+        whenever(uiSelector.invoke(any())).thenJust(result)
+        mfSelector(project, uiSelector).test().assertValue { it == result }
     }
 
     fun testShouldReturnEmptyResultWhenNoConfigurationInProject() {
-        val result = getSelectorResult(emptyList(), emptyList())
-        assertTrue(result.isEmpty())
+        val (toInject, toRestore) = getSelectorResult(emptyList(), emptyList())
+        assertTrue(toInject.isEmpty())
+        assertTrue(toRestore.isEmpty())
     }
 
     fun testShouldReturnEmptyResultWhenNoChangesInUi() {
         val items = listOf(MFSelectorItem(mock(), false, false))
-        val result = getSelectorResult(items, items)
-        assertTrue(result.isEmpty())
+        val (toInject, toRestore) = getSelectorResult(items, items)
+        assertTrue(toInject.isEmpty())
+        assertTrue(toRestore.isEmpty())
     }
 
     fun testShouldReturnSelectedItemOnChangeInUi() {
-        val item = MFSelectorItem(mock(), false, false)
-        val result = getSelectorResult(
+        val configuration = mock<RunConfiguration>()
+        val item = MFSelectorItem(configuration, false, false)
+        val (toInject, toRestore) = getSelectorResult(
                 uiIn = listOf(item),
                 uiOut = listOf(item.copy(isSelected = true)))
-        assertEquals(listOf(item.copy(isSelected = true)), result)
+        assertEquals(listOf(configuration), toInject)
+        assertTrue(toRestore.isEmpty())
     }
 }
