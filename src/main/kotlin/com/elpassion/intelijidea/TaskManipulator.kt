@@ -11,7 +11,7 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-class MFTaskInjector(val project: Project, val mfTaskProvider: MFBeforeRunTaskProvider) {
+class TaskManipulator(val project: Project, val mfTaskProvider: MFBeforeRunTaskProvider) {
     val runManager: RunManagerEx = RunManagerEx.getInstanceEx(project)
 
     fun injectMainframerBeforeTasks(mfConfigurations: List<MFSelectorItem>, replaceAll: Boolean) {

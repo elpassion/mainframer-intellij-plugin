@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.integration
 
-import com.elpassion.intelijidea.MFTaskInjector
+import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
 import com.elpassion.intelijidea.action.configure.selector.MFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
@@ -22,7 +22,7 @@ import java.util.*
 
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
 
-    private val taskInjector by lazy { MFTaskInjector(project, MFBeforeRunTaskProvider(project)) }
+    private val taskInjector by lazy { TaskManipulator(project, MFBeforeRunTaskProvider(project)) }
     private val runManager by lazy { taskInjector.runManager }
 
     fun testShouldAddMainframerToConfiguration() {

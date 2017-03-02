@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action
 
-import com.elpassion.intelijidea.MFTaskInjector
+import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.getConfigurationsAsSelectorItems
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
@@ -34,7 +34,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
     }
 
     private fun Project.injectMainFramer(replaceAll: Boolean) {
-        MFTaskInjector(this, this.mfBeforeRunTaskProvider).run {
+        TaskManipulator(this, this.mfBeforeRunTaskProvider).run {
             val allConfigurationToInject = runManager.getConfigurationsAsSelectorItems(true)
             injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = replaceAll)
         }
