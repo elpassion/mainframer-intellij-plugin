@@ -16,7 +16,8 @@ fun mfSelector(project: Project, uiSelector: MFUiSelector): Maybe<MFSelectorResu
 
 fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>): MFSelectorResult {
     if (uiOut != uiIn) {
-        return MFSelectorResult(uiOut.map(MFSelectorItem::configuration), emptyList())
+        return MFSelectorResult(uiOut.filter { it.isSelected }.map(MFSelectorItem::configuration),
+                uiOut.filterNot { it.isSelected }.map(MFSelectorItem::configuration))
     } else {
         return MFSelectorResult(emptyList(), emptyList())
     }

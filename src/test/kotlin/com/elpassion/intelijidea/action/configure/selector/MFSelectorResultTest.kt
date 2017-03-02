@@ -24,7 +24,7 @@ class MFSelectorResultTest {
     }
 
     @Test
-    fun shouldReturnConfigurationToInjectOnChangeInUi() {
+    fun shouldReturnConfigurationToInjectWhenSelectedInUi() {
         val configuration = mock<RunConfiguration>()
         val item = MFSelectorItem(configuration, false, false)
         val (toInject, toRestore) = getSelectorResult(
@@ -32,5 +32,16 @@ class MFSelectorResultTest {
                 uiOut = listOf(item.copy(isSelected = true)))
         assertEquals(listOf(configuration), toInject)
         assertTrue(toRestore.isEmpty())
+    }
+
+    @Test
+    fun shouldReturnConfigurationToRestoreWhenUnselectedInUi() {
+        val configuration = mock<RunConfiguration>()
+        val item = MFSelectorItem(configuration, false, true)
+        val (toInject, toRestore) = getSelectorResult(
+                uiIn = listOf(item),
+                uiOut = listOf(item.copy(isSelected = false)))
+        assertTrue(toInject.isEmpty())
+        assertEquals(listOf(configuration), toRestore)
     }
 }
