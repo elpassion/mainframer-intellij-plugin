@@ -16,12 +16,10 @@ class MFTaskInjector(val project: Project, val mfTaskProvider: MFBeforeRunTaskPr
 
     fun injectMainframerBeforeTasks(mfConfigurations: List<MFSelectorItem>, replaceAll: Boolean) {
         mfConfigurations
-                .forEach { selector ->
-                    val configuration = selector.configuration
-                    if (selector.isSelected) {
-                        injectMFTasks(configuration, replaceAll)
-                    } else {
-                        restoreDefaultBeforeRunTasks(configuration)
+                .forEach { (configuration, _, isSelected) ->
+                    when (isSelected) {
+                        true -> injectMFTasks(configuration, replaceAll)
+                        else -> restoreDefaultBeforeRunTasks(configuration)
                     }
                 }
     }
