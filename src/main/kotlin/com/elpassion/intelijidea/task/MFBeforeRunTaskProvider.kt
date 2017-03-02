@@ -11,7 +11,6 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import javax.swing.Icon
-import javax.swing.SwingUtilities
 
 class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvider<MFBeforeRunTask>() {
 

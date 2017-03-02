@@ -7,11 +7,12 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.platform.templates.github.DownloadUtil
 import com.intellij.platform.templates.github.Outcome
+import io.reactivex.Maybe
 import java.io.File
 
-fun mfFileDownloader(project: Project) = { mfToolInfo: MFToolInfo ->
-    downloadFileToProject(project, getMfToolDownloadUrl(mfToolInfo.version), mfToolInfo.file).asResultObservable()
-}
+fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<Unit> = { (version, file) ->
+        downloadFileToProject(project, getMfToolDownloadUrl(version), file).asResultObservable()
+    }
 
 //TODO: Make private and remove @Deprecated annotation
 @Deprecated(message = "Replace with MFConfigureProjectAction")

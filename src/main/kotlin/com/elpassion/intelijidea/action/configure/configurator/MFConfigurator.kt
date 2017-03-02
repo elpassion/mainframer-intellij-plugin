@@ -10,8 +10,8 @@ fun mfConfigurator(project: Project, configurationFromUi: (MFConfiguratorIn) -> 
     val defaultValues = createDefaultValues(versionList, mfStorage.getConfiguration())
     val file = createDefaultMfLocation(project)
     configurationFromUi(defaultValues)
-            .doAfterSuccess { data ->
-                mfStorage.saveConfiguration(MFPluginConfiguration(data.taskName, data.buildCommand, data.remoteName, file.absolutePath))
+            .doAfterSuccess { (_, remoteName, taskName, buildCommand) ->
+                mfStorage.saveConfiguration(MFPluginConfiguration(taskName, buildCommand, remoteName, file.absolutePath))
             }
             .map { MFToolInfo(it.version, file) }
 }

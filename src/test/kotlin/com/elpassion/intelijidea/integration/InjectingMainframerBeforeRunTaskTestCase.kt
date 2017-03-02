@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.integration
 
 import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.TemplateConfigurationsProvider
-import com.elpassion.intelijidea.action.configure.selector.MFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
@@ -19,6 +18,7 @@ import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixtureTestCa
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertNotEquals
 import java.util.*
+import javax.swing.Icon
 
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
 
@@ -119,7 +119,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     private class TestConfigurationType(val uuid: String, compileBeforeLaunch: Boolean) : ConfigurationType {
         private val elements = TestConfigurationFactory(this, uuid, compileBeforeLaunch)
 
-        override fun getIcon() = AllIcons.Icons.Ide.NextStep
+        override fun getIcon(): Icon = AllIcons.Icons.Ide.NextStep
 
         override fun getConfigurationTypeDescription() = "mock"
 
