@@ -131,20 +131,15 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframerReplacingAllMfTasks(runConfiguration: RunConfiguration) {
-        inject(runConfiguration, true, true)
+        taskInjector.injectMFToConfigurationsWithReplacingMFTask(listOf(runConfiguration))
     }
 
     private fun restoreConfigurations(runConfiguration: RunConfiguration) {
-        inject(runConfiguration, false, false)
+        taskInjector.restoreConfigurations(listOf(runConfiguration))
     }
 
     private fun injectMainframer(runConfiguration: RunConfiguration) {
-        inject(runConfiguration, true, false)
-    }
-
-    private fun inject(runConfiguration: RunConfiguration, shouldInject: Boolean, replaceAll: Boolean) {
-        val mfSelectorItem = MFSelectorItem(runConfiguration, false, shouldInject)
-        taskInjector.injectMainframerBeforeTasks(listOf(mfSelectorItem), replaceAll)
+        taskInjector.injectMFToConfigurationsWithReplacingMFTask(listOf(runConfiguration))
     }
 
     private fun verifyBeforeRunTasks(configuration: RunConfiguration) = assertThat(runManager.getBeforeRunTasks(configuration))

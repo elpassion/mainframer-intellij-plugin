@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.action
 
 import com.elpassion.intelijidea.TaskManipulator
-import com.elpassion.intelijidea.getConfigurationsAsSelectorItems
+import com.elpassion.intelijidea.getConfigurationsItems
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.elpassion.intelijidea.util.showError
@@ -35,8 +35,11 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
 
     private fun Project.injectMainFramer(replaceAll: Boolean) {
         TaskManipulator(this, this.mfBeforeRunTaskProvider).run {
-            val allConfigurationToInject = runManager.getConfigurationsAsSelectorItems(true)
-            injectMainframerBeforeTasks(mfConfigurations = allConfigurationToInject, replaceAll = replaceAll)
+            val allConfigurationToInject = runManager.getConfigurationsItems()
+            when (replaceAll) {
+                true -> injectMFToConfigurationsWithReplacingMFTask(allConfigurationToInject)
+                else -> injectMFToConfigurations(allConfigurationToInject)
+            }
         }
         showInfo(this, "Mainframer injected!")
     }

@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea
 
-import com.elpassion.intelijidea.action.configure.selector.MFSelectorItem
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.intellij.execution.BeforeRunTask
@@ -14,22 +13,23 @@ import com.intellij.openapi.project.Project
 class TaskManipulator(val project: Project, val mfTaskProvider: MFBeforeRunTaskProvider) {
     val runManager: RunManagerEx = RunManagerEx.getInstanceEx(project)
 
-    fun injectMainframerBeforeTasks(mfConfigurations: List<MFSelectorItem>, replaceAll: Boolean) {
-        mfConfigurations
-                .forEach { (configuration, _, isSelected) ->
-                    when (isSelected) {
-                        true -> injectMFTasks(configuration, replaceAll)
-                        else -> restoreDefaultBeforeRunTasks(configuration)
-                    }
-                }
+    fun injectMFToConfigurations(configurations: List<RunConfiguration>) {
+        configurations.forEach { configuration ->
+            runManager.getFirstMFBeforeRunTask(configuration)?.let {
+                injectMFTask(configuration)
+            }
+        }
     }
 
-    private fun injectMFTasks(configuration: RunConfiguration, replaceAll: Boolean) {
-        val oldTask = runManager.getFirstMFBeforeRunTask(configuration)
-        if (replaceAll || oldTask == null) {
-            val taskToInject = mfTaskProvider.createEnabledTask(configuration)
-            runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
+    fun injectMFToConfigurationsWithReplacingMFTask(configurations: List<RunConfiguration>) {
+        configurations.forEach {
+            injectMFTask(it)
         }
+    }
+
+    private fun injectMFTask(configuration: RunConfiguration) {
+        val taskToInject = mfTaskProvider.createEnabledTask(configuration)
+        runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
     }
 
     private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
@@ -38,6 +38,12 @@ class TaskManipulator(val project: Project, val mfTaskProvider: MFBeforeRunTaskP
     private fun MFBeforeRunTaskProvider.createEnabledTask(runConfiguration: RunConfiguration) = createTask(runConfiguration)
             .apply { isEnabled = true }
 
+    fun restoreConfigurations(configurations: List<RunConfiguration>) {
+        configurations.forEach {
+            restoreDefaultBeforeRunTasks(it)
+        }
+    }
+
     private fun restoreDefaultBeforeRunTasks(configuration: RunConfiguration) {
         val beforeRunTasks = getHardcodedBeforeRunTasks(configuration, project)
         runManager.setBeforeRunTasks(configuration, beforeRunTasks, false)
@@ -45,9 +51,9 @@ class TaskManipulator(val project: Project, val mfTaskProvider: MFBeforeRunTaskP
 
 }
 
-@Deprecated("Remove when configuration dialog completed", ReplaceWith("List of MFSelectorItem"))
-fun RunManagerEx.getConfigurationsAsSelectorItems(restore: Boolean) =
-        (getAllConfigurationsAsSelectorItems(restore) + getTemplateConfigurationsAsSelectorItems(restore))
+@Deprecated("Remove when configuration dialog completed", ReplaceWith("Configuration list selected from dialog"))
+fun RunManagerEx.getConfigurationsItems() =
+        (getAllConfigurationsAsSelectorItems() + getTemplateConfigurationsAsSelectorItems())
 
 fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
     val configurationTypes = TemplateConfigurationsProvider.get()
@@ -56,14 +62,9 @@ fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
             .map { it.configuration }
 }
 
-private fun RunManagerEx.getAllConfigurationsAsSelectorItems(restore: Boolean) =
-        allConfigurationsList.filterInjectableConfigurations()
-                .map { MFSelectorItem(it, isTemplate = false, isSelected = restore) }
+private fun RunManagerEx.getAllConfigurationsAsSelectorItems() = allConfigurationsList.filterInjectableConfigurations()
 
-
-private fun RunManagerEx.getTemplateConfigurationsAsSelectorItems(restore: Boolean) =
-        getTemplateConfigurations().filterInjectableConfigurations()
-                .map { MFSelectorItem(it, isTemplate = true, isSelected = restore) }
+private fun RunManagerEx.getTemplateConfigurationsAsSelectorItems() = getTemplateConfigurations().filterInjectableConfigurations()
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = BeforeRunTaskProvider.EXTENSION_POINT_NAME.getExtensions(project)
