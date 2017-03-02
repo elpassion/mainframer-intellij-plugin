@@ -26,7 +26,10 @@ class MFSelectorDialog(project: Project,
         return form.panel
     }
 
-    override fun getSuccessResult(): List<MFSelectorItem> = items
+    override fun getSuccessResult(): List<MFSelectorItem> =
+            getSelectorResult(uiIn = items, uiOut = items.map {
+                MFSelectorItem(it.configuration, it.isTemplate, form.items.isItemSelected(it))
+            })
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(sortedBy { it.getName() }.map { it.asCheckBox() })
 
