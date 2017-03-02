@@ -28,11 +28,10 @@ class MFTaskInjector(val project: Project, val mfTaskProvider: MFBeforeRunTaskPr
 
     private fun injectMFTasks(configuration: RunConfiguration, replaceAll: Boolean) {
         val oldTask = runManager.getFirstMFBeforeRunTask(configuration)
-        val taskToInject = when {
-            replaceAll || oldTask == null -> mfTaskProvider.createEnabledTask(configuration)
-            else -> oldTask
+        if (replaceAll || oldTask == null) {
+            val taskToInject = mfTaskProvider.createEnabledTask(configuration)
+            runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
         }
-        runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
     }
 
     private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
