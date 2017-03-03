@@ -48,7 +48,6 @@ private fun showConfigurationDialog(project: Project, defaultValues: MFConfigura
         Maybe.create<MFConfiguratorOut> { emitter ->
             MFConfiguratorDialog(project, defaultValues, {
                 emitter.onSuccess(it)
-                emitter.onComplete()
             }, {
                 emitter.onComplete()
             }).show()

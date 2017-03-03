@@ -44,7 +44,6 @@ fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): M
         Maybe.create<MFSelectorResult> { emitter ->
             MFSelectorDialog(project, selectorItems, {
                 emitter.onSuccess(it)
-                emitter.onComplete()
             }, {
                 emitter.onComplete()
             }).show()
