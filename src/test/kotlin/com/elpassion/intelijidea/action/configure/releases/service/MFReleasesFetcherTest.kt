@@ -17,7 +17,7 @@ class MFReleasesFetcherTest {
 
         releasesFetcher()
                 .test()
-                .assertValue{ it.first() == "2.1.2"}
+                .assertValue { it.first() == "2.1.2" }
     }
 
     @Test
@@ -26,8 +26,7 @@ class MFReleasesFetcherTest {
 
         releasesFetcher()
                 .test()
-                .assertValue{ it[0] == "2.1.2"}
-                .assertValue{ it[1] == "2.1.3"}
+                .assertValue { it == listOf("2.1.2", "2.1.3") }
     }
 
     @Test
@@ -36,7 +35,7 @@ class MFReleasesFetcherTest {
 
         releasesFetcher()
                 .test()
-                .assertValue { it[0] == "2.0.0" }
+                .assertValue { it.first() == "2.0.0" }
                 .assertValueCount(1)
     }
 
