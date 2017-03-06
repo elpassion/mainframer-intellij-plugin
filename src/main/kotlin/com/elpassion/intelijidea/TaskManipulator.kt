@@ -10,26 +10,26 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-class TaskManipulator(val project: Project, val mfTaskProvider: MFBeforeRunTaskProvider) {
+class TaskManipulator(val project: Project) {
     val runManager: RunManagerEx = RunManagerEx.getInstanceEx(project)
 
-    fun injectMFToConfigurations(configurations: List<RunConfiguration>) {
+    fun injectMFToConfigurations(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach { configuration ->
             runManager.getFirstMFBeforeRunTask(configuration)?.let {
-                injectMFTask(configuration)
+                configuration.injectMFTask(taskProvider)
             }
         }
     }
 
-    fun injectMFToConfigurationsWithReplacingMFTask(configurations: List<RunConfiguration>) {
+    fun injectMFToConfigurationsWithReplacingMFTask(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach {
-            injectMFTask(it)
+            it.injectMFTask(taskProvider)
         }
     }
 
-    private fun injectMFTask(configuration: RunConfiguration) {
-        val taskToInject = mfTaskProvider.createEnabledTask(configuration)
-        runManager.setBeforeRunTasks(configuration, listOf(taskToInject), false)
+    private fun RunConfiguration.injectMFTask(mfTaskProvider: MFBeforeRunTaskProvider) {
+        val taskToInject = mfTaskProvider.createEnabledTask(this)
+        runManager.setBeforeRunTasks(this, listOf(taskToInject), false)
     }
 
     private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =

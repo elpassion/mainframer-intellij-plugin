@@ -34,11 +34,11 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
     }
 
     private fun Project.injectMainFramer(replaceAll: Boolean) {
-        TaskManipulator(this, this.mfBeforeRunTaskProvider).run {
+        TaskManipulator(this).run {
             val allConfigurationToInject = runManager.getConfigurationsItems()
             when (replaceAll) {
-                true -> injectMFToConfigurationsWithReplacingMFTask(allConfigurationToInject)
-                else -> injectMFToConfigurations(allConfigurationToInject)
+                true -> injectMFToConfigurationsWithReplacingMFTask(mfBeforeRunTaskProvider, allConfigurationToInject)
+                else -> injectMFToConfigurations(mfBeforeRunTaskProvider, allConfigurationToInject)
             }
         }
         showInfo(this, "Mainframer injected!")

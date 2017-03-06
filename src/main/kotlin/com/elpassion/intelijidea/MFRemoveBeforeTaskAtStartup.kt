@@ -15,9 +15,9 @@ class MFRemoveBeforeTaskAtStartup : StartupActivity {
     }
 
     private fun injectBeforeRunTask(project: Project) {
-        TaskManipulator(project, project.mfBeforeRunTaskProvider).run {
+        TaskManipulator(project).run {
             val configurationToInject = runManager.getConfigurationsItems()
-            injectMFToConfigurations(configurationToInject)
+            injectMFToConfigurations(project.mfBeforeRunTaskProvider, configurationToInject)
         }
     }
 }

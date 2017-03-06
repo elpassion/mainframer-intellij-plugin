@@ -22,7 +22,7 @@ import javax.swing.Icon
 
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
 
-    private val taskInjector by lazy { TaskManipulator(project, MFBeforeRunTaskProvider(project)) }
+    private val taskInjector by lazy { TaskManipulator(project) }
     private val runManager by lazy { taskInjector.runManager }
 
     fun testShouldAddMainframerToConfiguration() {
@@ -131,7 +131,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframerReplacingAllMfTasks(runConfiguration: RunConfiguration) {
-        taskInjector.injectMFToConfigurationsWithReplacingMFTask(listOf(runConfiguration))
+        taskInjector.injectMFToConfigurationsWithReplacingMFTask(MFBeforeRunTaskProvider(project), listOf(runConfiguration))
     }
 
     private fun restoreConfigurations(runConfiguration: RunConfiguration) {
@@ -139,7 +139,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframer(runConfiguration: RunConfiguration) {
-        taskInjector.injectMFToConfigurationsWithReplacingMFTask(listOf(runConfiguration))
+        taskInjector.injectMFToConfigurationsWithReplacingMFTask(MFBeforeRunTaskProvider(project), listOf(runConfiguration))
     }
 
     private fun verifyBeforeRunTasks(configuration: RunConfiguration) = assertThat(runManager.getBeforeRunTasks(configuration))

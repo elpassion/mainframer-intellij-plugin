@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.action
 
 import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.getConfigurationsItems
-import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -11,7 +10,7 @@ class MFRestoreDefaultBeforeRunTasksAction : AnAction(MF_RESTORE_DEFAULT_BEFORE_
 
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let {
-            TaskManipulator(it, it.mfBeforeRunTaskProvider).run {
+            TaskManipulator(it).run {
                 val configurationsToRestore = runManager.getConfigurationsItems()
                 restoreConfigurations(configurationsToRestore)
             }
