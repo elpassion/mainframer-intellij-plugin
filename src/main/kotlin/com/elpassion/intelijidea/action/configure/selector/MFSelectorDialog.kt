@@ -28,12 +28,9 @@ class MFSelectorDialog(project: Project,
 
     override fun getSuccessResult(): MFSelectorResult = getSelectorResult(uiIn = items, uiOut = items.mapFromUi())
 
-    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(sortedBy { it.getName() }.map { it.asCheckBox() })
+    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(sortedBy { it.getName() }.map { createCheckBox(it) })
 
-    private fun MFSelectorItem.asCheckBox() = JCheckBox(getName()).apply {
-        val item = this@asCheckBox
-        isSelected = item.isSelected
-    }
+    private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
     private fun List<MFSelectorItem>.mapFromUi() = map {
         MFSelectorItem(it.configuration, it.isTemplate, form.items.isItemSelected(it))
