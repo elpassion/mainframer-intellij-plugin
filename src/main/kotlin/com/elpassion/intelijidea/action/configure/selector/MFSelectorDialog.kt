@@ -34,8 +34,14 @@ class MFSelectorDialog(project: Project,
 
     private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
-    private fun MFSelectorItem.toItemFromUi() =
-            MFSelectorItem(configuration, isTemplate, form.items.isItemSelected(this))
+    private fun MFSelectorItem.toItemFromUi(): MFSelectorItem {
+        val isSelected = items.filterNot { it.isTemplate }.withIndex().find { it.value == this }?.index?.let {
+            form.items.isItemSelected(it)
+        } ?: items.filter { it.isTemplate }.withIndex().find { it.value == this }?.index!!.let {
+            form.templateItems.isItemSelected(it)
+        }
+        return MFSelectorItem(configuration, isTemplate, isSelected)
+    }
 }
 
 fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<MFSelectorResult> =
