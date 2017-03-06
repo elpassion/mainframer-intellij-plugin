@@ -14,13 +14,13 @@ import org.junit.rules.TemporaryFolder
 import javax.swing.JCheckBox
 import javax.swing.JTextField
 
-@DisplayName("Before task default settings panel test")
+@DisplayName("Expect before task default settings panel")
 class MFBeforeTaskDefaultSettingsPanelTest {
 
     @Nested
-    inner class `should throw configuration exception` {
+    inner class `to throw configuration exception when applied` {
         @Test
-        fun `when build command is empty`() {
+        fun `and build command is empty`() {
             val settingsPanel = setupPanel(buildCommand = "")
             assertThrows<ConfigurationException>(ConfigurationException::class.java) {
                 settingsPanel.apply()
@@ -28,7 +28,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `when task name is empty`() {
+        fun `and task name is empty`() {
             val settingsPanel = setupPanel(taskName = "")
             assertThrows<ConfigurationException>(ConfigurationException::class.java) {
                 settingsPanel.apply()
@@ -36,7 +36,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `when mainframer path is not valid`() {
+        fun `and mainframer path is not valid`() {
             val settingsPanel = setupPanel(mainframerPath = "")
             assertThrows<ConfigurationException>(ConfigurationException::class.java) {
                 settingsPanel.apply()
@@ -44,7 +44,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `when remote machine name is empty`() {
+        fun `and remote machine name is empty`() {
             val settingsPanel = setupPanel(remoteMachineName = "")
             assertThrows<ConfigurationException>(ConfigurationException::class.java) {
                 settingsPanel.apply()
@@ -53,9 +53,9 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     }
 
     @Nested
-    inner class `should reset` {
+    inner class `to have proper values after reset when` {
         @Test
-        fun `build command field`() {
+        fun `build command field changed`() {
             val settingsPanel = setupPanel(buildCommand = "build command")
             settingsPanel.buildCommandField.text = "other command"
             settingsPanel.reset()
@@ -64,7 +64,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `task name field`() {
+        fun `task name field changed`() {
             val settingsPanel = setupPanel(taskName = "some task")
             settingsPanel.taskNameField.text = "other task"
             settingsPanel.reset()
@@ -73,7 +73,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `mainframer path field`() {
+        fun `mainframer path field changed`() {
             val settingsPanel = setupPanel(mainframerPath = "path")
             settingsPanel.mainframerToolField.text = "unknown location"
             settingsPanel.reset()
@@ -82,7 +82,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         }
 
         @Test
-        fun `remote machine name`() {
+        fun `remote machine name changed`() {
             val settingsPanel = setupPanel(remoteMachineName = "remoteName")
             settingsPanel.remoteMachineField.text = "local"
             settingsPanel.reset()
@@ -101,7 +101,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     }
 
     @Nested
-    inner class `should be modified` {
+    inner class `to be modified` {
         @Test
         fun `after changing build command`() {
             val settingsPanel = setupPanel(buildCommand = "example")
@@ -140,7 +140,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
 
     @Nested
     @EnableRuleMigrationSupport
-    inner class `should save` {
+    inner class `to save` {
 
         @JvmField @Rule
         val rule = TemporaryFolder()
