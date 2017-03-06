@@ -7,6 +7,7 @@ import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.execution.Executor
+import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.configurations.RunConfiguration
@@ -23,7 +24,7 @@ import javax.swing.Icon
 class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixtureTestCase() {
 
     private val taskInjector by lazy { TaskManipulator(project) }
-    private val runManager by lazy { taskInjector.runManager }
+    private val runManager by lazy { RunManagerEx.getInstanceEx(project) }
 
     fun testShouldAddMainframerToConfiguration() {
         val runConfiguration = addTestConfiguration(createTestConfigurationType())
