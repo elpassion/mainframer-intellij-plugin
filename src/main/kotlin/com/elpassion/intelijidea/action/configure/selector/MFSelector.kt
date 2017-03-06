@@ -14,13 +14,13 @@ fun mfSelector(project: Project, uiSelector: MFUiSelector): Maybe<MFSelectorResu
             uiSelector(getConfigurationItems() + getTemplateConfigurationItems())
         }
 
-fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>): MFSelectorResult {
+fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, replaceAll: Boolean): MFSelectorResult {
     return if (uiOut != uiIn) {
         val toInject = (uiOut.filter { it.isSelected } - uiIn.filter { it.isSelected }).map { it.configuration }
         val toRestore = (uiOut.filterNot { it.isSelected } - uiIn.filterNot { it.isSelected }).map { it.configuration }
-        MFSelectorResult(toInject, toRestore)
+        MFSelectorResult(toInject, toRestore, replaceAll)
     } else {
-        MFSelectorResult(emptyList(), emptyList())
+        MFSelectorResult(emptyList(), emptyList(), replaceAll)
     }
 }
 
