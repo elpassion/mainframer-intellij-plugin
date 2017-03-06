@@ -6,4 +6,5 @@ public class MFSelectorForm {
     public JPanel panel;
     public MFSelectorList items;
     public MFSelectorList templateItems;
+    public JCheckBox replaceAll;
 }
