@@ -1,7 +1,9 @@
 package com.elpassion.intelijidea.action
 
+import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.action.configure.selector.mfSelector
 import com.elpassion.intelijidea.action.configure.selector.showSelectorDialog
+import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
@@ -15,7 +17,12 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     private fun selectConfigurations(project: Project) {
         mfSelector(project) { items ->
             showSelectorDialog(project, items)
-        }.subscribe()
+        }.subscribe { (toInject, toRestore) ->
+            TaskManipulator(project, project.mfBeforeRunTaskProvider).run {
+                injectMFToConfigurations(toInject)
+                restoreConfigurations(toRestore)
+            }
+        }
     }
 
     companion object {
