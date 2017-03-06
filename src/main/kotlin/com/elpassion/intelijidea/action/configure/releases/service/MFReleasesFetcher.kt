@@ -7,10 +7,10 @@ import io.reactivex.Single
 fun mfReleasesFetcher(api: GitHubApi) = {
     api.listReleases()
             .mapWithoutVPrefix()
-            .drop1xVersions()
+            .dropUnsupportedVersions()
 }
 
-private fun Single<List<String>>.drop1xVersions(): Single<List<String>>? {
+private fun Single<List<String>>.dropUnsupportedVersions(): Single<List<String>>? {
     val versionOneRegex = "1.\\d.\\d".toRegex()
     return map { it.filter { !it.matches(versionOneRegex) } }
 }
