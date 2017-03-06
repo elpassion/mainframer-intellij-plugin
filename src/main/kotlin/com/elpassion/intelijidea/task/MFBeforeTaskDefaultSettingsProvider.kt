@@ -25,6 +25,7 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
         myState.defaultTaskName = state.defaultTaskName
         myState.defaultMainframerPath = state.defaultMainframerPath
         myState.configureBeforeTaskOnStartup = state.configureBeforeTaskOnStartup
+        myState.remoteMachineName = state.remoteMachineName
     }
 
     class State {
@@ -32,6 +33,7 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
         var defaultBuildCommand: String? = null
         var defaultTaskName: String? = null
         var configureBeforeTaskOnStartup: Boolean = false
+        var remoteMachineName: String? = null
     }
 
     companion object {
