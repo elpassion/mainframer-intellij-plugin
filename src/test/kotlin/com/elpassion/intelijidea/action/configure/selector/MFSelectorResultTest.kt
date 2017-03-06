@@ -53,5 +53,6 @@ class MFSelectorResultTest {
         assertEquals(listOf(item2.configuration), toRestore)
     }
 
-    private fun createSelectorItem(isSelected: Boolean = false) = MFSelectorItem(mock(), false, isSelected)
+    private fun createSelectorItem(isSelected: Boolean = false) =
+            MFSelectorItem(mock(), isTemplate = false, isSelected = isSelected)
 }
