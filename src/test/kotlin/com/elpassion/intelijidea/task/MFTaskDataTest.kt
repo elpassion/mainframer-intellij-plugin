@@ -4,10 +4,12 @@ import com.elpassion.intelijidea.util.mfFilename
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport
 import org.junit.rules.TemporaryFolder
 import java.io.File
 
+@EnableRuleMigrationSupport
 class IntegrationTest {
 
     @get:Rule

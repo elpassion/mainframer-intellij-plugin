@@ -2,7 +2,7 @@ package com.elpassion.intelijidea.configuration
 
 import com.intellij.openapi.command.impl.DummyProject
 import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MFConfigurationFactoryTest {
 

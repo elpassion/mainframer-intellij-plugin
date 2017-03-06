@@ -5,7 +5,7 @@ import com.elpassion.intelijidea.action.configure.releases.api.GitHubApi
 import com.elpassion.intelijidea.action.configure.releases.api.ReleaseApiModel
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MFReleasesFetcherTest {
     val api = mock<GitHubApi>()

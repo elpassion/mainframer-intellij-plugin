@@ -3,7 +3,7 @@ package com.elpassion.intelijidea.task
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertFalse
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MFBeforeRunTaskProviderTest {
 

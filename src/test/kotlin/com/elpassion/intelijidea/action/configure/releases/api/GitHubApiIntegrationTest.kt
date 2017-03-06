@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.action.configure.releases.api
 
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class GitHubApiIntegrationTest {
 

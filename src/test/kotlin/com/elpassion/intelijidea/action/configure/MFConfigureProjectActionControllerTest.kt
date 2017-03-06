@@ -8,7 +8,7 @@ import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class MFConfigureProjectActionControllerTest {

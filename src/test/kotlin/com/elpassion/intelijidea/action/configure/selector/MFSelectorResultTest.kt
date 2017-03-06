@@ -3,7 +3,7 @@ package com.elpassion.intelijidea.action.configure.selector
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class MFSelectorResultTest {
 
