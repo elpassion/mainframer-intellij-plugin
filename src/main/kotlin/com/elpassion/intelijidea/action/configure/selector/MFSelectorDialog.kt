@@ -15,6 +15,8 @@ class MFSelectorDialog(project: Project,
                        doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
+    private val sortedItems = items.filterNot { it.isTemplate }.sortedBy { it.getName() }
+    private val sortedTemplateItems = items.filter { it.isTemplate }.sortedBy { it.getName() }
 
     init {
         title = "Select run configurations to inject mainframer"
@@ -22,25 +24,21 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.model = items.filterNot { it.isTemplate }.asListModel()
-        form.templateItems.model = items.filter { it.isTemplate }.asListModel()
+        form.items.model = sortedItems.asListModel()
+        form.templateItems.model = sortedTemplateItems.asListModel()
         return form.panel
     }
 
     override fun getSuccessResult(): MFSelectorResult =
             getSelectorResult(uiIn = items, uiOut = items.map { it.toItemFromUi() })
 
-    private fun List<MFSelectorItem>.asListModel() =
-            ArrayListModel(sortedBy { it.getName() }.map { createCheckBox(it) })
+    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
 
     private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
     private fun MFSelectorItem.toItemFromUi(): MFSelectorItem {
-        val isSelected = items.filterNot { it.isTemplate }.indexOfOrNull(this)?.let {
-            form.items.isItemSelected(it)
-        } ?: items.filter { it.isTemplate }.indexOfOrNull(this)!!.let {
-            form.templateItems.isItemSelected(it)
-        }
+        val isSelected = sortedItems.indexOfOrNull(this)?.let { form.items.isItemSelected(it) } ?:
+                sortedTemplateItems.indexOfOrNull(this)!!.let { form.templateItems.isItemSelected(it) }
         return MFSelectorItem(configuration, isTemplate, isSelected)
     }
 }
