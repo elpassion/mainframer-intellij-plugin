@@ -140,7 +140,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
     }
 
     private fun injectMainframer(runConfiguration: RunConfiguration) {
-        taskInjector.injectMFToConfigurationsWithReplacingMFTask(MFBeforeRunTaskProvider(project), listOf(runConfiguration))
+        taskInjector.injectMFToConfigurations(MFBeforeRunTaskProvider(project), listOf(runConfiguration))
     }
 
     private fun verifyBeforeRunTasks(configuration: RunConfiguration) = assertThat(runManager.getBeforeRunTasks(configuration))

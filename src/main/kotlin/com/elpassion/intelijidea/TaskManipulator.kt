@@ -15,9 +15,7 @@ class TaskManipulator(val project: Project) {
 
     fun injectMFToConfigurations(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach { configuration ->
-            runManager.getFirstMFBeforeRunTask(configuration)?.let {
-                configuration.injectMFTask(taskProvider)
-            }
+            runManager.getFirstMFBeforeRunTask(configuration) ?: configuration.injectMFTask(taskProvider)
         }
     }
 
