@@ -17,9 +17,12 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     private fun selectConfigurations(project: Project) {
         mfSelector(project) { items ->
             showSelectorDialog(project, items)
-        }.subscribe { (toInject, toRestore) ->
+        }.subscribe { (toInject, toRestore, replaceAll) ->
             TaskManipulator(project).run {
-                injectMFToConfigurations(project.mfBeforeRunTaskProvider, toInject)
+                when (replaceAll) {
+                    true -> injectMFToConfigurationsWithReplacingMFTask(project.mfBeforeRunTaskProvider, toInject)
+                    false -> injectMFToConfigurations(project.mfBeforeRunTaskProvider, toInject)
+                }
                 restoreConfigurations(toRestore)
             }
         }
