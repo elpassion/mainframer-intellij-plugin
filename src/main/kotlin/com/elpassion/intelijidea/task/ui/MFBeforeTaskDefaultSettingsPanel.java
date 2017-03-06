@@ -23,6 +23,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public JPanel panel;
     public JCheckBox configureBeforeTasksOnStartupField;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
+    public JTextField remoteMachineField;
 
     public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;
