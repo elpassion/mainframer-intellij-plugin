@@ -1,6 +1,5 @@
 package com.elpassion.intelijidea.configuration
 
-import com.elpassion.intelijidea.common.assertThrows
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
@@ -10,6 +9,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.jdom.Element
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
@@ -76,7 +76,7 @@ class MFRunConfigurationTest {
 
     @Test
     fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
-        val exception = assertThrows(ExecutionException::class.java) {
+        val exception = assertThrows<ExecutionException>(ExecutionException::class.java) {
             mfRunConfiguration()
                     .apply { data = null }
                     .getState(mock(), mock())
@@ -88,7 +88,7 @@ class MFRunConfigurationTest {
     fun shouldThrowExecutionExceptionWhenMfFileIsNotAvailableOnGetState() {
         var isToolNotFoundErrorShown = false
         var shownMainFramerPath: String? = null
-        val exception = assertThrows(ExecutionException::class.java) {
+        val exception = assertThrows<ExecutionException>(ExecutionException::class.java) {
             mfRunConfiguration {
                 isToolNotFoundErrorShown = true
                 shownMainFramerPath = it
@@ -107,7 +107,7 @@ class MFRunConfigurationTest {
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunConfigurationData: MFRunConfigurationData?) {
-        val exception = assertThrows(RuntimeConfigurationError::class.java) {
+        val exception = assertThrows<RuntimeConfigurationError>(RuntimeConfigurationError::class.java) {
             mfRunConfiguration()
                     .apply { data = mfRunConfigurationData }
                     .checkConfiguration()
