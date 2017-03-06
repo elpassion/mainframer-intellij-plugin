@@ -21,7 +21,7 @@ class MFInjectBeforeRunTasksAction : AnAction(MF_INJECT_BEFORE_RUN_TASK_ACTION) 
         val isTaskDataValid = MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData.isValid()
         when (isTaskDataValid) {
             true -> project.showInjectionDialog()
-            else -> project.showInvalidSettingsError()
+            false -> project.showInvalidSettingsError()
         }
     }
 
