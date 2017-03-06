@@ -2,6 +2,7 @@ package com.elpassion.intelijidea.action.configure.selector
 
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
+import com.elpassion.intelijidea.util.indexOfOrNull
 import com.intellij.openapi.project.Project
 import com.jgoodies.common.collect.ArrayListModel
 import io.reactivex.Maybe
@@ -35,9 +36,9 @@ class MFSelectorDialog(project: Project,
     private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
     private fun MFSelectorItem.toItemFromUi(): MFSelectorItem {
-        val isSelected = items.filterNot { it.isTemplate }.withIndex().find { it.value == this }?.index?.let {
+        val isSelected = items.filterNot { it.isTemplate }.indexOfOrNull(this)?.let {
             form.items.isItemSelected(it)
-        } ?: items.filter { it.isTemplate }.withIndex().find { it.value == this }?.index!!.let {
+        } ?: items.filter { it.isTemplate }.indexOfOrNull(this)!!.let {
             form.templateItems.isItemSelected(it)
         }
         return MFSelectorItem(configuration, isTemplate, isSelected)
