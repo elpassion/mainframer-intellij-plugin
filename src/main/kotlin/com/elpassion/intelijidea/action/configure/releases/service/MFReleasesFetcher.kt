@@ -10,6 +10,9 @@ fun mfReleasesFetcher(api: GitHubApi) = {
             .drop1xVersions()
 }
 
-private fun Single<List<String>>.drop1xVersions() = map { it.filter { !it.matches("1.\\d.\\d".toRegex()) } }
+private fun Single<List<String>>.drop1xVersions(): Single<List<String>>? {
+    val versionOneRegex = "1.\\d.\\d".toRegex()
+    return map { it.filter { !it.matches(versionOneRegex) } }
+}
 
 private fun Single<List<ReleaseApiModel>>.mapWithoutVPrefix() = map { it.map { it.tagName.drop(1) } }
