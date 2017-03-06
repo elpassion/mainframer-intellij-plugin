@@ -10,7 +10,7 @@ fun mfReleasesFetcher(api: GitHubApi) = {
             .dropUnsupportedVersions()
 }
 
-private fun Single<List<String>>.dropUnsupportedVersions(): Single<List<String>>? {
+private fun Single<List<String>>.dropUnsupportedVersions(): Single<List<String>> {
     val versionOneRegex = "1.\\d.\\d".toRegex()
     return map { it.filter { !it.matches(versionOneRegex) } }
 }
