@@ -1,16 +1,16 @@
-# mainframer-intellij-plugin [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=master)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin)
+# mainframer-intellij-plugin [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin)
 An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 
 About
 -----
 
-This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new runConfiguration to run mainframer tasks.
+This plugin makes integration with Mainframer tool easy and seamless. Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks, to replace standard build tasks with the one using mainframer. In addition it provides new run configuration type to run mainframer tasks.
 
 #### Features
-* BeforeTasks which delegate tasks to mainframer
+* Mainframer Make tasks which delegate tasks to mainframer
 * Injecting/Restoring before tasks to all configurations
 * Configuring mainframer in project
-* RunConfiguration for mainframer
+* Custom run configuration for mainframer
 
 Installation
 ------------
@@ -57,7 +57,7 @@ This is an initial action you need to perform to configure Mainframer in your cu
 
 #### Inject mainframer before run task
 
-With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **MainframerBefore** task:
+With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **Mainframer Make** task:
 
 ![](readme/injecting.png)
 

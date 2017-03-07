@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.task
 
 import com.elpassion.intelijidea.task.edit.MFBeforeRunTaskDialog
+import com.elpassion.intelijidea.util.MFIcons
 import com.elpassion.intelijidea.util.showError
 import com.elpassion.intelijidea.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
@@ -9,7 +10,7 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
-import javax.swing.SwingUtilities
+import javax.swing.Icon
 
 class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvider<MFBeforeRunTask>() {
 
@@ -18,6 +19,8 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     override fun getDescription(task: MFBeforeRunTask): String = TASK_NAME
 
     override fun getName(): String = TASK_NAME
+
+    override fun getIcon(): Icon = MFIcons.mainframerIcon
 
     override fun isConfigurable(): Boolean = true
 
@@ -43,21 +46,21 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
     }
 
-    override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask? {
+    override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask {
         val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
         return MFBeforeRunTask(settingsProvider.taskData)
     }
 
     companion object {
         val ID = Key.create<MFBeforeRunTask>("MainFrame.BeforeRunTask")
-        val TASK_NAME = "MainframerBefore"
+        val TASK_NAME = "Mainframer Make"
     }
 
-    private fun Project.showInvalidDataError() = SwingUtilities.invokeAndWait {
+    private fun Project.showInvalidDataError() {
         showError(this, "Cannot execute task with invalid data")
     }
 
-    private fun Project.showStartExecutionInfo() = SwingUtilities.invokeAndWait {
+    private fun Project.showStartExecutionInfo() {
         showInfo(this, "Mainframer is executing task: $name")
     }
 }

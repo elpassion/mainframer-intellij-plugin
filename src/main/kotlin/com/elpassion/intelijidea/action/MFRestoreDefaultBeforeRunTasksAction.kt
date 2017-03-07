@@ -1,18 +1,20 @@
 package com.elpassion.intelijidea.action
 
-import com.elpassion.intelijidea.restoreDefaultBeforeRunTasks
-import com.intellij.execution.RunManagerEx
+import com.elpassion.intelijidea.TaskManipulator
+import com.elpassion.intelijidea.getConfigurationsItems
+import com.elpassion.intelijidea.util.showInfo
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.ui.Messages
 
 class MFRestoreDefaultBeforeRunTasksAction : AnAction(MF_RESTORE_DEFAULT_BEFORE_RUN_TASK_ACTION) {
 
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let {
-            val runManager = RunManagerEx.getInstanceEx(it)
-            restoreDefaultBeforeRunTasks(runManager, it)
-            Messages.showInfoMessage("BeforeRun tasks default configuration restored.", MF_RESTORE_DEFAULT_BEFORE_RUN_TASK_ACTION)
+            TaskManipulator(it).run {
+                val configurationsToRestore = runManager.getConfigurationsItems()
+                restoreConfigurations(configurationsToRestore)
+            }
+            showInfo(it, "Restored default configuration of before run tasks.")
         }
     }
 

@@ -23,6 +23,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public JPanel panel;
     public JCheckBox configureBeforeTasksOnStartupField;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
+    public JTextField remoteMachineField;
 
     public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
         this.project = project;
@@ -39,12 +40,14 @@ public class MFBeforeTaskDefaultSettingsPanel {
     }
 
     public Boolean isModified() {
-        MFTaskData taskData = settingsProvider.getTaskData();
-        boolean configureBeforeTaskOnStartup = settingsProvider.getState().getConfigureBeforeTaskOnStartup();
+        final MFTaskData taskData = settingsProvider.getTaskData();
+        final boolean configureBeforeTaskOnStartup = settingsProvider.getState().getConfigureBeforeTaskOnStartup();
+        final String remoteMachineName = settingsProvider.getState().getRemoteMachineName();
         return !Comparing.equal(mainframerToolField.getText(), taskData.getMainframerPath()) ||
                 !Comparing.equal(buildCommandField.getText(), taskData.getBuildCommand()) ||
                 !Comparing.equal(taskNameField.getText(), taskData.getTaskName()) ||
-                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), configureBeforeTaskOnStartup);
+                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), configureBeforeTaskOnStartup) ||
+                !Comparing.equal(remoteMachineField.getText(), remoteMachineName);
     }
 
     private void save() {
@@ -54,6 +57,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
                 taskNameField.getText());
         settingsProvider.setTaskData(taskData);
         settingsProvider.getState().setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
+        settingsProvider.getState().setRemoteMachineName(remoteMachineField.getText());
     }
 
     public void reset() {
@@ -62,6 +66,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
         mainframerToolField.setText(taskData.getMainframerPath());
         taskNameField.setText(taskData.getTaskName());
         configureBeforeTasksOnStartupField.setSelected(settingsProvider.getState().getConfigureBeforeTaskOnStartup());
+        remoteMachineField.setText(settingsProvider.getState().getRemoteMachineName());
     }
 
     public void apply() throws ConfigurationException {

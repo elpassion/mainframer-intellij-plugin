@@ -26,8 +26,5 @@ class JacksonExtensionsTests {
 
 }
 
-class TagNameWrapper : Serializable {
-    var tagName: String = ""
-    var descriptionInfo: String = ""
-
-}
+class TagNameWrapper(val tagName: String = "",
+                     val descriptionInfo: String = "") : Serializable

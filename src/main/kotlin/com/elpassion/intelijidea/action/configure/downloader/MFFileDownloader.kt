@@ -7,11 +7,12 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.platform.templates.github.DownloadUtil
 import com.intellij.platform.templates.github.Outcome
+import io.reactivex.Maybe
 import java.io.File
 
-fun mfFileDownloader(project: Project) = { mfToolInfo: MFToolInfo ->
-    downloadFileToProject(project, getMfToolDownloadUrl(mfToolInfo.version), mfToolInfo.file).asResultObservable()
-}
+fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<Unit> = { (version, file) ->
+        downloadFileToProject(project, getMfToolDownloadUrl(version), file).asResultObservable()
+    }
 
 //TODO: Make private and remove @Deprecated annotation
 @Deprecated(message = "Replace with MFConfigureProjectAction")
@@ -21,6 +22,7 @@ fun downloadFileToProject(project: Project, url: String, outputFile: File): Outc
     val action = {
         val progressIndicator = ProgressManager.getInstance().progressIndicator
         DownloadUtil.downloadAtomically(progressIndicator, url, outputFile)
+        outputFile.setExecutable(true)
         project.baseDir.refresh(true, false)
     }
     return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)

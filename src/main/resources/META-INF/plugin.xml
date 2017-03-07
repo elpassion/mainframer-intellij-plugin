@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.elpassion.intelijidea</id>
     <name>mainframer-plugin</name>
-    <vendor email="android@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
+    <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
@@ -10,17 +10,19 @@
       Plugin uses IntelliJ IDEA run configuration mechanism, especially it takes advantage of before run tasks,
       to replace standard build tasks with the one using mainframer.<br>
       <br>
-      In addition it provides new runConfiguration to run mainframer tasks.<br>
+      In addition it provides new run configuration type to run mainframer tasks.<br>
       <h3>Features:</h3>
         <ul>
-          <li>BeforeTasks which delegate tasks to mainframer</li>
+          <li>Before Make tasks which delegate tasks to mainframer</li>
           <li>Injecting/Restoring before tasks to all configurations</li>
           <li>Configuring mainframer in project</li>
-          <li>RunConfiguration for mainframer</li>
+          <li>Custom run configuration for mainframer</li>
         </ul>
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 0.2.4: Add configurations select dialog to override existing mainframer tasks.<br>
+      Release 0.2.3: Add support for remote machine configuration and validation for task's configuration.<br>
       Release 0.2.2: Fixing minor problems + refactoring.<br>
       Release 0.2.0: Add general settings for before tasks.<br>
       Release 0.0.11: Refactor injecting before tasks feature.<br>
@@ -39,6 +41,7 @@
             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
         <applicationService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
+        <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
     </extensions>
 
     <actions>
@@ -50,6 +53,7 @@
             <separator />
             <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject" />
             <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore" />
+            <action class="com.elpassion.intelijidea.action.MFSelectConfigurationsAction" id="MF.Select" />
             <add-to-group group-id="ToolsMenu" />
         </group>
     </actions>
