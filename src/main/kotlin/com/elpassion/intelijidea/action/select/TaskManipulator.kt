@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.action.select
 
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider

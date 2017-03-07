@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea
+package com.elpassion.intelijidea.action.select
 
 import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.configurations.ConfigurationType.CONFIGURATION_TYPE_EP

@@ -1,5 +1,7 @@
 package com.elpassion.intelijidea
 
+import com.elpassion.intelijidea.action.select.TaskManipulator
+import com.elpassion.intelijidea.action.select.getConfigurationsItems
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
 import com.intellij.openapi.project.Project

@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.configure.selector
 
-import com.elpassion.intelijidea.getTemplateConfigurations
+import com.elpassion.intelijidea.action.select.getTemplateConfigurations
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.RunConfiguration

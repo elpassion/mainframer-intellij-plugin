@@ -1,6 +1,5 @@
-package com.elpassion.intelijidea.action
+package com.elpassion.intelijidea.action.select
 
-import com.elpassion.intelijidea.TaskManipulator
 import com.elpassion.intelijidea.action.configure.selector.mfSelector
 import com.elpassion.intelijidea.action.configure.selector.showSelectorDialog
 import com.elpassion.intelijidea.task.mfBeforeRunTaskProvider
