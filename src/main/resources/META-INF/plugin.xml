@@ -51,8 +51,6 @@
                 <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
             </action>
             <separator />
-            <action class="com.elpassion.intelijidea.action.MFInjectBeforeRunTasksAction" id="MF.Inject" />
-            <action class="com.elpassion.intelijidea.action.MFRestoreDefaultBeforeRunTasksAction" id="MF.Restore" />
             <action class="com.elpassion.intelijidea.action.MFSelectConfigurationsAction" id="MF.Select" />
             <add-to-group group-id="ToolsMenu" />
         </group>
