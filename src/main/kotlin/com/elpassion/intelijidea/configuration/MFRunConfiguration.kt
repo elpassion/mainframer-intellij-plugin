@@ -61,11 +61,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunConfigurationData>() ?:
-                MFRunConfigurationData(
-                        buildCommand = "./gradlew",
-                        taskName = "build",
-                        mainframerPath = project.basePath)
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunConfigurationData>() ?: getDefaultData()
     }
 
     override fun writeExternal(element: Element) {
@@ -74,6 +70,11 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
+
+    private fun getDefaultData() = MFRunConfigurationData(
+            buildCommand = "./gradlew",
+            taskName = "build",
+            mainframerPath = project.basePath)
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRun.data"
