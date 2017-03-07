@@ -16,12 +16,13 @@ import com.intellij.openapi.project.Project
 import org.jdom.Element
 import java.io.File
 import java.io.Serializable
+import kotlin.properties.Delegates
 
 class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String,
                          val showToolNotFoundError: (mainframerPath: String?) -> Unit)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
-    var data: MFRunConfigurationData? = null
+    var data: MFRunConfigurationData by Delegates.notNull()
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return MFSettingsEditor(project)
@@ -29,9 +30,8 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data) {
         when {
-            this == null -> throw ExecutionException("Mainframer tool cannot be found")
             !this.isMfFileAvailable() -> {
-                showToolNotFoundError(data?.mainframerPath)
+                showToolNotFoundError(data.mainframerPath)
                 throw ExecutionException("Mainframer tool cannot be found")
             }
             else -> createCommandLineState(environment, this)
@@ -52,7 +52,6 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun checkConfiguration() = with(data) {
         when {
-            this == null -> throw RuntimeConfigurationError("Configuration incorrect")
             buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
             taskName.isBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
             else -> Unit
@@ -70,7 +69,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun writeExternal(element: Element) {
         super.writeExternal(element)
-        data?.let { element.setAttribute(CONFIGURATION_ATTR_DATA, it.toJson()) }
+        element.setAttribute(CONFIGURATION_ATTR_DATA, data.toJson())
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
