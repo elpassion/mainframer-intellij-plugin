@@ -50,11 +50,8 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     }
 
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
-        when {
-            buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
-            taskName.isBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
-            else -> Unit
-        }
+        if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
+        if (taskName.isBlank()) throw RuntimeConfigurationError("Task name cannot be empty")
     }
 
     override fun readExternal(element: Element) {
