@@ -93,5 +93,5 @@ dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0-M3'
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0-M3'
-    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-migration-support', version: '5.0.0-M3'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-migration-support', version: '5.0.0-M3'
 }
