@@ -10,6 +10,7 @@ class MFConfigureProjectActionController(
         val mainframerConfigurator: (List<String>) -> Maybe<MFToolInfo>,
         val mainframerFileDownloader: (MFToolInfo) -> Maybe<Unit>,
         val showMessage: (String) -> Unit,
+        val showError: (String) -> Unit,
         val uiScheduler: Scheduler,
         val progressScheduler: Scheduler) {
 
@@ -22,7 +23,7 @@ class MFConfigureProjectActionController(
                 .subscribe({
                     showMessage("Mainframer configured in your project!")
                 }, {
-                    showMessage("Error during mainframer configuration")
+                    showError("Error during mainframer configuration")
                 })
     }
 }

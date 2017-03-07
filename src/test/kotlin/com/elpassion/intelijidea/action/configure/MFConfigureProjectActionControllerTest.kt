@@ -17,9 +17,10 @@ class MFConfigureProjectActionControllerTest {
     private val mainframerVersionChooser = mock<(List<String>) -> Maybe<MFToolInfo>>()
     private val mainframerFileDownloader = mock<(MFToolInfo) -> Maybe<Unit>>()
     private val showMessage = mock<(String) -> Unit>()
+    private val showError = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()
-    private val controller = MFConfigureProjectActionController(mainframerReleasesFetcher, mainframerVersionChooser, mainframerFileDownloader, showMessage, uiScheduler, progressScheduler)
+    private val controller = MFConfigureProjectActionController(mainframerReleasesFetcher, mainframerVersionChooser, mainframerFileDownloader, showMessage, showError, uiScheduler, progressScheduler)
 
     @Test
     fun shouldConfigureMainframerInProject() {
@@ -75,7 +76,7 @@ class MFConfigureProjectActionControllerTest {
 
         controller.configureMainframer()
 
-        verify(showMessage).invoke("Error during mainframer configuration")
+        verify(showError).invoke("Error during mainframer configuration")
     }
 
     @Test
@@ -84,6 +85,6 @@ class MFConfigureProjectActionControllerTest {
 
         controller.configureMainframer()
 
-        verify(showMessage).invoke("Error during mainframer configuration")
+        verify(showError).invoke("Error during mainframer configuration")
     }
 }
