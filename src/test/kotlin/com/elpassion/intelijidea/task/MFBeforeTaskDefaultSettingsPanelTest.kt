@@ -5,11 +5,11 @@ import com.elpassion.intelijidea.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.nhaarman.mockito_kotlin.mock
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import javax.swing.JCheckBox
 import javax.swing.JTextField
 
 class MFBeforeTaskDefaultSettingsPanelTest {
@@ -83,15 +83,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     }
 
     @Test
-    fun `should reset configuration on startup field`() {
-        val settingsPanel = setupPanel(configureOnStartup = false)
-        settingsPanel.configureBeforeTasksOnStartupField.isSelected = true
-        settingsPanel.reset()
-
-        assertFalse(settingsPanel.configureBeforeTasksOnStartupField.isSelected)
-    }
-
-    @Test
     fun `should be modified after changing build command`() {
         val settingsPanel = setupPanel(buildCommand = "example")
         settingsPanel.buildCommandField.text = "other"
@@ -102,13 +93,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     fun `should be modified after changing task name`() {
         val settingsPanel = setupPanel(taskName = "task1")
         settingsPanel.taskNameField.text = "task2"
-        assertTrue(settingsPanel.isModified)
-    }
-
-    @Test
-    fun `should be modified after changing configureOnStartup field`() {
-        val settingsPanel = setupPanel(configureOnStartup = true)
-        settingsPanel.configureBeforeTasksOnStartupField.isSelected = false
         assertTrue(settingsPanel.isModified)
     }
 
@@ -170,38 +154,25 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         settingsPanel.apply()
         assertEquals("remote", settingsProvider.state.remoteMachineName)
     }
-
-    @Test
-    fun `should save configuration on startup when configuration applied`() {
-        val settingsProvider = createSettingsProvider(configureOnStartup = true, mainframerPath = mfFile.absolutePath)
-        val settingsPanel = createPanel(settingsProvider)
-
-        settingsPanel.apply()
-        assertEquals(true, settingsProvider.state.configureBeforeTaskOnStartup)
-    }
 }
 
 private fun setupPanel(mainframerPath: String = "a",
                        buildCommand: String = "b",
                        taskName: String = "c",
-                       remoteMachineName: String = "remoteName",
-                       configureOnStartup: Boolean = false) =
+                       remoteMachineName: String = "remoteName") =
         createPanel(createSettingsProvider(
                 mainframerPath = mainframerPath,
                 buildCommand = buildCommand,
                 taskName = taskName,
-                remoteMachineName = remoteMachineName,
-                configureOnStartup = configureOnStartup))
+                remoteMachineName = remoteMachineName))
 
 private fun createSettingsProvider(mainframerPath: String = "a",
                                    buildCommand: String = "b",
                                    taskName: String = "c",
-                                   remoteMachineName: String = "remoteName",
-                                   configureOnStartup: Boolean = false): MFBeforeTaskDefaultSettingsProvider {
+                                   remoteMachineName: String = "remoteName"): MFBeforeTaskDefaultSettingsProvider {
     return MFBeforeTaskDefaultSettingsProvider().apply {
         taskData = MFTaskData(mainframerPath = mainframerPath, buildCommand = buildCommand, taskName = taskName)
         state.remoteMachineName = remoteMachineName
-        state.configureBeforeTaskOnStartup = configureOnStartup
     }
 }
 
@@ -213,7 +184,6 @@ private fun MFBeforeTaskDefaultSettingsPanel.injectUiComponents(): MFBeforeTaskD
         apply {
             buildCommandField = JTextField()
             taskNameField = JTextField()
-            configureBeforeTasksOnStartupField = JCheckBox()
             remoteMachineField = JTextField()
             mainframerToolField = TextFieldWithBrowseButton()
             reset()

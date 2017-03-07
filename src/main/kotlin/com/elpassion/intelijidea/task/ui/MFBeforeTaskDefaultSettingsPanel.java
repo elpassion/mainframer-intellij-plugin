@@ -21,7 +21,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public JTextField buildCommandField;
     public JTextField taskNameField;
     public JPanel panel;
-    public JCheckBox configureBeforeTasksOnStartupField;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JTextField remoteMachineField;
 
@@ -41,12 +40,10 @@ public class MFBeforeTaskDefaultSettingsPanel {
 
     public Boolean isModified() {
         final MFTaskData taskData = settingsProvider.getTaskData();
-        final boolean configureBeforeTaskOnStartup = settingsProvider.getState().getConfigureBeforeTaskOnStartup();
         final String remoteMachineName = settingsProvider.getState().getRemoteMachineName();
         return !Comparing.equal(mainframerToolField.getText(), taskData.getMainframerPath()) ||
                 !Comparing.equal(buildCommandField.getText(), taskData.getBuildCommand()) ||
                 !Comparing.equal(taskNameField.getText(), taskData.getTaskName()) ||
-                !Comparing.equal(configureBeforeTasksOnStartupField.isSelected(), configureBeforeTaskOnStartup) ||
                 !Comparing.equal(remoteMachineField.getText(), remoteMachineName);
     }
 
@@ -56,7 +53,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
                 buildCommandField.getText(),
                 taskNameField.getText());
         settingsProvider.setTaskData(taskData);
-        settingsProvider.getState().setConfigureBeforeTaskOnStartup(configureBeforeTasksOnStartupField.isSelected());
         settingsProvider.getState().setRemoteMachineName(remoteMachineField.getText());
     }
 
@@ -65,7 +61,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
         buildCommandField.setText(taskData.getBuildCommand());
         mainframerToolField.setText(taskData.getMainframerPath());
         taskNameField.setText(taskData.getTaskName());
-        configureBeforeTasksOnStartupField.setSelected(settingsProvider.getState().getConfigureBeforeTaskOnStartup());
         remoteMachineField.setText(settingsProvider.getState().getRemoteMachineName());
     }
 
