@@ -8,21 +8,21 @@ class AssertThrowsTest {
 
     @Test(expected = AssertionError::class)
     fun shouldInformThatExceptionHasntBeenThrown() {
-        assertThrows(Exception::class.java) {
+        assertThrows<Exception> {
             Unit
         }
     }
 
     @Test(expected = AssertionError::class)
     fun shouldInformThatTypeOfThrownExceptionIsDifferent() {
-        assertThrows(NullPointerException::class.java) {
+        assertThrows<NullPointerException> {
             throw ClassCastException()
         }
     }
 
     @Test
     fun shouldReturnExceptionWithCorrectType() {
-        val exception = assertThrows(NullPointerException::class.java) {
+        val exception = assertThrows<NullPointerException> {
             throw NullPointerException()
         }
         assertTrue(exception is NullPointerException)
@@ -30,7 +30,7 @@ class AssertThrowsTest {
 
     @Test
     fun shouldAlsoCatchClassesWhichOneInheritsFromBaseClass() {
-        assertThrows(NullPointerException::class.java) {
+        assertThrows<NullPointerException> {
             throw KotlinNullPointerException()
         }
     }

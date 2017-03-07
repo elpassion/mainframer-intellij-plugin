@@ -76,7 +76,7 @@ class MFRunConfigurationTest {
 
     @Test
     fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
-        val exception = assertThrows(ExecutionException::class.java) {
+        val exception = assertThrows<ExecutionException> {
             mfRunConfiguration()
                     .apply { data = null }
                     .getState(mock(), mock())
@@ -88,7 +88,7 @@ class MFRunConfigurationTest {
     fun shouldThrowExecutionExceptionWhenMfFileIsNotAvailableOnGetState() {
         var isToolNotFoundErrorShown = false
         var shownMainFramerPath: String? = null
-        val exception = assertThrows(ExecutionException::class.java) {
+        val exception = assertThrows<ExecutionException> {
             mfRunConfiguration {
                 isToolNotFoundErrorShown = true
                 shownMainFramerPath = it
@@ -107,7 +107,7 @@ class MFRunConfigurationTest {
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, mfRunConfigurationData: MFRunConfigurationData?) {
-        val exception = assertThrows(RuntimeConfigurationError::class.java) {
+        val exception = assertThrows<RuntimeConfigurationError> {
             mfRunConfiguration()
                     .apply { data = mfRunConfigurationData }
                     .checkConfiguration()

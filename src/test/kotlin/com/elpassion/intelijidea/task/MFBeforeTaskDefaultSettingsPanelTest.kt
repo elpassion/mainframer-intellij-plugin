@@ -17,7 +17,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     @Test
     fun `should throw configuration exception when build command is empty`() {
         val settingsPanel = setupPanel(buildCommand = "")
-        assertThrows(ConfigurationException::class.java) {
+        assertThrows<ConfigurationException> {
             settingsPanel.apply()
         }
     }
@@ -25,7 +25,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     @Test
     fun `should throw configuration exception when task name is empty`() {
         val settingsPanel = setupPanel(taskName = "")
-        assertThrows(ConfigurationException::class.java) {
+        assertThrows<ConfigurationException> {
             settingsPanel.apply()
         }
     }
@@ -33,7 +33,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     @Test
     fun `should throw configuration exception when mainframer path is not valid`() {
         val settingsPanel = setupPanel(mainframerPath = "")
-        assertThrows(ConfigurationException::class.java) {
+        assertThrows<ConfigurationException> {
             settingsPanel.apply()
         }
     }
@@ -41,7 +41,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     @Test
     fun `should throw configuration exception when remote machine name is empty`() {
         val settingsPanel = setupPanel(remoteMachineName = "")
-        assertThrows(ConfigurationException::class.java) {
+        assertThrows<ConfigurationException> {
             settingsPanel.apply()
         }
     }
