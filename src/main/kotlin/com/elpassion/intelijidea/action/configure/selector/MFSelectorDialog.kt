@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.action.configure.selector
 
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
-import com.elpassion.intelijidea.util.indexOfOrNull
 import com.intellij.openapi.project.Project
 import com.jgoodies.common.collect.ArrayListModel
 import io.reactivex.Maybe
@@ -10,13 +9,14 @@ import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
-                       val items: List<MFSelectorItem>,
+                       configurations: List<MFSelectorItem>,
+                       templates: List<MFSelectorItem>,
                        doOnOk: (MFSelectorResult) -> Unit,
                        doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
-    private val sortedItems = items.filterNot { it.isTemplate }.sortedBy { it.getName() }
-    private val sortedTemplateItems = items.filter { it.isTemplate }.sortedBy { it.getName() }
+    private val sortedItems = configurations.sortedBy { it.getName() }
+    private val sortedTemplateItems = templates.sortedBy { it.getName() }
 
     init {
         title = "Select run configurations to inject mainframer"
@@ -34,24 +34,24 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun getSuccessResult(): MFSelectorResult = getSelectorResult(
-            uiIn = items,
-            uiOut = items.map { it.toItemFromUi() },
+            uiIn = sortedItems + sortedTemplateItems,
+            uiOut = sortedItems.mapWithIndex { value.toItemFromUi(index) } + sortedTemplateItems.mapWithIndex { value.toTemplateItemFromUi(index) },
             replaceAll = form.replaceAll.isSelected)
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
 
     private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
-    private fun MFSelectorItem.toItemFromUi(): MFSelectorItem {
-        val isSelected = sortedItems.indexOfOrNull(this)?.let { form.items.isItemSelected(it) } ?:
-                sortedTemplateItems.indexOfOrNull(this)!!.let { form.templateItems.isItemSelected(it) }
-        return MFSelectorItem(configuration, isTemplate, isSelected)
-    }
+    private fun MFSelectorItem.toItemFromUi(index: Int) = copy(isSelected = form.items.isItemSelected(index))
+
+    private fun MFSelectorItem.toTemplateItemFromUi(index: Int) = copy(isSelected = form.templateItems.isItemSelected(index))
 }
 
-fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<MFSelectorResult> =
+private fun List<MFSelectorItem>.mapWithIndex(function: IndexedValue<MFSelectorItem>.() -> MFSelectorItem) = withIndex().map { function(it) }
+
+fun showSelectorDialog(project: Project, configurations: List<MFSelectorItem>, templates: List<MFSelectorItem>): Maybe<MFSelectorResult> =
         Maybe.create<MFSelectorResult> { emitter ->
-            MFSelectorDialog(project, selectorItems, {
+            MFSelectorDialog(project, configurations, templates, {
                 emitter.onSuccess(it)
             }, {
                 emitter.onComplete()

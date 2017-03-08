@@ -7,11 +7,11 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 
-typealias MFUiSelector = (List<MFSelectorItem>) -> Maybe<MFSelectorResult>
+typealias MFUiSelector = (List<MFSelectorItem>, List<MFSelectorItem>) -> Maybe<MFSelectorResult>
 
 fun mfSelector(project: Project, uiSelector: MFUiSelector): Maybe<MFSelectorResult> =
         with(RunManagerEx.getInstanceEx(project)) {
-            uiSelector(getConfigurationItems() + getTemplateConfigurationItems())
+            uiSelector(getConfigurationItems(), getTemplateConfigurationItems())
         }
 
 fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, replaceAll: Boolean): MFSelectorResult {

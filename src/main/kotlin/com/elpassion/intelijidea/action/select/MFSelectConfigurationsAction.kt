@@ -16,8 +16,8 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     }
 
     private fun selectConfigurations(project: Project) {
-        mfSelector(project) { items ->
-            showSelectorDialog(project, items)
+        mfSelector(project) { configuration,templates ->
+            showSelectorDialog(project, configuration, templates)
         }.map { result ->
             configureSelections(project, result)
         }.subscribe { (injected, restored) ->
