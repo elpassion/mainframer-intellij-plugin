@@ -31,7 +31,9 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     private fun createCommandLineState(environment: ExecutionEnvironment, data: MFRunConfigurationData): MFCommandLineState {
         return MFCommandLineState(environment, data.mainframerPath, data.buildCommand, data.taskName).apply {
-            consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project)
+            consoleBuilder = TextConsoleBuilderFactory.getInstance()
+                    .createBuilder(project)
+                    .filters(RemoteToLocalTranslatingFilter(project))
         }
     }
 
