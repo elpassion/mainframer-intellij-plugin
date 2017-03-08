@@ -38,5 +38,5 @@ class MFSelectorList : CheckBoxList<MFSelectorItem>() {
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
 
-    private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
+    private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.name).apply { isSelected = item.isSelected }
 }

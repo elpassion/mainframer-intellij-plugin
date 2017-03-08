@@ -25,14 +25,18 @@ fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, r
 }
 
 private fun RunManagerEx.getConfigurationItems() = allConfigurationsList
-        .map { MFSelectorItem(it, isTemplate = false, isSelected = hasMainframerTask(it)) }
+        .map { MFSelectorItem(it, isSelected = hasMainframerTask(it), name = it.configurationName()) }
+
 
 private fun RunManagerEx.getTemplateConfigurationItems() = getTemplateConfigurations()
-        .map { MFSelectorItem(it, isTemplate = true, isSelected = hasMainframerTask(it)) }
+        .map { MFSelectorItem(it, isSelected = hasMainframerTask(it), name = it.templateConfigurationName()) }
+
+private fun RunConfiguration.configurationName(): String = "[${type.displayName}] ${name}"
+
+private fun RunConfiguration.templateConfigurationName(): String = type.displayName
 
 private fun RunManagerEx.hasMainframerTask(configuration: RunConfiguration) =
         getBeforeRunTasks(configuration).any { it is MFBeforeRunTask }
-
 private fun getItemsToInject(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>) =
         (uiOut.filter { it.isSelected } - uiIn.filter { it.isSelected }).map { it.configuration }
 

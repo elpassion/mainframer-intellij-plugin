@@ -13,8 +13,8 @@ class MFSelectorDialog(project: Project,
                        doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
-    private val sortedConfigurations = configurations.sortedBy { it.getName() }
-    private val sortedTemplateItems = templates.sortedBy { it.getName() }
+    private val sortedConfigurations = configurations.sortedBy { it.name }
+    private val sortedTemplateItems = templates.sortedBy { it.name }
 
     init {
         title = "Select run configurations to inject mainframer"
