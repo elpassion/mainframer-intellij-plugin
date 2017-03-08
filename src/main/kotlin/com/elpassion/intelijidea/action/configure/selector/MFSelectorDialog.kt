@@ -3,9 +3,7 @@ package com.elpassion.intelijidea.action.configure.selector
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
 import com.intellij.openapi.project.Project
-import com.jgoodies.common.collect.ArrayListModel
 import io.reactivex.Maybe
-import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
@@ -24,8 +22,8 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.configurationItems.model = sortedConfigurations.asListModel()
-        form.templateItems.model = sortedTemplateItems.asListModel()
+        form.configurationItems.items = sortedConfigurations
+        form.templateItems.items = sortedTemplateItems
         form.selectAllItems.addActionListener { form.configurationItems.selectAll() }
         form.unselectAllItems.addActionListener { form.configurationItems.unselectAll() }
         form.selectAllTemplateItems.addActionListener { form.templateItems.selectAll() }
@@ -35,19 +33,9 @@ class MFSelectorDialog(project: Project,
 
     override fun getSuccessResult(): MFSelectorResult = getSelectorResult(
             uiIn = sortedConfigurations + sortedTemplateItems,
-            uiOut = sortedConfigurations.mapWithIndex { value.toItemFromUi(index) } + sortedTemplateItems.mapWithIndex { value.toTemplateItemFromUi(index) },
+            uiOut = form.configurationItems.items + form.templateItems.items,
             replaceAll = form.replaceAll.isSelected)
-
-    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
-
-    private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
-
-    private fun MFSelectorItem.toItemFromUi(index: Int) = copy(isSelected = form.configurationItems.isItemSelected(index))
-
-    private fun MFSelectorItem.toTemplateItemFromUi(index: Int) = copy(isSelected = form.templateItems.isItemSelected(index))
 }
-
-private fun List<MFSelectorItem>.mapWithIndex(function: IndexedValue<MFSelectorItem>.() -> MFSelectorItem) = withIndex().map { function(it) }
 
 fun showSelectorDialog(project: Project, configurations: List<MFSelectorItem>, templates: List<MFSelectorItem>): Maybe<MFSelectorResult> =
         Maybe.create<MFSelectorResult> { emitter ->
