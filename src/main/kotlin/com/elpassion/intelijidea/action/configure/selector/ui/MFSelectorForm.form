@@ -50,7 +50,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="2f4fe" class="com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorList" binding="items">
+              <component id="2f4fe" class="com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorList" binding="configurationItems">
                 <constraints/>
                 <properties/>
               </component>

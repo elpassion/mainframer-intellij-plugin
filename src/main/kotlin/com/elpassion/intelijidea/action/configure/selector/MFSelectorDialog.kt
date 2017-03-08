@@ -15,7 +15,7 @@ class MFSelectorDialog(project: Project,
                        doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
-    private val sortedItems = configurations.sortedBy { it.getName() }
+    private val sortedConfigurations = configurations.sortedBy { it.getName() }
     private val sortedTemplateItems = templates.sortedBy { it.getName() }
 
     init {
@@ -24,25 +24,25 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.model = sortedItems.asListModel()
+        form.configurationItems.model = sortedConfigurations.asListModel()
         form.templateItems.model = sortedTemplateItems.asListModel()
-        form.selectAllItems.addActionListener { form.items.selectAll() }
-        form.unselectAllItems.addActionListener { form.items.unselectAll() }
+        form.selectAllItems.addActionListener { form.configurationItems.selectAll() }
+        form.unselectAllItems.addActionListener { form.configurationItems.unselectAll() }
         form.selectAllTemplateItems.addActionListener { form.templateItems.selectAll() }
         form.unselectAllTemplateItems.addActionListener { form.templateItems.unselectAll() }
         return form.panel
     }
 
     override fun getSuccessResult(): MFSelectorResult = getSelectorResult(
-            uiIn = sortedItems + sortedTemplateItems,
-            uiOut = sortedItems.mapWithIndex { value.toItemFromUi(index) } + sortedTemplateItems.mapWithIndex { value.toTemplateItemFromUi(index) },
+            uiIn = sortedConfigurations + sortedTemplateItems,
+            uiOut = sortedConfigurations.mapWithIndex { value.toItemFromUi(index) } + sortedTemplateItems.mapWithIndex { value.toTemplateItemFromUi(index) },
             replaceAll = form.replaceAll.isSelected)
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
 
     private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
 
-    private fun MFSelectorItem.toItemFromUi(index: Int) = copy(isSelected = form.items.isItemSelected(index))
+    private fun MFSelectorItem.toItemFromUi(index: Int) = copy(isSelected = form.configurationItems.isItemSelected(index))
 
     private fun MFSelectorItem.toTemplateItemFromUi(index: Int) = copy(isSelected = form.templateItems.isItemSelected(index))
 }
