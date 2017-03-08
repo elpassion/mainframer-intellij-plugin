@@ -26,6 +26,10 @@ class MFSelectorDialog(project: Project,
     override fun createCenterPanel(): JComponent {
         form.items.model = sortedItems.asListModel()
         form.templateItems.model = sortedTemplateItems.asListModel()
+        form.selectAllItems.addActionListener { form.items.selectAll() }
+        form.unselectAllItems.addActionListener { form.items.unselectAll() }
+        form.selectAllTemplateItems.addActionListener { form.templateItems.selectAll() }
+        form.unselectAllTemplateItems.addActionListener { form.templateItems.unselectAll() }
         return form.panel
     }
 

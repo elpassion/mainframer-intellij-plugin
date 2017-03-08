@@ -9,4 +9,8 @@ class MFSelectorList : CheckBoxList<MFSelectorItem>() {
     init {
         selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
     }
+
+    fun selectAll() = Unit
+
+    fun unselectAll() = Unit
 }
