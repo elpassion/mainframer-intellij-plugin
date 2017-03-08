@@ -19,9 +19,22 @@ class MFSelectorList : CheckBoxList<MFSelectorItem>() {
         }
         get() = field.mapIndexed { index, mfSelectorItem -> mfSelectorItem.copy(isSelected = isItemSelected(index)) }
 
-    fun selectAll() = Unit
+    @Suppress("unchecked_cast")
+    private val listModel = model as ArrayListModel<JCheckBox>
 
-    fun unselectAll() = Unit
+    fun selectAll() {
+        listModel.forEachIndexed { index, checkBox ->
+            checkBox.isSelected = true
+            listModel.fireContentsChanged(index)
+        }
+    }
+
+    fun unselectAll() {
+        listModel.forEachIndexed { index, checkBox ->
+            checkBox.isSelected = false
+            listModel.fireContentsChanged(index)
+        }
+    }
 
     private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
 
