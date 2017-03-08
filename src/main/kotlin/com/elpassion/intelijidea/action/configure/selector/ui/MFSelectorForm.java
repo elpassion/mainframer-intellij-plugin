@@ -7,4 +7,8 @@ public class MFSelectorForm {
     public MFSelectorList items;
     public MFSelectorList templateItems;
     public JCheckBox replaceAll;
+    private JButton selectAllItems;
+    private JButton unselectAllItems;
+    private JButton selectAllTemplateItems;
+    private JButton unselectAllTemplateItems;
 }
