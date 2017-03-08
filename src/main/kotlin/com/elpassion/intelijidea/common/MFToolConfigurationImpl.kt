@@ -4,15 +4,15 @@ import com.intellij.openapi.util.io.FileUtil
 import java.io.*
 import java.util.*
 
-class MFToolConfiguration(projectDir: String?) {
+class MFToolConfigurationImpl(projectDir: String?) : MFToolConfiguration {
 
     private val configurationFile = File(File(projectDir, ".mainframer"), "config")
 
-    fun readRemoteMachineName(): String? {
+    override fun readRemoteMachineName(): String? {
         return configurationFile.asProperties().getProperty(REMOTE_BUILD_MACHINE_KEY)
     }
 
-    fun writeRemoteMachineName(name: String) {
+    override fun writeRemoteMachineName(name: String) {
         configurationFile.asProperties().run {
             setProperty(REMOTE_BUILD_MACHINE_KEY, name)
             saveToFile(configurationFile)
@@ -22,6 +22,12 @@ class MFToolConfiguration(projectDir: String?) {
     companion object {
         private val REMOTE_BUILD_MACHINE_KEY = "remote_machine"
     }
+}
+
+interface MFToolConfiguration {
+    fun readRemoteMachineName(): String?
+
+    fun writeRemoteMachineName(name: String)
 }
 
 private fun File.asProperties(): Properties {

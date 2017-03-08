@@ -23,10 +23,12 @@ public class MFBeforeTaskDefaultSettingsPanel {
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JTextField remoteMachineField;
+    private MFToolConfiguration mfToolConfiguration;
 
-    public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider) {
+    public MFBeforeTaskDefaultSettingsPanel(Project project, MFBeforeTaskDefaultSettingsProvider settingsProvider, MFToolConfiguration mfToolConfiguration) {
         this.project = project;
         this.settingsProvider = settingsProvider;
+        this.mfToolConfiguration = mfToolConfiguration;
     }
 
     private void createUIComponents() {
@@ -40,7 +42,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
 
     public Boolean isModified() {
         final MFTaskData taskData = settingsProvider.getTaskData();
-        final String remoteMachineName = settingsProvider.getState().getRemoteMachineName();
+        final String remoteMachineName = mfToolConfiguration.readRemoteMachineName();
         return !Comparing.equal(mainframerToolField.getText(), taskData.getMainframerPath()) ||
                 !Comparing.equal(buildCommandField.getText(), taskData.getBuildCommand()) ||
                 !Comparing.equal(taskNameField.getText(), taskData.getTaskName()) ||
@@ -53,7 +55,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
                 buildCommandField.getText(),
                 taskNameField.getText());
         settingsProvider.setTaskData(taskData);
-        settingsProvider.getState().setRemoteMachineName(remoteMachineField.getText());
+        mfToolConfiguration.writeRemoteMachineName(remoteMachineField.getText());
     }
 
     public void reset() {
@@ -61,7 +63,7 @@ public class MFBeforeTaskDefaultSettingsPanel {
         buildCommandField.setText(taskData.getBuildCommand());
         mainframerToolField.setText(taskData.getMainframerPath());
         taskNameField.setText(taskData.getTaskName());
-        remoteMachineField.setText(settingsProvider.getState().getRemoteMachineName());
+        remoteMachineField.setText(mfToolConfiguration.readRemoteMachineName());
     }
 
     public void apply() throws ConfigurationException {

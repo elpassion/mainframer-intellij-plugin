@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.configure.configurator
 
-import com.elpassion.intelijidea.common.MFToolConfiguration
+import com.elpassion.intelijidea.common.MFToolConfigurationImpl
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.application.ApplicationManager
@@ -14,7 +14,7 @@ class MFPluginConfigurationRepository(private val project: Project) {
 
     private fun getRemoteMachineName(): String? {
         return ApplicationManager.getApplication().runReadAction<String> {
-            MFToolConfiguration(project.basePath).readRemoteMachineName()
+            MFToolConfigurationImpl(project.basePath).readRemoteMachineName()
         }
     }
 
@@ -25,7 +25,7 @@ class MFPluginConfigurationRepository(private val project: Project) {
 
     private fun setRemoteMachineName(name: String?) = name?.let {
         ApplicationManager.getApplication().runWriteAction {
-            MFToolConfiguration(project.basePath).writeRemoteMachineName(name)
+            MFToolConfigurationImpl(project.basePath).writeRemoteMachineName(name)
         }
     }
 

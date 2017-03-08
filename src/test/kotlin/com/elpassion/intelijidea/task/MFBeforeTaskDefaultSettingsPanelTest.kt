@@ -1,10 +1,13 @@
 package com.elpassion.intelijidea.task
 
+import com.elpassion.intelijidea.common.MFToolConfiguration
 import com.elpassion.intelijidea.common.assertThrows
 import com.elpassion.intelijidea.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -13,6 +16,8 @@ import org.junit.rules.TemporaryFolder
 import javax.swing.JTextField
 
 class MFBeforeTaskDefaultSettingsPanelTest {
+
+    private val mfToolConfiguration = mock<MFToolConfiguration>()
 
     @Test
     fun `should throw configuration exception when build command is empty`() {
@@ -152,32 +157,32 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         val settingsPanel = createPanel(settingsProvider)
 
         settingsPanel.apply()
-        assertEquals("remote", settingsProvider.state.remoteMachineName)
+        verify(mfToolConfiguration).writeRemoteMachineName("remote")
     }
-}
 
-private fun setupPanel(mainframerPath: String = "a",
-                       buildCommand: String = "b",
-                       taskName: String = "c",
-                       remoteMachineName: String = "remoteName") =
-        createPanel(createSettingsProvider(
-                mainframerPath = mainframerPath,
-                buildCommand = buildCommand,
-                taskName = taskName,
-                remoteMachineName = remoteMachineName))
+    private fun setupPanel(mainframerPath: String = "a",
+                           buildCommand: String = "b",
+                           taskName: String = "c",
+                           remoteMachineName: String = "remoteName") =
+            createPanel(createSettingsProvider(
+                    mainframerPath = mainframerPath,
+                    buildCommand = buildCommand,
+                    taskName = taskName,
+                    remoteMachineName = remoteMachineName))
 
-private fun createSettingsProvider(mainframerPath: String = "a",
-                                   buildCommand: String = "b",
-                                   taskName: String = "c",
-                                   remoteMachineName: String = "remoteName"): MFBeforeTaskDefaultSettingsProvider {
-    return MFBeforeTaskDefaultSettingsProvider().apply {
-        taskData = MFTaskData(mainframerPath = mainframerPath, buildCommand = buildCommand, taskName = taskName)
-        state.remoteMachineName = remoteMachineName
+    private fun createSettingsProvider(mainframerPath: String = "a",
+                                       buildCommand: String = "b",
+                                       taskName: String = "c",
+                                       remoteMachineName: String = "remoteName"): MFBeforeTaskDefaultSettingsProvider {
+        return MFBeforeTaskDefaultSettingsProvider().apply {
+            taskData = MFTaskData(mainframerPath = mainframerPath, buildCommand = buildCommand, taskName = taskName)
+            whenever(mfToolConfiguration.readRemoteMachineName()).thenReturn(remoteMachineName)
+        }
     }
-}
 
-private fun createPanel(settingsProvider: MFBeforeTaskDefaultSettingsProvider): MFBeforeTaskDefaultSettingsPanel {
-    return MFBeforeTaskDefaultSettingsPanel(mock(), settingsProvider).injectUiComponents()
+    private fun createPanel(settingsProvider: MFBeforeTaskDefaultSettingsProvider): MFBeforeTaskDefaultSettingsPanel {
+        return MFBeforeTaskDefaultSettingsPanel(mock(), settingsProvider, mfToolConfiguration).injectUiComponents()
+    }
 }
 
 private fun MFBeforeTaskDefaultSettingsPanel.injectUiComponents(): MFBeforeTaskDefaultSettingsPanel =
