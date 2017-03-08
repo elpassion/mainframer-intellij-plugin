@@ -64,17 +64,17 @@
           </component>
         </children>
       </grid>
-      <component id="7d1a5" class="javax.swing.JLabel">
+      <component id="7d1a5" class="com.intellij.ui.TitledSeparator">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Default values used to create mainframer before tasks"/>
         </properties>
       </component>
-      <component id="e35d8" class="javax.swing.JLabel">
+      <component id="e35d8" class="com.intellij.ui.TitledSeparator">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="General settings"/>
