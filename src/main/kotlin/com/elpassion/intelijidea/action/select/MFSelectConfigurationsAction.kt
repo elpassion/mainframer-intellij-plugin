@@ -18,11 +18,11 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     private fun selectConfigurations(project: Project) {
         mfSelector(project) { items ->
             showSelectorDialog(project, items)
+        }.map { result ->
+            configureSelections(project, result)
+        }.subscribe { (injected, restored) ->
+            project.showConfigurationChangesCountInfo(injected, restored)
         }
-                .map { result -> configureSelections(project, result) }
-                .subscribe { (injected, restored) ->
-                    project.showConfigurationChangesCountInfo(injected, restored)
-                }
     }
 
     private fun configureSelections(project: Project, selectorResult: MFSelectorResult) = with(selectorResult) {
