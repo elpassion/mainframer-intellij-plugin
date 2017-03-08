@@ -10,8 +10,8 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
-class TaskManipulator(val project: Project) {
-    val runManager: RunManagerEx = RunManagerEx.getInstanceEx(project)
+class TaskManipulator(private val project: Project) {
+    private val runManager = RunManagerEx.getInstanceEx(project)
 
     fun injectMFToConfigurations(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach { configuration ->
