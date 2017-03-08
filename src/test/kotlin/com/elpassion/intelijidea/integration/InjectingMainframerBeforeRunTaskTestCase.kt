@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.integration
 
-import com.elpassion.intelijidea.TaskManipulator
-import com.elpassion.intelijidea.TemplateConfigurationsProvider
+import com.elpassion.intelijidea.action.select.TaskManipulator
+import com.elpassion.intelijidea.action.select.TemplateConfigurationsProvider
 import com.elpassion.intelijidea.task.MFBeforeRunTask
 import com.elpassion.intelijidea.task.MFBeforeRunTaskProvider
 import com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider

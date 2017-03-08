@@ -27,9 +27,8 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         return MFSettingsEditor(project)
     }
 
-    override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data) {
+    override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data ?: getDefaultData()) {
         when {
-            this == null -> throw ExecutionException("Mainframer tool cannot be found")
             !this.isMfFileAvailable() -> {
                 showToolNotFoundError(data?.mainframerPath)
                 throw ExecutionException("Mainframer tool cannot be found")
@@ -50,22 +49,14 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         it.exists() && it.isFile && it.canExecute()
     }
 
-    override fun checkConfiguration() = with(data) {
-        when {
-            this == null -> throw RuntimeConfigurationError("Configuration incorrect")
-            buildCommand.isBlank() -> throw RuntimeConfigurationError("Build command cannot be empty")
-            taskName.isBlank() -> throw RuntimeConfigurationError("Task name cannot be empty")
-            else -> Unit
-        }
+    override fun checkConfiguration() = with(data ?: getDefaultData()) {
+        if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
+        if (taskName.isBlank()) throw RuntimeConfigurationError("Task name cannot be empty")
     }
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunConfigurationData>() ?:
-                MFRunConfigurationData(
-                        buildCommand = "./gradlew",
-                        taskName = "build",
-                        mainframerPath = project.basePath)
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFRunConfigurationData>() ?: getDefaultData()
     }
 
     override fun writeExternal(element: Element) {
@@ -74,6 +65,11 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     }
 
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
+
+    private fun getDefaultData() = MFRunConfigurationData(
+            buildCommand = "./gradlew",
+            taskName = "build",
+            mainframerPath = project.basePath)
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRun.data"

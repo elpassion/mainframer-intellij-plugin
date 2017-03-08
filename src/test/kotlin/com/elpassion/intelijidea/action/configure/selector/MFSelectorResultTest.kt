@@ -70,5 +70,5 @@ class MFSelectorResultTest {
     }
 
     private fun createSelectorItem(isSelected: Boolean = false) =
-            MFSelectorItem(mock(), isTemplate = false, isSelected = isSelected)
+            MFSelectorItem(mock(), isSelected = isSelected, name = "configuration")
 }

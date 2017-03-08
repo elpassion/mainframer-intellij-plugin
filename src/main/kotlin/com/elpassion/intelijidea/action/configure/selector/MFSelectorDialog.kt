@@ -2,21 +2,19 @@ package com.elpassion.intelijidea.action.configure.selector
 
 import com.elpassion.intelijidea.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.intelijidea.common.DialogWrapperAdapter
-import com.elpassion.intelijidea.util.indexOfOrNull
 import com.intellij.openapi.project.Project
-import com.jgoodies.common.collect.ArrayListModel
 import io.reactivex.Maybe
-import javax.swing.JCheckBox
 import javax.swing.JComponent
 
 class MFSelectorDialog(project: Project,
-                       val items: List<MFSelectorItem>,
+                       configurations: List<MFSelectorItem>,
+                       templates: List<MFSelectorItem>,
                        doOnOk: (MFSelectorResult) -> Unit,
                        doOnCancel: () -> Unit) : DialogWrapperAdapter<MFSelectorResult>(project, doOnOk, doOnCancel) {
 
     private val form = MFSelectorForm()
-    private val sortedItems = items.filterNot { it.isTemplate }.sortedBy { it.getName() }
-    private val sortedTemplateItems = items.filter { it.isTemplate }.sortedBy { it.getName() }
+    private val sortedConfigurations = configurations.sortedBy { it.name }
+    private val sortedTemplateItems = templates.sortedBy { it.name }
 
     init {
         title = "Select run configurations to inject mainframer"
@@ -24,30 +22,24 @@ class MFSelectorDialog(project: Project,
     }
 
     override fun createCenterPanel(): JComponent {
-        form.items.model = sortedItems.asListModel()
-        form.templateItems.model = sortedTemplateItems.asListModel()
+        form.configurationItems.items = sortedConfigurations
+        form.templateItems.items = sortedTemplateItems
+        form.selectAllItems.addActionListener { form.configurationItems.selectAll() }
+        form.unselectAllItems.addActionListener { form.configurationItems.unselectAll() }
+        form.selectAllTemplateItems.addActionListener { form.templateItems.selectAll() }
+        form.unselectAllTemplateItems.addActionListener { form.templateItems.unselectAll() }
         return form.panel
     }
 
     override fun getSuccessResult(): MFSelectorResult = getSelectorResult(
-            uiIn = items,
-            uiOut = items.map { it.toItemFromUi() },
+            uiIn = sortedConfigurations + sortedTemplateItems,
+            uiOut = form.configurationItems.items + form.templateItems.items,
             replaceAll = form.replaceAll.isSelected)
-
-    private fun List<MFSelectorItem>.asListModel() = ArrayListModel(map { createCheckBox(it) })
-
-    private fun createCheckBox(item: MFSelectorItem) = JCheckBox(item.getName()).apply { isSelected = item.isSelected }
-
-    private fun MFSelectorItem.toItemFromUi(): MFSelectorItem {
-        val isSelected = sortedItems.indexOfOrNull(this)?.let { form.items.isItemSelected(it) } ?:
-                sortedTemplateItems.indexOfOrNull(this)!!.let { form.templateItems.isItemSelected(it) }
-        return MFSelectorItem(configuration, isTemplate, isSelected)
-    }
 }
 
-fun showSelectorDialog(project: Project, selectorItems: List<MFSelectorItem>): Maybe<MFSelectorResult> =
+fun showSelectorDialog(project: Project, configurations: List<MFSelectorItem>, templates: List<MFSelectorItem>): Maybe<MFSelectorResult> =
         Maybe.create<MFSelectorResult> { emitter ->
-            MFSelectorDialog(project, selectorItems, {
+            MFSelectorDialog(project, configurations, templates, {
                 emitter.onSuccess(it)
             }, {
                 emitter.onComplete()

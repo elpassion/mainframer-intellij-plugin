@@ -21,13 +21,6 @@ class MFRunConfigurationTest {
     private val element = mock<Element>()
 
     @Test
-    fun shouldThrowRuntimeConfigurationErrorWhenDataIsNullOnCheckConfiguration() {
-        assertExceptionMessageOnCheckConfiguration(
-                expectedMessage = "Configuration incorrect",
-                mfRunConfigurationData = null)
-    }
-
-    @Test
     fun shouldThrowRuntimeConfigurationErrorWhenBuildCommandIsBlankOnCheckConfiguration() {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Build command cannot be empty",
