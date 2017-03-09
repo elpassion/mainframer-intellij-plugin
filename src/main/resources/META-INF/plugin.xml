@@ -21,6 +21,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 0.3.1: Fix bug with focusing tab on each output change.<br>
       Release 0.3.0: Remove actions injecting and restoring all before run tasks. Add machine name in settings. Minor bugs fixes.<br>
       Release 0.2.4: Add configurations select dialog to override existing mainframer tasks.<br>
       Release 0.2.3: Add support for remote machine configuration and validation for task's configuration.<br>
