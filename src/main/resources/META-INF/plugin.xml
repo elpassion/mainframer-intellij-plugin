@@ -40,7 +40,7 @@
         <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.task.MFBeforeRunTaskProvider" />
         <projectConfigurable displayName="Mainframer" groupId="tools" groupWeight="140" id="mainframer"
             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
-        <applicationService
+        <projectService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
     </extensions>
