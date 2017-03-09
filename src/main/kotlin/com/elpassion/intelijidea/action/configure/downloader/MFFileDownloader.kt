@@ -10,18 +10,19 @@ import com.intellij.platform.templates.github.Outcome
 import io.reactivex.Maybe
 import java.io.File
 
-fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<Unit> = { (version, file) ->
+fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<File> = { (version, file) ->
     downloadFileToProject(project, getMfToolDownloadUrl(version), file).asResultObservable()
 }
 
-private fun downloadFileToProject(project: Project, url: String, outputFile: File): Outcome<Unit> {
+private fun downloadFileToProject(project: Project, url: String, outputFile: File): Outcome<File> {
     val title = "Downloading file"
     val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
-    val action = {
-        val progressIndicator = ProgressManager.getInstance().progressIndicator
-        DownloadUtil.downloadAtomically(progressIndicator, url, outputFile)
-        outputFile.setExecutable(true)
-        project.baseDir.refresh(true, false)
-    }
-    return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, action, null)
+    return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, fileSupplier(outputFile, project, url), null)
+}
+
+private fun fileSupplier(outputFile: File, project: Project, url: String): () -> File = {
+    val progressIndicator = ProgressManager.getInstance().progressIndicator
+    DownloadUtil.downloadAtomically(progressIndicator, url, outputFile)
+    project.baseDir.refresh(true, false)
+    outputFile
 }

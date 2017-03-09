@@ -4,11 +4,12 @@ import com.elpassion.intelijidea.action.configure.configurator.MFToolInfo
 import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import java.io.File
 
 class MFConfigureProjectActionController(
         val mainframerReleasesFetcher: () -> Single<List<String>>,
         val mainframerConfigurator: (List<String>) -> Maybe<MFToolInfo>,
-        val mainframerFileDownloader: (MFToolInfo) -> Maybe<Unit>,
+        val mainframerFileDownloader: (MFToolInfo) -> Maybe<File>,
         val showMessage: (String) -> Unit,
         val showError: (String) -> Unit,
         val uiScheduler: Scheduler,
@@ -20,6 +21,7 @@ class MFConfigureProjectActionController(
                 .observeOn(uiScheduler)
                 .flatMapMaybe(mainframerConfigurator)
                 .flatMap(mainframerFileDownloader)
+                .doOnSuccess { it.setExecutable(true) }
                 .subscribe({
                     showMessage("Mainframer configured in your project!")
                 }, {
