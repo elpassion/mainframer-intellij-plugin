@@ -11,12 +11,10 @@ import io.reactivex.Maybe
 import java.io.File
 
 fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<Unit> = { (version, file) ->
-        downloadFileToProject(project, getMfToolDownloadUrl(version), file).asResultObservable()
-    }
+    downloadFileToProject(project, getMfToolDownloadUrl(version), file).asResultObservable()
+}
 
-//TODO: Make private and remove @Deprecated annotation
-@Deprecated(message = "Replace with MFConfigureProjectAction")
-fun downloadFileToProject(project: Project, url: String, outputFile: File): Outcome<Unit> {
+private fun downloadFileToProject(project: Project, url: String, outputFile: File): Outcome<Unit> {
     val title = "Downloading file"
     val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
     val action = {
