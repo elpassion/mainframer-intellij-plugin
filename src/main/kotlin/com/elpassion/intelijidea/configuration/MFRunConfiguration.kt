@@ -1,7 +1,6 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.console.MFCommandLineState
-import com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingFilter
 import com.elpassion.intelijidea.util.fromJson
 import com.elpassion.intelijidea.util.toJson
 import com.intellij.execution.Executor
@@ -34,7 +33,6 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         return MFCommandLineState(environment, data.mainframerPath, data.buildCommand, data.taskName).apply {
             consoleBuilder = TextConsoleBuilderFactory.getInstance()
                     .createBuilder(project)
-                    .filters(RemoteToLocalTranslatingFilter(project))
         }
     }
 
