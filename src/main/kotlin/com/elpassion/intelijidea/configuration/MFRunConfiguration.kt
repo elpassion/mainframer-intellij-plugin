@@ -3,7 +3,6 @@ package com.elpassion.intelijidea.configuration
 import com.elpassion.intelijidea.common.MFCommandLineState
 import com.elpassion.intelijidea.util.fromJson
 import com.elpassion.intelijidea.util.toJson
-import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.LocatableConfigurationBase
@@ -17,8 +16,7 @@ import org.jdom.Element
 import java.io.File
 import java.io.Serializable
 
-class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String,
-                         val showToolNotFoundError: (mainframerPath: String?) -> Unit)
+class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     : LocatableConfigurationBase(project, configurationFactory, name) {
 
     var data: MFRunConfigurationData? = null
@@ -28,13 +26,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data ?: getDefaultData()) {
-        when {
-            !this.isMfFileAvailable() -> {
-                showToolNotFoundError(data?.mainframerPath)
-                throw ExecutionException("Mainframer tool cannot be found")
-            }
-            else -> createCommandLineState(environment, this)
-        }
+        createCommandLineState(environment, this)
     }
 
     private fun createCommandLineState(environment: ExecutionEnvironment, data: MFRunConfigurationData): MFCommandLineState {
@@ -52,6 +44,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
         if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
         if (taskName.isBlank()) throw RuntimeConfigurationError("Task name cannot be empty")
+        if (!isMfFileAvailable()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
     }
 
     override fun readExternal(element: Element) {

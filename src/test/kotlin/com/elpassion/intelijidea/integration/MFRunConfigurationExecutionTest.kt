@@ -1,11 +1,9 @@
 package com.elpassion.intelijidea.integration
 
-import com.elpassion.intelijidea.common.assertThrows
 import com.elpassion.intelijidea.configuration.MFConfigurationFactory
 import com.elpassion.intelijidea.configuration.MFRunConfiguration
 import com.elpassion.intelijidea.configuration.MFRunConfigurationData
 import com.elpassion.intelijidea.configuration.MFRunConfigurationType
-import com.intellij.execution.ExecutionException
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.runners.ExecutionEnvironmentBuilder
 import com.intellij.openapi.util.io.FileUtil
@@ -14,17 +12,8 @@ import java.io.File
 
 class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase() {
 
-    fun testShouldThrowExecutionExceptionWhenConfigurationDataIsNull() {
-        assertThrows<ExecutionException> {
-            buildProjectAndExecute(configurationData = null)
-        }
-    }
-
-    fun testShouldThrowExecutionExceptionWhenToolNotFound() {
-        assertThrows<ExecutionException> {
-            val data = createConfigurationData()
-            buildProjectAndExecute(configurationData = data)
-        }
+    fun testShouldNotThrowExecutionExceptionWhenConfigurationDataIsNull() {
+        buildProjectAndExecute(configurationData = null)
     }
 
     fun testShouldStartExecutionWithoutExceptionOnToolFoundInDefinedPath() {
@@ -47,7 +36,7 @@ class MFRunConfigurationExecutionTest : LightPlatformCodeInsightFixtureTestCase(
     }
 
     private fun createRunConfiguration(configurationData: MFRunConfigurationData?) =
-            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "", {}).apply {
+            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
                 data = configurationData
             }
 }

@@ -1,14 +1,14 @@
 package com.elpassion.intelijidea.configuration
 
 import com.elpassion.intelijidea.common.assertThrows
-import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.jdom.Element
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.never
@@ -32,6 +32,13 @@ class MFRunConfigurationTest {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Task name cannot be empty",
                 mfRunConfigurationData = mfRunConfigurationData(taskName = ""))
+    }
+
+    @Test
+    fun shouldThrowRuntimeConfigurationErrorWhenScriptPathIsInvalidOnCheckConfiguration() {
+        assertExceptionMessageOnCheckConfiguration(
+                expectedMessage = "Mainframer tool cannot be found",
+                mfRunConfigurationData = mfRunConfigurationData(mainframerPath = ""))
     }
 
     @Test
@@ -68,33 +75,6 @@ class MFRunConfigurationTest {
     }
 
     @Test
-    fun shouldThrowExecutionExceptionWhenDataIsNullOnGetState() {
-        val exception = assertThrows<ExecutionException> {
-            mfRunConfiguration()
-                    .apply { data = null }
-                    .getState(mock(), mock())
-        }
-        assertEquals("Mainframer tool cannot be found", exception.message)
-    }
-
-    @Test
-    fun shouldThrowExecutionExceptionWhenMfFileIsNotAvailableOnGetState() {
-        var isToolNotFoundErrorShown = false
-        var shownMainFramerPath: String? = null
-        val exception = assertThrows<ExecutionException> {
-            mfRunConfiguration {
-                isToolNotFoundErrorShown = true
-                shownMainFramerPath = it
-            }.apply {
-                data = mfRunConfigurationData(mainframerPath = "mainFramerPath")
-            }.getState(mock(), mock())
-        }
-        assertEquals("Mainframer tool cannot be found", exception.message)
-        assertTrue(isToolNotFoundErrorShown)
-        assertEquals("mainFramerPath", shownMainFramerPath)
-    }
-
-    @Test
     fun shouldReturnFalseOnIsCompileBeforeLaunchAddedByDefault() {
         assertFalse(mfRunConfiguration().isCompileBeforeLaunchAddedByDefault)
     }
@@ -116,7 +96,7 @@ class MFRunConfigurationTest {
         }
     }
 
-    private fun mfRunConfiguration(showToolNotFoundError: (String?) -> Unit = {}) = MFRunConfiguration(project, confFactory, "", showToolNotFoundError)
+    private fun mfRunConfiguration() = MFRunConfiguration(project, confFactory, "")
 
     private fun mfRunConfigurationData(buildCommand: String = "buildCommand",
                                        taskName: String = "taskName",
