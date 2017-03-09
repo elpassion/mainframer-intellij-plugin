@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.configuration.ui
 
-import com.elpassion.intelijidea.configuration.RemoteToLocalTranslatingFilter
+import com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingFilter
 import com.intellij.execution.filters.ConsoleFilterProvider
 import com.intellij.openapi.project.Project
 

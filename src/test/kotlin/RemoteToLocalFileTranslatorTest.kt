@@ -1,4 +1,4 @@
-import com.elpassion.intelijidea.configuration.RemoteToLocalFileTranslator
+import com.elpassion.intelijidea.common.console.RemoteToLocalFileTranslator
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock

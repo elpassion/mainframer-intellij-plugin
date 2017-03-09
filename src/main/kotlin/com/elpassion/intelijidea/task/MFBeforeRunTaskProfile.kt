@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.task
 
-import com.elpassion.intelijidea.common.MFCommandLineState
+import com.elpassion.intelijidea.common.console.MFCommandLineState
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.configurations.ModuleRunProfile
