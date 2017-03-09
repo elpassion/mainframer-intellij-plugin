@@ -45,6 +45,7 @@
         <projectService
             serviceImplementation="com.elpassion.intelijidea.common.MFStateProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
+        <consoleFilterProvider implementation="com.elpassion.intelijidea.configuration.ui.MFCompilationErrorsFilterProvider" />
     </extensions>
 
     <actions>
