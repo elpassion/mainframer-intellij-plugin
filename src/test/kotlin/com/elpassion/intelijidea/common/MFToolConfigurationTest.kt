@@ -12,7 +12,7 @@ class MFToolConfigurationTest {
 
     @get:Rule
     val temporaryFolder = TemporaryFolder()
-    val toolConfiguration by lazy { MFToolConfiguration(temporaryFolder.root.path) }
+    val toolConfiguration by lazy { MFToolConfigurationImpl(temporaryFolder.root.path) }
     val configurationFile by lazy { File(File(temporaryFolder.root.path, ".mainframer"), "config") }
 
     @Before

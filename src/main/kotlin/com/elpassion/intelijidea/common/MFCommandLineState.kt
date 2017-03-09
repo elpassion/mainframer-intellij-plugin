@@ -7,7 +7,6 @@ import com.intellij.execution.configurations.CommandLineState
 import com.intellij.execution.process.*
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.ProgramRunner
-import com.intellij.openapi.util.Key
 
 class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
                          private val mainframerPath: String?,
@@ -32,18 +31,16 @@ class BringConsoleToFrontExecutionResult(
         val executor: Executor) : ExecutionResult by executionResult {
 
     init {
-        processHandler.addProcessListener(OnSystemTextAvailableProcessAdapter({ bringConsoleToFront() }))
+        processHandler.addProcessListener(OnProcessStartedProcessAdapter { bringConsoleToFront() })
     }
 
     private fun bringConsoleToFront() {
         ExecutionManager.getInstance(environment.project).contentManager.toFrontRunContent(executor, processHandler)
     }
 
-    class OnSystemTextAvailableProcessAdapter(val onSystemTextAvailable: () -> Unit) : ProcessAdapter() {
-        override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-            if (outputType !== ProcessOutputTypes.SYSTEM) {
-                onSystemTextAvailable()
-            }
+    class OnProcessStartedProcessAdapter(val onProcessStarted: () -> Unit) : ProcessAdapter() {
+        override fun startNotified(event: ProcessEvent?) {
+            onProcessStarted()
         }
     }
 }

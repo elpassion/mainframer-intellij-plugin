@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.task
 
+import com.elpassion.intelijidea.common.MFToolConfigurationImpl
 import com.elpassion.intelijidea.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.options.Configurable
@@ -29,7 +30,7 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
     }
 
     override fun createComponent(): JComponent {
-        mfSettingsPanel = MFBeforeTaskDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.INSTANCE)
+        mfSettingsPanel = MFBeforeTaskDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.INSTANCE, MFToolConfigurationImpl(project.basePath))
         return mfSettingsPanel!!.panel
     }
 
