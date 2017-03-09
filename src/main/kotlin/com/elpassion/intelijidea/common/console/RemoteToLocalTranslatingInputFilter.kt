@@ -19,8 +19,7 @@ class RemoteToLocalTranslatingInputFilter(private val project: Project) : InputF
         return if (!matcher.find()) {
             text
         } else {
-            val file = matcher.group(FILE_GROUP)
-            text.replace(file, RemoteToLocalFileTranslator.translate(project, file))
+            text.replace("\\D+mainframer/${project.name}".toRegex(), project.basePath!!)
         }
     }
 
@@ -28,6 +27,5 @@ class RemoteToLocalTranslatingInputFilter(private val project: Project) : InputF
         private val FILE_REGEX = "(^|[\\W])(?<file>(?:\\p{Alpha}\\:|/)[0-9 a-z_A-Z\\-\\\\./]+)"
         private val LINE_REGEX = "(?<line>[0-9]+)"
         private val ERROR_REGEX = "error: \\D+"
-        private val FILE_GROUP = "file"
     }
 }
