@@ -11,13 +11,16 @@ class RemoteToLocalTranslatingInputFilter(private val project: Project) : InputF
     private val pattern = Pattern.compile("$FILE_REGEX:$LINE_REGEX: $ERROR_REGEX", Pattern.MULTILINE)
 
     override fun applyFilter(text: String, contentType: ConsoleViewContentType): MutableList<Pair<String, ConsoleViewContentType>> {
+        return mutableListOf(Pair(translateText(text), contentType))
+    }
+
+    private fun translateText(text: String): String {
         val matcher = pattern.matcher(text)
-        if (!matcher.find()) {
-            return mutableListOf(Pair(text, contentType))
+        return if (!matcher.find()) {
+            text
         } else {
             val file = matcher.group(FILE_GROUP)
-            val replace = text.replace(file, RemoteToLocalFileTranslator.translate(project, file))
-            return mutableListOf(Pair(replace, contentType))
+            text.replace(file, RemoteToLocalFileTranslator.translate(project, file))
         }
     }
 
