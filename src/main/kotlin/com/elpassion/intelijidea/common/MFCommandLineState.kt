@@ -31,7 +31,7 @@ class BringConsoleToFrontExecutionResult(
         val executor: Executor) : ExecutionResult by executionResult {
 
     init {
-        processHandler.addProcessListener(OnProcessStartedProcessAdapter({ bringConsoleToFront() }))
+        processHandler.addProcessListener(OnProcessStartedProcessAdapter { bringConsoleToFront() })
     }
 
     private fun bringConsoleToFront() {
