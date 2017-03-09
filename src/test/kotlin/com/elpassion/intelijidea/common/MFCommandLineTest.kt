@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.common
 
+import com.elpassion.intelijidea.common.console.createMfCommandLine
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

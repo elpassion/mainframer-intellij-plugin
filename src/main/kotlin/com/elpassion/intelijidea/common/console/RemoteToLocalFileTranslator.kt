@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.configuration
+package com.elpassion.intelijidea.common.console
 
 import com.intellij.openapi.project.Project
 

@@ -1,4 +1,4 @@
-package com.elpassion.intelijidea.common
+package com.elpassion.intelijidea.common.console
 
 import com.intellij.execution.configurations.GeneralCommandLine
 
