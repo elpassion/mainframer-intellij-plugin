@@ -1,4 +1,5 @@
-import com.elpassion.intelijidea.common.console.RemoteToLocalFileTranslator
+package com.elpassion.intelijidea.common.console
+
 import com.intellij.openapi.project.Project
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
@@ -13,14 +14,14 @@ class RemoteToLocalFileTranslatorTest {
     }
 
     @Test
-    fun testShouldTranslateRemoteFileNameToLocal() {
+    fun `test should translate remote file name to local`() {
         val remotePathName = "/home/kasper/mainframer/$PROJECT_NAME/src/test/java/BB.java"
         val result = RemoteToLocalFileTranslator.translate(project, remotePathName)
         assertEquals("${project.basePath}/src/test/java/BB.java", result)
     }
 
     @Test
-    fun testReallyShouldTranslateRemoteFileNameToLocal() {
+    fun `test really should translate remote file name to local`() {
         val remotePathName = "/home/kasper/mainframer/$PROJECT_NAME/src/test/java/CC.java"
         val result = RemoteToLocalFileTranslator.translate(project, remotePathName)
         assertEquals("${project.basePath}/src/test/java/CC.java", result)
