@@ -14,13 +14,13 @@ class MFSelectorTest : LightPlatformCodeInsightFixtureTestCase() {
     fun testShouldReturnEmptyItemsListWhenNoConfigurationInProject() {
         val result = MFSelectorResult(emptyList(), emptyList(), replaceAll = false)
         whenever(uiSelector.invoke(any(), any())).thenJust(result)
-        mfSelector(project, uiSelector).test().assertValue { it == result }
+        mfSelector(project, uiSelector).invoke().test().assertValue { it == result }
     }
 
     fun testShouldReturnSelectedConfigurationOnChangeInUi() {
         val configuration = mock<RunConfiguration>()
         val result = MFSelectorResult(listOf(configuration), emptyList(), replaceAll = false)
         whenever(uiSelector.invoke(any(), any())).thenJust(result)
-        mfSelector(project, uiSelector).test().assertValue { it == result }
+        mfSelector(project, uiSelector).invoke().test().assertValue { it == result }
     }
 }
