@@ -37,8 +37,8 @@ class MFPluginConfigurationRepository(private val project: Project) {
     }
 
     private var taskData: MFTaskData
-        get() = MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData
+        get() = MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData
         set(value) {
-            MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = value
+            MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = value
         }
 }

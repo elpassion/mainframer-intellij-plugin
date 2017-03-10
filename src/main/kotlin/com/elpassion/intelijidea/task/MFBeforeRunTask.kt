@@ -17,7 +17,7 @@ class MFBeforeRunTask(var data: MFTaskData) : BeforeRunTask<MFBeforeRunTask>(MFB
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(MF_BEFORE_TASK_DATA)?.fromJson<MFTaskData>() ?: MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData
+        data = element.getAttributeValue(MF_BEFORE_TASK_DATA)?.fromJson<MFTaskData>() ?: data
     }
 
     companion object {

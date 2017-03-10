@@ -127,10 +127,10 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     private fun stubMfTaskSettingsProvider(mfTaskData: MFTaskData) {
-        MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData = mfTaskData
+        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = mfTaskData
     }
 
-    private fun settingsProviderTask() = MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData
+    private fun settingsProviderTask() = MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData
 
     private fun stubConfigurationFromUi(version: String = "0.0.1",
                                         buildCommand: String = "./gradlew",
@@ -144,7 +144,7 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     override fun tearDown() {
-        super.tearDown()
         stubMfTaskSettingsProvider(MFTaskData())
+        super.tearDown()
     }
 }

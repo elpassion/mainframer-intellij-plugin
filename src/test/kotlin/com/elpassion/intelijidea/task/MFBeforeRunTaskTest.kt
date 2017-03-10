@@ -13,7 +13,7 @@ class MFBeforeRunTaskTest : LightPlatformCodeInsightFixtureTestCase() {
         val task = MFBeforeRunTask(data = MFTaskData())
         task.readExternal(element)
 
-        Assert.assertEquals(MFBeforeTaskDefaultSettingsProvider.INSTANCE.taskData, task.data)
+        Assert.assertEquals(MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData, task.data)
     }
 
     fun testShouldReadMFTaskDataFromJson() {

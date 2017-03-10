@@ -30,7 +30,7 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
     }
 
     override fun createComponent(): JComponent {
-        mfSettingsPanel = MFBeforeTaskDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.INSTANCE, MFToolConfigurationImpl(project.basePath))
+        mfSettingsPanel = MFBeforeTaskDefaultSettingsPanel(project, MFBeforeTaskDefaultSettingsProvider.getInstance(project), MFToolConfigurationImpl(project.basePath))
         return mfSettingsPanel!!.panel
     }
 

@@ -47,7 +47,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask {
-        val settingsProvider = MFBeforeTaskDefaultSettingsProvider.INSTANCE
+        val settingsProvider = MFBeforeTaskDefaultSettingsProvider.getInstance(project)
         return MFBeforeRunTask(settingsProvider.taskData)
     }
 

@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.openapi.project.Project
 
 @State(name = "MFBeforeTaskDefaultSettingsProvider", storages = arrayOf(Storage("mainframer.xml")))
 class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTaskDefaultSettingsProvider.State> {
@@ -33,7 +34,6 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
     }
 
     companion object {
-        val INSTANCE: MFBeforeTaskDefaultSettingsProvider
-            get() = ServiceManager.getService(MFBeforeTaskDefaultSettingsProvider::class.java)
+        fun getInstance(project: Project): MFBeforeTaskDefaultSettingsProvider = ServiceManager.getService(project, MFBeforeTaskDefaultSettingsProvider::class.java)
     }
 }
