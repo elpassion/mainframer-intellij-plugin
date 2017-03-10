@@ -26,10 +26,7 @@ fun selectConfigurationsToMFActions(project: Project) {
 private fun configureSelections(project: Project): (MFSelectorResult) -> Unit = {
     with(it) {
         TaskManipulator(project).run {
-            when (replaceAll) {
-                true -> injectMFToConfigurationsWithReplacingMFTask(project.mfBeforeRunTaskProvider, toInject)
-                false -> injectMFToConfigurations(project.mfBeforeRunTaskProvider, toInject)
-            }
+            injectMFToConfigurations(project.mfBeforeRunTaskProvider, toInject)
             restoreConfigurations(toRestore)
         }
     }

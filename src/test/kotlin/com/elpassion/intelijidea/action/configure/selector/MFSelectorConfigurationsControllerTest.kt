@@ -77,7 +77,7 @@ class MFSelectorConfigurationsControllerTest {
     private fun createSingletonListMockConfiguration() = listOf(mock<RunConfiguration>())
 
     private fun stubSelectorResults(toInject: List<RunConfiguration> = listOf(), toRestore: List<RunConfiguration> = listOf()) {
-        whenever(selectorResults.invoke()).thenReturn(Maybe.just(MFSelectorResult(toInject, toRestore, false)))
+        whenever(selectorResults.invoke()).thenReturn(Maybe.just(MFSelectorResult(toInject, toRestore)))
     }
 
 }

@@ -59,7 +59,7 @@ class MFSelectorResultTest {
     fun shouldNotReplaceAllMfConfigurationsWhenNotSelectedInUi() {
         val items = listOf(createSelectorItem(isSelected = true))
         val result = getSelectorResult(items, items, replaceAll = false)
-        assertFalse(result.replaceAll)
+        assertTrue(result.toInject.isEmpty())
     }
 
     @Test
