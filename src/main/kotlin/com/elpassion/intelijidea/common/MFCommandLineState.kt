@@ -9,7 +9,7 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.ProgramRunner
 
 class MFCommandLineState(private val executionEnvironment: ExecutionEnvironment,
-                         private val mainframerPath: String?,
+                         private val mainframerPath: String,
                          private val buildCommand: String,
                          private val taskName: String) : CommandLineState(executionEnvironment) {
 

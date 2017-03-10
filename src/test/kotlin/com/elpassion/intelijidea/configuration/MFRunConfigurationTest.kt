@@ -53,9 +53,9 @@ class MFRunConfigurationTest {
     @Test
     fun shouldSetAttributeValueEqualToDataFieldOnWriteExternal() {
         mfRunConfiguration().run {
-            data = mfRunConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = null)
+            data = mfRunConfigurationData(buildCommand = "BuildCommand", taskName = "TaskName", mainframerPath = "path")
             writeExternal(element)
-            verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":null}"))
+            verify(element).setAttribute(any(), eq("{\"build_command\":\"BuildCommand\",\"task_name\":\"TaskName\",\"mainframer_path\":\"path\"}"))
         }
     }
 
@@ -100,6 +100,6 @@ class MFRunConfigurationTest {
 
     private fun mfRunConfigurationData(buildCommand: String = "buildCommand",
                                        taskName: String = "taskName",
-                                       mainframerPath: String? = "path") = MFRunConfigurationData(buildCommand, taskName, mainframerPath)
+                                       mainframerPath: String = "path") = MFRunConfigurationData(buildCommand, taskName, mainframerPath)
 
 }

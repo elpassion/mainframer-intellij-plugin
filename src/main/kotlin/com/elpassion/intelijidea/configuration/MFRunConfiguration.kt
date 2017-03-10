@@ -35,16 +35,14 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         }
     }
 
-    private fun MFRunConfigurationData?.isMfFileAvailable() = this?.mainframerPath?.let { isValidMFScript(it) } ?: false
-
-    private fun isValidMFScript(path: String) = File(path).let {
-        it.exists() && it.isFile && it.canExecute()
-    }
-
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
         if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
         if (taskName.isBlank()) throw RuntimeConfigurationError("Task name cannot be empty")
-        if (!isMfFileAvailable()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
+        if (!mainframerPath.isMfFileAvailable()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
+    }
+
+    private fun String.isMfFileAvailable() = File(this).let {
+        it.exists() && it.isFile && it.canExecute()
     }
 
     override fun readExternal(element: Element) {
@@ -62,7 +60,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     private fun getDefaultData() = MFRunConfigurationData(
             buildCommand = "./gradlew",
             taskName = "build",
-            mainframerPath = project.basePath)
+            mainframerPath = project.basePath!!)
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRun.data"
@@ -71,4 +69,4 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
 data class MFRunConfigurationData(val buildCommand: String = "",
                                   val taskName: String = "",
-                                  val mainframerPath: String? = null) : Serializable
+                                  val mainframerPath: String = "") : Serializable

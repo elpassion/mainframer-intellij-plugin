@@ -15,6 +15,6 @@ class MFBeforeRunTaskProfile(private val task: MFBeforeRunTask) : ModuleRunProfi
     override fun getModules(): Array<Module> = Module.EMPTY_ARRAY
 
     override fun getState(executor: Executor, env: ExecutionEnvironment) = with(task.data) {
-        MFCommandLineState(env, mainframerPath, buildCommand!!, taskName!!)
+        MFCommandLineState(env, mainframerPath!!, buildCommand!!, taskName!!)
     }
 }
