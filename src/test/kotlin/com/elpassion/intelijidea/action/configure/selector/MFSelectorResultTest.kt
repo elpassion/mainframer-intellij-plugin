@@ -64,9 +64,14 @@ class MFSelectorResultTest {
 
     @Test
     fun shouldReplaceAllMfConfigurationsWhenSelectedInUi() {
-        val items = listOf(createSelectorItem(isSelected = true))
-        val result = getSelectorResult(items, items, replaceAll = true)
-        assertTrue(result.replaceAll)
+        val selectorItem = createSelectorItem(isSelected = true)
+        val items = listOf(selectorItem)
+        val (toInject, _) = getSelectorResult(
+                uiIn = items,
+                uiOut = items,
+                replaceAll = true)
+
+        assertEquals(listOf(selectorItem.configuration), toInject)
     }
 
     private fun createSelectorItem(isSelected: Boolean = false) =
