@@ -51,9 +51,8 @@ public class MFBeforeTaskDefaultSettingsPanel {
 
     private void save() {
         MFTaskData taskData = new MFTaskData(
-                mainframerToolField.getText(),
-                buildCommandField.getText(),
-                taskNameField.getText());
+                buildCommandField.getText(), taskNameField.getText(), mainframerToolField.getText()
+        );
         settingsProvider.setTaskData(taskData);
         mfToolConfiguration.writeRemoteMachineName(remoteMachineField.getText());
     }

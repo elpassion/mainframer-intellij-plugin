@@ -67,7 +67,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         val runConfiguration = addTestTemplateConfiguration()
         injectMainframer(runConfiguration)
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData("path2")
+        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData(mainframerPath = "path2")
         injectMainframer(runConfiguration)
         val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
@@ -78,7 +78,7 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         val runConfiguration = addTestTemplateConfiguration()
         injectMainframerReplacingAllMfTasks(runConfiguration)
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData("path2")
+        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData(mainframerPath = "path2")
         injectMainframerReplacingAllMfTasks(runConfiguration)
         val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 

@@ -42,6 +42,8 @@
             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
         <projectService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
+        <projectService
+            serviceImplementation="com.elpassion.intelijidea.MFStateProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
         <consoleInputFilterProvider implementation="com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
     </extensions>
@@ -52,9 +54,14 @@
             <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
                 <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
             </action>
-            <separator />
+            <separator/>
             <action class="com.elpassion.intelijidea.action.select.MFSelectConfigurationsAction" id="MF.Select" />
             <add-to-group group-id="ToolsMenu" />
+        </group>
+        <group id="MainframerMainSwitch" text="Mainframer settings">
+            <separator/>
+            <action class="com.elpassion.intelijidea.action.switcher.MFSwitchAction" id="MF.Switch" icon="/icons/mainframerIcon.png" />
+            <add-to-group group-id="MainToolBar" relative-to-action="ToolbarRunGroup" anchor="after" />
         </group>
     </actions>
 

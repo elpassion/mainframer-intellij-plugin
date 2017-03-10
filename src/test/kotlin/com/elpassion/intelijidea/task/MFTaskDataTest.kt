@@ -66,6 +66,6 @@ class IntegrationTest {
 
     private fun createTaskData(buildCommand: String = "./gradlew", taskName: String = "build"): MFTaskData {
         val folderPath = File(temporaryFolder.root.absolutePath, mfFilename).absolutePath
-        return MFTaskData(folderPath, buildCommand, taskName)
+        return MFTaskData(buildCommand, taskName, folderPath)
     }
 }
