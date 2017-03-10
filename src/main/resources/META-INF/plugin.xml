@@ -42,6 +42,8 @@
             instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
         <projectService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
+        <projectService
+            serviceImplementation="com.elpassion.intelijidea.common.MFStateProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
     </extensions>
 
