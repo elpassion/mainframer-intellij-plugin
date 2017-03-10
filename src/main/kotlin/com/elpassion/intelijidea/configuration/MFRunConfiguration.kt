@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.configuration
 
-import com.elpassion.intelijidea.common.MFCommandLineState
+import com.elpassion.intelijidea.common.console.MFCommandLineState
 import com.elpassion.intelijidea.util.fromJson
 import com.elpassion.intelijidea.util.toJson
 import com.intellij.execution.Executor
