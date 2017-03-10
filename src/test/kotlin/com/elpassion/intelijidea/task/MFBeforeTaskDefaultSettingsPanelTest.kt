@@ -175,7 +175,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
                                        taskName: String = "c",
                                        remoteMachineName: String = "remoteName"): MFBeforeTaskDefaultSettingsProvider {
         return MFBeforeTaskDefaultSettingsProvider().apply {
-            taskData = MFTaskData(mainframerPath = mainframerPath, buildCommand = buildCommand, taskName = taskName)
+            taskData = MFTaskData(buildCommand = buildCommand, taskName = taskName, mainframerPath = mainframerPath)
             whenever(mfToolConfiguration.readRemoteMachineName()).thenReturn(remoteMachineName)
         }
     }

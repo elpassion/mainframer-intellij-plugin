@@ -35,7 +35,7 @@ data class MFConfiguratorOut(val version: String,
                              val taskName: String,
                              val buildCommand: String)
 
-data class MFPluginConfiguration(val taskName: String?,
-                                 val buildCommand: String?,
+data class MFPluginConfiguration(val taskName: String,
+                                 val buildCommand: String,
                                  val remoteName: String?,
-                                 val mainframerPath: String?)
+                                 val mainframerPath: String)
