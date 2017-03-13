@@ -9,20 +9,27 @@ import io.reactivex.Maybe
 
 typealias MFUiSelector = (List<MFSelectorItem>, List<MFSelectorItem>) -> Maybe<MFSelectorResult>
 
-fun mfSelector(project: Project, uiSelector: MFUiSelector): Maybe<MFSelectorResult> =
-        with(RunManagerEx.getInstanceEx(project)) {
-            uiSelector(getConfigurationItems(), getTemplateConfigurationItems())
-        }
-
-fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, replaceAll: Boolean): MFSelectorResult {
-    return if (uiOut != uiIn) {
-        val toInject = getItemsToInject(uiIn, uiOut)
-        val toRestore = getItemsToRestore(uiIn, uiOut)
-        MFSelectorResult(toInject, toRestore, replaceAll)
-    } else {
-        MFSelectorResult(emptyList(), emptyList(), replaceAll)
+fun mfSelector(project: Project, uiSelector: MFUiSelector) = {
+    with(RunManagerEx.getInstanceEx(project)) {
+        uiSelector(getConfigurationItems(), getTemplateConfigurationItems())
     }
 }
+
+fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, replaceAll: Boolean): MFSelectorResult {
+    return if (replaceAll) {
+        val toInject = getSelectedConfigurations(uiOut)
+        val toRestore = getItemsToRestore(uiIn, uiOut)
+        MFSelectorResult(toInject, toRestore)
+    } else if (uiOut != uiIn) {
+        val toInject = getItemsToInject(uiIn, uiOut)
+        val toRestore = getItemsToRestore(uiIn, uiOut)
+        MFSelectorResult(toInject, toRestore)
+    } else {
+        MFSelectorResult(emptyList(), emptyList())
+    }
+}
+
+private fun getSelectedConfigurations(uiOut: List<MFSelectorItem>) = uiOut.filter { it.isSelected }.map { it.configuration }
 
 private fun RunManagerEx.getConfigurationItems() = allConfigurationsList
         .map { MFSelectorItem(it, isSelected = hasMainframerTask(it), name = it.configurationName()) }
@@ -37,6 +44,7 @@ private fun RunConfiguration.templateConfigurationName(): String = type.displayN
 
 private fun RunManagerEx.hasMainframerTask(configuration: RunConfiguration) =
         getBeforeRunTasks(configuration).any { it is MFBeforeRunTask }
+
 private fun getItemsToInject(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>) =
         (uiOut.filter { it.isSelected } - uiIn.filter { it.isSelected }).map { it.configuration }
 

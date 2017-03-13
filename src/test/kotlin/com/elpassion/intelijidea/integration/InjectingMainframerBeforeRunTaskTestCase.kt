@@ -63,23 +63,12 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
                 .isEmpty()
     }
 
-    fun testShouldNotReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
+    fun testShouldReplaceMainframerMakeDataWhenTaskExistedBeforeInjection() {
         val runConfiguration = addTestTemplateConfiguration()
         injectMainframer(runConfiguration)
         val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
         MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData(mainframerPath = "path2")
         injectMainframer(runConfiguration)
-        val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
-
-        assertEquals(oldTaskData, newTaskData)
-    }
-
-    fun testShouldReplaceMainframerMakeDataOnNextInjectionWhenReplacingAllMfTasks() {
-        val runConfiguration = addTestTemplateConfiguration()
-        injectMainframerReplacingAllMfTasks(runConfiguration)
-        val oldTaskData = firstMFBeforeRunTaskData(runConfiguration)
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData(mainframerPath = "path2")
-        injectMainframerReplacingAllMfTasks(runConfiguration)
         val newTaskData = firstMFBeforeRunTaskData(runConfiguration)
 
         assertNotEquals(oldTaskData, newTaskData)
@@ -129,10 +118,6 @@ class InjectingMainframerBeforeRunTaskTestCase : LightPlatformCodeInsightFixture
         override fun getDisplayName() = "mock"
 
         override fun getConfigurationFactories() = arrayOf<ConfigurationFactory>(elements)
-    }
-
-    private fun injectMainframerReplacingAllMfTasks(runConfiguration: RunConfiguration) {
-        taskInjector.injectMFToConfigurationsWithReplacingMFTask(MFBeforeRunTaskProvider(project), listOf(runConfiguration))
     }
 
     private fun restoreConfigurations(runConfiguration: RunConfiguration) {

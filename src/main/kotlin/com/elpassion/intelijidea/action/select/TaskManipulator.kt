@@ -14,27 +14,18 @@ class TaskManipulator(private val project: Project) {
     private val runManager = RunManagerEx.getInstanceEx(project)
 
     fun injectMFToConfigurations(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
-        configurations.forEach { configuration ->
-            runManager.getFirstMFBeforeRunTask(configuration) ?: configuration.injectMFTask(taskProvider)
-        }
-    }
-
-    fun injectMFToConfigurationsWithReplacingMFTask(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach {
             it.injectMFTask(taskProvider)
         }
     }
 
-    private fun RunConfiguration.injectMFTask(mfTaskProvider: MFBeforeRunTaskProvider) {
+    private fun RunConfiguration.injectMFTask(mfTaskProvider: BeforeRunTaskProvider<MFBeforeRunTask>) {
         val taskToInject = mfTaskProvider.createEnabledTask(this)
         runManager.setBeforeRunTasks(this, listOf(taskToInject), false)
     }
 
-    private fun RunManagerEx.getFirstMFBeforeRunTask(configuration: RunConfiguration) =
-            getBeforeRunTasks(configuration).filterIsInstance<MFBeforeRunTask>().firstOrNull()
-
-    private fun MFBeforeRunTaskProvider.createEnabledTask(runConfiguration: RunConfiguration) = createTask(runConfiguration)
-            .apply { isEnabled = true }
+    private fun BeforeRunTaskProvider<MFBeforeRunTask>.createEnabledTask(runConfiguration: RunConfiguration) =
+            createTask(runConfiguration)!!.apply { isEnabled = true }
 
     fun restoreConfigurations(configurations: List<RunConfiguration>) {
         configurations.forEach {
