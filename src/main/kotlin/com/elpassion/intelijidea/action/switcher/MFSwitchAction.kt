@@ -1,6 +1,6 @@
 package com.elpassion.intelijidea.action.switcher
 
-import com.elpassion.intelijidea.MFStateProvider
+import com.elpassion.intelijidea.common.MFStateProvider
 import com.elpassion.intelijidea.util.MFIcons
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction

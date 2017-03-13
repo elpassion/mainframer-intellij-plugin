@@ -43,7 +43,7 @@
         <projectService
             serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
         <projectService
-            serviceImplementation="com.elpassion.intelijidea.MFStateProvider" />
+            serviceImplementation="com.elpassion.intelijidea.common.MFStateProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
         <consoleInputFilterProvider implementation="com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
     </extensions>
