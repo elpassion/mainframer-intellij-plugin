@@ -40,20 +40,12 @@ class TaskManipulator(private val project: Project) {
 
 }
 
-@Deprecated("Remove when configuration dialog completed", ReplaceWith("Configuration list selected from dialog"))
-fun RunManager.getConfigurationsItems() =
-        (getAllConfigurationsAsSelectorItems() + getTemplateConfigurationsAsSelectorItems())
-
 fun RunManager.getTemplateConfigurations(): List<RunConfiguration> {
     val configurationTypes = TemplateConfigurationsProvider.get()
     return configurationTypes.flatMap { it.configurationFactories.toList() }
             .map { getConfigurationTemplate(it) }
             .map { it.configuration }
 }
-
-private fun RunManager.getAllConfigurationsAsSelectorItems() = allConfigurationsList.filterInjectableConfigurations()
-
-private fun RunManager.getTemplateConfigurationsAsSelectorItems() = getTemplateConfigurations().filterInjectableConfigurations()
 
 private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project: Project): List<BeforeRunTask<*>> {
     val beforeRunProviders = BeforeRunTaskProvider.EXTENSION_POINT_NAME.getExtensions(project)
@@ -66,6 +58,3 @@ private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project:
             .filterNotNull()
             .filter { it.isEnabled }
 }
-
-private fun List<RunConfiguration>.filterInjectableConfigurations() = filterIsInstance<RunConfigurationBase>()
-        .filter { it.isCompileBeforeLaunchAddedByDefault }
