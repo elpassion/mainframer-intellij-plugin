@@ -42,7 +42,7 @@ sourceSets {
 intellij {
     def intellijVersion = '171.3224.1'
     version intellijVersion
-    pluginName 'mainframer-plugin'
+    pluginName 'mainframer-integration'
     publish {
         username project.findProperty("MF_PUBLISH_USER_NAME")
         password project.findProperty("MF_PUBLISH_PASSWORD")

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.elpassion.intelijidea</id>
-    <name>mainframer-plugin</name>
+    <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
     <description><![CDATA[
