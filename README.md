@@ -55,15 +55,17 @@ Launch *Enter action dialog* with (<kbd>command</kbd> or <kbd>ctrl</kbd>) + <kbd
 
 This is an initial action you need to perform to configure Mainframer in your current project. It starts with fetching a list of all available tool releases. You can select a Mainframer tool version you are interested in. It will check if your opened project contains a *mainframer.sh* file and if not it will download it for you.
 
-#### Inject mainframer before run task
+#### Select configurations to inject mainframer or restore to default
 
-With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **Mainframer Make** task:
+This action comes with a dialog containing selectable lists of run/debug configurations and default configurations (templates):
+
+![](readme/select_configurations.png)
+
+After clicking *OK* button plugin will modify all your created run configurations. For each selected configuration it will remove default *before launch* task and inject **Mainframer Make** task. 
 
 ![](readme/injecting.png)
 
-#### Restore default before run tasks
-
-Whenever you decide to build your project locally, this action will restore default *before run* tasks in all run configurations defined.
+Simultaneously, for each unselected configuration, this action will restore default *before run* task, enabling project local build.
 
 ### Run configurations
 
