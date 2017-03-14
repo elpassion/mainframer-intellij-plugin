@@ -67,6 +67,8 @@ After clicking *OK* button plugin will modify all your created run configuration
 
 Simultaneously, for each unselected configuration, this action will restore default *before run* task, enabling project local build.
 
+Selecting a checkbox at the bottom of the dialog indicates that you want to override all **Mainframer Make** tasks properties, set separately per run configuration, with defaults from plugin settings (defined in *Tools > Mainframer*).
+
 ### Run configurations
 
 You can use **mainframer-plugin** either to inject predefined *before launch* tasks or to create a custom run configuration. In case to add new mainframer configuration open run configurations dialog, click add button and select proper configuration type as below:
