@@ -20,12 +20,10 @@ fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, r
         val toInject = getSelectedConfigurations(uiOut)
         val toRestore = getItemsToRestore(uiIn, uiOut)
         MFSelectorResult(toInject, toRestore)
-    } else if (uiOut != uiIn) {
+    } else {
         val toInject = getItemsToInject(uiIn, uiOut)
         val toRestore = getItemsToRestore(uiIn, uiOut)
         MFSelectorResult(toInject, toRestore)
-    } else {
-        MFSelectorResult(emptyList(), emptyList())
     }
 }
 
