@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.action.switcher
 
 import com.elpassion.intelijidea.common.MFStateProvider
 import com.elpassion.intelijidea.util.MFIcons
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 
@@ -17,7 +16,7 @@ class MFSwitchAction : AnAction(MF_SWTICH_ACTION) {
 
     override fun update(e: AnActionEvent) {
         e.project?.let {
-            e.presentation.icon = if(MFStateProvider.getInstance(it).isTurnOn) MFIcons.mainframerIcon else AllIcons.Windows.CloseActive
+            e.presentation.icon = if (MFStateProvider.getInstance(it).isTurnOn) MFIcons.disableMainframerIcon else MFIcons.enableMainframerIcon
         }
     }
 
