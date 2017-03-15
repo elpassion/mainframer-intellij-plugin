@@ -17,7 +17,7 @@ fun mfSelector(project: Project, uiSelector: MFUiSelector) = {
 
 fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, replaceAll: Boolean): MFSelectorResult {
     return if (replaceAll) {
-        val toInject = getSelectedConfigurations(uiOut)
+        val toInject = getItemsToInject(emptyList(), uiOut)
         val toRestore = getItemsToRestore(uiIn, uiOut)
         MFSelectorResult(toInject, toRestore)
     } else {
@@ -26,8 +26,6 @@ fun getSelectorResult(uiIn: List<MFSelectorItem>, uiOut: List<MFSelectorItem>, r
         MFSelectorResult(toInject, toRestore)
     }
 }
-
-private fun getSelectedConfigurations(uiOut: List<MFSelectorItem>) = uiOut.filter { it.isSelected }.map { it.configuration }
 
 private fun RunManagerEx.getConfigurationItems() = allConfigurationsList
         .map { MFSelectorItem(it, isSelected = hasMainframerTask(it), name = it.configurationName()) }
