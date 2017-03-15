@@ -8,8 +8,9 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.module.Module
 import javax.swing.Icon
 
+
 class MFBeforeRunTaskProfile(private val task: MFBeforeRunTask, private val commandLineProvider: (MFTaskData) -> GeneralCommandLine) : ModuleRunProfile {
-    override fun getName(): String = "MFBeforeRunTaskProfile"
+    override fun getName(): String = "Mainframer"
 
     override fun getIcon(): Icon? = null
 

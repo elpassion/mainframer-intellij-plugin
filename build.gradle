@@ -42,11 +42,11 @@ sourceSets {
 intellij {
     def intellijVersion = '171.3224.1'
     version intellijVersion
-    pluginName 'mainframer-plugin'
+    pluginName 'mainframer-integration'
     publish {
         username project.findProperty("MF_PUBLISH_USER_NAME")
         password project.findProperty("MF_PUBLISH_PASSWORD")
-        channel 'nightly'
+        channel project.findProperty("publishChannel")
     }
     patchPluginXml {
         version readVersion()
@@ -81,13 +81,13 @@ dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-runtime', version: kotlin_version
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlin_version
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.6'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-jackson:2.1.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.5'
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.1.0'
+    compile group: 'com.squareup.retrofit2', name: 'converter-jackson', version: '2.1.0'
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.5'
+    compile group: 'com.jakewharton.retrofit', name: 'retrofit2-rxjava2-adapter', version: '1.0.0'
 
-    testCompile "com.nhaarman:mockito-kotlin:1.2.0"
-    testCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.2.0'
+    testCompile group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.6.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
 }

@@ -9,7 +9,8 @@ script:
   - ./gradlew test
 
 after_success:
-  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin
+  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin -PpublishChannel=Stable
+  - test "$TRAVIS_BRANCH" == "nightly" && ./gradlew publishPlugin -PpublishChannel=nightly
 
 notifications:
   slack:

@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.elpassion.intelijidea</id>
-    <name>mainframer-plugin</name>
+    <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
     <description><![CDATA[
@@ -21,6 +21,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 0.3.2: Settings provider is now project scoped. Fix not replacing existing configurations when selected.<br>
       Release 0.3.1: Fix bug with focusing tab on each output change.<br>
       Release 0.3.0: Remove actions injecting and restoring all before run tasks. Add machine name in settings. Minor bugs fixes.<br>
       Release 0.2.4: Add configurations select dialog to override existing mainframer tasks.<br>
