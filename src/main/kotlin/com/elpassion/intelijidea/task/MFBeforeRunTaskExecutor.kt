@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.task
 
+import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
@@ -13,7 +14,8 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.functions.Consumer
 
-class MFBeforeRunTaskExecutor(private val project: Project) {
+class MFBeforeRunTaskExecutor(private val project: Project,
+                              private val commandLineProvider: (Project, MFTaskData) -> GeneralCommandLine) {
 
     fun executeSync(task: MFBeforeRunTask, executionId: Long): Boolean {
         return Single.fromCallable { createExecutionEnv(task, executionId) }
@@ -29,7 +31,7 @@ class MFBeforeRunTaskExecutor(private val project: Project) {
 
     private fun createExecutionEnv(task: MFBeforeRunTask, executionId: Long): ExecutionEnvironment {
         return ExecutionEnvironmentBuilder(project, DefaultRunExecutor.getRunExecutorInstance())
-                .runProfile(MFBeforeRunTaskProfile(task))
+                .runProfile(MFBeforeRunTaskProfile(task, { taskData: MFTaskData -> commandLineProvider(project, taskData) }))
                 .build()
                 .apply {
                     this.executionId = executionId

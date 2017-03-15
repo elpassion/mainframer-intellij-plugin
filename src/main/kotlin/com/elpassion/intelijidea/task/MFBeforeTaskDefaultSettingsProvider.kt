@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project
 class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTaskDefaultSettingsProvider.State> {
 
     var taskData: MFTaskData
-        get() = MFTaskData(myState.defaultMainframerPath, myState.defaultBuildCommand, myState.defaultTaskName)
+        get() = MFTaskData(myState.defaultBuildCommand, myState.defaultTaskName, myState.defaultMainframerPath)
         set(value) = with(myState) {
             defaultMainframerPath = value.mainframerPath
             defaultBuildCommand = value.buildCommand
@@ -28,9 +28,9 @@ class MFBeforeTaskDefaultSettingsProvider : PersistentStateComponent<MFBeforeTas
     }
 
     class State {
-        var defaultMainframerPath: String? = null
-        var defaultBuildCommand: String? = null
-        var defaultTaskName: String? = null
+        var defaultMainframerPath: String = ""
+        var defaultBuildCommand: String = ""
+        var defaultTaskName: String = ""
     }
 
     companion object {

@@ -57,10 +57,10 @@ class MFConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
     }
 
     fun testConfigurationFromUiRunWithTaskNameFromProvider() {
-        stubMfTaskSettingsProvider(MFTaskData(taskName = null))
+        stubMfTaskSettingsProvider(MFTaskData(taskName = "taaasak"))
         configureMainframerInProject()
 
-        verify(configurationFromUi).invoke(argThat { taskName == null })
+        verify(configurationFromUi).invoke(argThat { taskName == "taaasak" })
     }
 
     fun testConfigurationFromUiRunReallyWithTaskNameFromProvider() {

@@ -1,5 +1,6 @@
 package com.elpassion.intelijidea.task
 
+import com.elpassion.intelijidea.common.mfCommandLineProvider
 import com.elpassion.intelijidea.task.edit.MFBeforeRunTaskDialog
 import com.elpassion.intelijidea.util.MFIcons
 import com.elpassion.intelijidea.util.showError
@@ -43,7 +44,7 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
             return false
         }
         configuration?.project?.showStartExecutionInfo()
-        return MFBeforeRunTaskExecutor(project).executeSync(task, env.executionId)
+        return MFBeforeRunTaskExecutor(project, mfCommandLineProvider).executeSync(task, env.executionId)
     }
 
     override fun createTask(runConfiguration: RunConfiguration?): MFBeforeRunTask {
