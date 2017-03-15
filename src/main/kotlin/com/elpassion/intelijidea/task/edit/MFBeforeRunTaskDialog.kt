@@ -2,7 +2,6 @@ package com.elpassion.intelijidea.task.edit
 
 import com.elpassion.intelijidea.common.BuildCommandValidator
 import com.elpassion.intelijidea.common.MainframerPathValidator
-import com.elpassion.intelijidea.common.TaskFieldValidator
 import com.elpassion.intelijidea.common.validateForm
 import com.elpassion.intelijidea.task.MFTaskData
 import com.intellij.openapi.project.Project
@@ -21,17 +20,15 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
     override fun createCenterPanel(): JComponent = form.panel
 
     override fun doValidate() = with(form) {
-        validateForm(MainframerPathValidator(mainframerToolField), BuildCommandValidator(buildCommandField), TaskFieldValidator(taskField))
+        validateForm(MainframerPathValidator(mainframerToolField), BuildCommandValidator(buildCommandField))
     }
 
     fun restoreMainframerTaskData(data: MFTaskData) {
-        form.mainframerToolField.text = data.mainframerPath ?: ""
+        form.mainframerToolField.text = data.mainframerPath
         form.buildCommandField.text = data.buildCommand
-        form.taskField.text = data.taskName
     }
 
     fun createMFTaskDataFromForms() = MFTaskData(
             buildCommand = form.buildCommandField.text,
-            taskName = form.taskField.text,
             mainframerPath = form.mainframerToolField.text)
 }

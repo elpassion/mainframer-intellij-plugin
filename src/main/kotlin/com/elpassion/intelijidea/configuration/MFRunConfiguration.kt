@@ -34,7 +34,6 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
         if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
-        if (taskName.isBlank()) throw RuntimeConfigurationError("Task name cannot be empty")
         if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
     }
 
@@ -52,7 +51,6 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     private fun getDefaultData() = MFTaskData(
             buildCommand = "./gradlew",
-            taskName = "build",
             mainframerPath = project.basePath!!)
 
     companion object {

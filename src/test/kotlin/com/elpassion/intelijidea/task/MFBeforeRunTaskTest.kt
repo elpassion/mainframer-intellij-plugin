@@ -18,14 +18,14 @@ class MFBeforeRunTaskTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldReadMFTaskDataFromJson() {
         val task = MFBeforeRunTask(data = MFTaskData())
-        whenever(element.getAttributeValue(any())).thenReturn(MFTaskData(buildCommand = "b", taskName = "t", mainframerPath = "p").toJson())
+        whenever(element.getAttributeValue(any())).thenReturn(MFTaskData(buildCommand = "b", mainframerPath = "p").toJson())
         task.readExternal(element)
 
-        Assert.assertEquals(MFTaskData(buildCommand = "b", taskName = "t", mainframerPath = "p"), task.data)
+        Assert.assertEquals(MFTaskData(buildCommand = "b", mainframerPath = "p"), task.data)
     }
 
     fun testShouldWriteMFTaskDataToJson() {
-        val task = MFBeforeRunTask(MFTaskData(buildCommand = "b", taskName = "t", mainframerPath = "p"))
+        val task = MFBeforeRunTask(MFTaskData(buildCommand = "b", mainframerPath = "p"))
         task.writeExternal(element)
         verify(element).setAttribute(any(), eq(task.data.toJson()))
     }

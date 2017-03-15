@@ -9,7 +9,7 @@ import com.intellij.openapi.project.Project
 class MFPluginConfigurationRepository(private val project: Project) {
 
     fun getConfiguration(): MFPluginConfiguration = with(taskData) {
-        MFPluginConfiguration(taskName = taskName, buildCommand = buildCommand, remoteName = getRemoteMachineName(), mainframerPath = mainframerPath)
+        MFPluginConfiguration(buildCommand = buildCommand, remoteName = getRemoteMachineName(), mainframerPath = mainframerPath)
     }
 
     private fun getRemoteMachineName(): String? {
@@ -32,7 +32,6 @@ class MFPluginConfigurationRepository(private val project: Project) {
     private fun saveProviderConfiguration(data: MFPluginConfiguration) {
         taskData = taskData.copy(
                 buildCommand = data.buildCommand,
-                taskName = data.taskName,
                 mainframerPath = data.mainframerPath)
     }
 

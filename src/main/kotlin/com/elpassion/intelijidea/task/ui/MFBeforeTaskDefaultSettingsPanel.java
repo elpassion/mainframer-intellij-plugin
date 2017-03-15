@@ -19,7 +19,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
     private final MFBeforeTaskDefaultSettingsProvider settingsProvider;
     public TextFieldWithBrowseButton mainframerToolField;
     public JTextField buildCommandField;
-    public JTextField taskNameField;
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JTextField remoteMachineField;
@@ -45,13 +44,12 @@ public class MFBeforeTaskDefaultSettingsPanel {
         final String remoteMachineName = mfToolConfiguration.readRemoteMachineName();
         return !Comparing.equal(mainframerToolField.getText(), taskData.getMainframerPath()) ||
                 !Comparing.equal(buildCommandField.getText(), taskData.getBuildCommand()) ||
-                !Comparing.equal(taskNameField.getText(), taskData.getTaskName()) ||
                 !Comparing.equal(remoteMachineField.getText(), remoteMachineName);
     }
 
     private void save() {
         MFTaskData taskData = new MFTaskData(
-                buildCommandField.getText(), taskNameField.getText(), mainframerToolField.getText()
+                buildCommandField.getText(), mainframerToolField.getText()
         );
         settingsProvider.setTaskData(taskData);
         mfToolConfiguration.writeRemoteMachineName(remoteMachineField.getText());
@@ -61,7 +59,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
         MFTaskData taskData = settingsProvider.getTaskData();
         buildCommandField.setText(taskData.getBuildCommand());
         mainframerToolField.setText(taskData.getMainframerPath());
-        taskNameField.setText(taskData.getTaskName());
         remoteMachineField.setText(mfToolConfiguration.readRemoteMachineName());
     }
 
@@ -76,7 +73,6 @@ public class MFBeforeTaskDefaultSettingsPanel {
 
     private ValidationInfo validate() {
         return FormValidatorKt.validateForm(
-                new TaskFieldValidator(taskNameField),
                 new BuildCommandValidator(buildCommandField),
                 new MainframerPathValidator(mainframerToolField));
     }

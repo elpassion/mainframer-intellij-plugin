@@ -5,11 +5,10 @@ import java.io.File
 import java.io.Serializable
 
 data class MFTaskData(val buildCommand: String = "",
-                      val taskName: String = "",
                       val mainframerPath: String = "") : Serializable {
 
     @JsonIgnore
-    fun isValid(): Boolean = listOf(mainframerPath, buildCommand, taskName).none(String::isBlank) && isScriptValid()
+    fun isValid(): Boolean = listOf(mainframerPath, buildCommand).none(String::isBlank) && isScriptValid()
 
     @JsonIgnore
     fun isScriptValid() = File(mainframerPath).let {

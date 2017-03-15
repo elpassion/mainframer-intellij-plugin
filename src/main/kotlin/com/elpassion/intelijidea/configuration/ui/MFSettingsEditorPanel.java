@@ -13,7 +13,6 @@ import static com.elpassion.intelijidea.common.MFToolFileDescriptorKt.getMfToolD
 public class MFSettingsEditorPanel {
     private final Project project;
     public JTextField buildCommand;
-    public JTextField taskName;
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public TextFieldWithBrowseButton mainframerTool;

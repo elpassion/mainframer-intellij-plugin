@@ -28,14 +28,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     }
 
     @Test
-    fun `should throw configuration exception when task name is empty`() {
-        val settingsPanel = setupPanel(taskName = "")
-        assertThrows<ConfigurationException> {
-            settingsPanel.apply()
-        }
-    }
-
-    @Test
     fun `should throw configuration exception when mainframer path is not valid`() {
         val settingsPanel = setupPanel(mainframerPath = "")
         assertThrows<ConfigurationException> {
@@ -58,15 +50,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
         settingsPanel.reset()
 
         assertEquals("build command", settingsPanel.buildCommandField.text)
-    }
-
-    @Test
-    fun `should reset task name field`() {
-        val settingsPanel = setupPanel(taskName = "some task")
-        settingsPanel.taskNameField.text = "other task"
-        settingsPanel.reset()
-
-        assertEquals("some task", settingsPanel.taskNameField.text)
     }
 
     @Test
@@ -95,13 +78,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     }
 
     @Test
-    fun `should be modified after changing task name`() {
-        val settingsPanel = setupPanel(taskName = "task1")
-        settingsPanel.taskNameField.text = "task2"
-        assertTrue(settingsPanel.isModified)
-    }
-
-    @Test
     fun `should be modified after changing remote machine name`() {
         val settingsPanel = setupPanel(remoteMachineName = "remote")
         settingsPanel.remoteMachineField.text = "local"
@@ -118,7 +94,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
     @JvmField @Rule
     val rule = TemporaryFolder()
 
-    val mfFile by lazy {
+    private val mfFile by lazy {
         rule.newFile("mainframer.sh").apply {
             setExecutable(true)
         }
@@ -126,20 +102,11 @@ class MFBeforeTaskDefaultSettingsPanelTest {
 
     @Test
     fun `should save build command when configuration applied`() {
-        val settingsProvider = createSettingsProvider(buildCommand = "example", mainframerPath = mfFile.absolutePath)
+        val settingsProvider = createSettingsProvider(mainframerPath = mfFile.absolutePath, buildCommand = "example")
         val settingsPanel = createPanel(settingsProvider)
 
         settingsPanel.apply()
         assertEquals("example", settingsProvider.taskData.buildCommand)
-    }
-
-    @Test
-    fun `should save task name when configuration applied`() {
-        val settingsProvider = createSettingsProvider(taskName = "taskName", mainframerPath = mfFile.absolutePath)
-        val settingsPanel = createPanel(settingsProvider)
-
-        settingsPanel.apply()
-        assertEquals("taskName", settingsProvider.taskData.taskName)
     }
 
     @Test
@@ -153,7 +120,7 @@ class MFBeforeTaskDefaultSettingsPanelTest {
 
     @Test
     fun `should save remote machine name when configuration applied`() {
-        val settingsProvider = createSettingsProvider(remoteMachineName = "remote", mainframerPath = mfFile.absolutePath)
+        val settingsProvider = createSettingsProvider(mainframerPath = mfFile.absolutePath, remoteMachineName = "remote")
         val settingsPanel = createPanel(settingsProvider)
 
         settingsPanel.apply()
@@ -162,20 +129,17 @@ class MFBeforeTaskDefaultSettingsPanelTest {
 
     private fun setupPanel(mainframerPath: String = "a",
                            buildCommand: String = "b",
-                           taskName: String = "c",
                            remoteMachineName: String = "remoteName") =
             createPanel(createSettingsProvider(
                     mainframerPath = mainframerPath,
                     buildCommand = buildCommand,
-                    taskName = taskName,
                     remoteMachineName = remoteMachineName))
 
     private fun createSettingsProvider(mainframerPath: String = "a",
                                        buildCommand: String = "b",
-                                       taskName: String = "c",
                                        remoteMachineName: String = "remoteName"): MFBeforeTaskDefaultSettingsProvider {
         return MFBeforeTaskDefaultSettingsProvider().apply {
-            taskData = MFTaskData(buildCommand = buildCommand, taskName = taskName, mainframerPath = mainframerPath)
+            taskData = MFTaskData(buildCommand = buildCommand, mainframerPath = mainframerPath)
             whenever(mfToolConfiguration.readRemoteMachineName()).thenReturn(remoteMachineName)
         }
     }
@@ -188,7 +152,6 @@ class MFBeforeTaskDefaultSettingsPanelTest {
 private fun MFBeforeTaskDefaultSettingsPanel.injectUiComponents(): MFBeforeTaskDefaultSettingsPanel =
         apply {
             buildCommandField = JTextField()
-            taskNameField = JTextField()
             remoteMachineField = JTextField()
             mainframerToolField = TextFieldWithBrowseButton()
             reset()
