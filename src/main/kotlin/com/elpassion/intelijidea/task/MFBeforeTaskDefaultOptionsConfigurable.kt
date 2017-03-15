@@ -44,6 +44,9 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
         Disposer.dispose(this)
     }
 
+    //Android Studio 2.3 crash when this method return null
+    override fun enableSearch(option: String?) = Runnable { }
+
     companion object {
         val ID = "mainframer"
         val DISPLAY_NAME = "Mainframer"
