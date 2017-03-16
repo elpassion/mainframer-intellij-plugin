@@ -1,6 +1,7 @@
 package com.elpassion.intelijidea.common.console
 
 import org.assertj.core.api.Assertions
+import org.intellij.lang.annotations.Language
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -43,8 +44,8 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should replace remote base path with given local path`() {
-        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX, "$localBasePath$1")
-        Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath/com/elpassion/mainframer/Example.kt: (19, 10): error")
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX, "$localBasePath<$1>")
+        Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath</com/elpassion/mainframer/Example.kt>: (19, 10): error")
     }
 
     @Test
@@ -111,10 +112,15 @@ class RemoteToLocalInputConverterTest {
         assertFalse(converter.LAST_FRAGMENT_REGEX.matches("Rest of line"))
     }
 
+    @Test
+    fun `Should catch path segment`() {
+        assertTrue(converter.PATH_SEGMENT.toRegex().matches("/test/test2"))
+    }
+
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
-    private val PATH_SEGMENT = "/\\w+"
+    val PATH_SEGMENT = "(?:/\\w+)*?"
     private val FILE_EXTENSION = "\\.\\w+"
     private val END_PATH = "($PATH_SEGMENT$FILE_EXTENSION)*"
     private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"
