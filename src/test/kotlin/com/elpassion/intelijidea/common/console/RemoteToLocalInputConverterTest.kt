@@ -1,7 +1,6 @@
 package com.elpassion.intelijidea.common.console
 
 import org.assertj.core.api.Assertions
-import org.intellij.lang.annotations.Language
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -71,8 +70,8 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should replace remote base path with given local path and have first fragment`() {
-        val replacedPath = "Complicated exception: /longer/path/mainframer/$PROJECT_NAME/Example.kt".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$1$localBasePath$2")
-        Assertions.assertThat(replacedPath).isEqualTo("Complicated exception: $localBasePath/Example.kt")
+        val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
+        Assertions.assertThat(replacedPath).isEqualTo("Complicated error: $localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
     }
 
     @Test
@@ -127,10 +126,10 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val REMOTE_PATH = "$REMOTE_START_PATH/mainframer/$projectName"
     val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
     val FIRST_FRAGMENT_REGEX = "(.*?:\\s)".toRegex()
-    val LINE_WITH_REMOTE_EXCEPTION = "${FIRST_FRAGMENT_REGEX.pattern}${FILE_PATH_REGEX.pattern}".toRegex()
     private val LINE_NUMBER_START = ":(?:\\s\\()?"
     private val LINE_NUMBER_VALUE = "(\\d+)"
     private val LINE_NUMBER_END = "(?:,\\s\\d+\\))?"
     val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END".toRegex()
     val LAST_FRAGMENT_REGEX = ":\\s.+".toRegex()
+    val LINE_WITH_REMOTE_EXCEPTION = "${FILE_PATH_REGEX.pattern}${LINE_NUMBER_REGEX.pattern}".toRegex()
 }
