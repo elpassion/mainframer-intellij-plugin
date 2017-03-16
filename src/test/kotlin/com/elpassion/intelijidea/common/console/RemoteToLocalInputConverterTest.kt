@@ -75,6 +75,12 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
+    fun `Should replace remote base path with given local path also when line number is simply given`() {
+        val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
+        Assertions.assertThat(replacedPath).isEqualTo("Complicated error: $localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
+    }
+
+    @Test
     fun `Should catch line number`() {
         assertTrue(converter.LINE_NUMBER_REGEX.matches(":100"))
     }
