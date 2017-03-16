@@ -83,6 +83,18 @@ class RemoteToLocalInputConverterTest {
         assertTrue(converter.LINE_NUMBER_REGEX.matches(": (9, 10)"))
     }
 
+    @Test
+    fun `Should format correctly simple path line number value`() {
+        val replacedPathSimple = ":321".replace(converter.LINE_NUMBER_REGEX, ":$1")
+        Assertions.assertThat(replacedPathSimple).isEqualTo(":321")
+    }
+
+    @Test
+    fun `Should format correctly complex path line number value`() {
+        val replacedPathComplex = ": (90, 100)".replace(converter.LINE_NUMBER_REGEX, ":$1")
+        Assertions.assertThat(replacedPathComplex).isEqualTo(":90")
+    }
+
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
@@ -94,8 +106,8 @@ class RemoteToLocalInputConverter(projectName: String) {
     val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
     val FIRST_FRAGMENT_REGEX = "(.*:\\s)".toRegex()
     val LINE_WITH_REMOTE_EXCEPTION = "${FIRST_FRAGMENT_REGEX.pattern}${FILE_PATH_REGEX.pattern}".toRegex()
-    private val LINE_NUMBER_START = ":(\\s\\()?"
-    private val LINE_NUMBER_VALUE = "\\d+"
-    private val LINE_NUMBER_END = "(,\\s\\d+\\))?"
+    private val LINE_NUMBER_START = ":(?:\\s\\()?"
+    private val LINE_NUMBER_VALUE = "(\\d+)"
+    private val LINE_NUMBER_END = "(?:,\\s\\d+\\))?"
     val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END".toRegex()
 }
