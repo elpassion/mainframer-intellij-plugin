@@ -56,6 +56,11 @@ class RemoteToLocalInputConverterTest {
     fun `Should catch whole first fragment of line`() {
         assertTrue(converter.FIRST_FRAGMENT_REGEX.matches("Very complicated exception: "))
     }
+
+    @Test
+    fun `Should check only one line if it matches first fragment regex`() {
+        assertFalse(converter.FIRST_FRAGMENT_REGEX.matches("Very complicated exception\n: "))
+    }
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
