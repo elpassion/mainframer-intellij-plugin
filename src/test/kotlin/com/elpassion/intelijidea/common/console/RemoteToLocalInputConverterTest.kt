@@ -55,6 +55,10 @@ class RemoteToLocalInputConverterTest {
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
-    private val FILE_END_PATH_REGEX = "(/.+\\.\\w+)*"
-    val FILE_PATH_REGEX = "(?:(?:/.+)*/mainframer/$projectName$FILE_END_PATH_REGEX)".toRegex()
+    private val PATH_SEGMENT = "/.+"
+    private val FILE_EXTENSION = "\\.\\w+"
+    private val END_PATH = "($PATH_SEGMENT$FILE_EXTENSION)*"
+    private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"
+    private val REMOTE_PATH = "$REMOTE_START_PATH/mainframer/$projectName"
+    val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
 }
