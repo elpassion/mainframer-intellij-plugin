@@ -59,7 +59,7 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should replace remote base path with given local path`() {
-        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX, "$localBasePath<$1>")
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX.toRegex(), "$localBasePath<$1>")
         Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath</com/elpassion/mainframer/Example.kt>: (19, 10): error")
     }
 
@@ -101,13 +101,13 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should format correctly simple path line number value`() {
-        val replacedPathSimple = ":321".replace(converter.LINE_NUMBER_REGEX, ":$1")
+        val replacedPathSimple = ":321".replace(converter.LINE_NUMBER_REGEX.toRegex(), ":$1")
         Assertions.assertThat(replacedPathSimple).isEqualTo(":321")
     }
 
     @Test
     fun `Should format correctly complex path line number value`() {
-        val replacedPathComplex = ": (90, 100)".replace(converter.LINE_NUMBER_REGEX, ":$1")
+        val replacedPathComplex = ": (90, 100)".replace(converter.LINE_NUMBER_REGEX.toRegex(), ":$1")
         Assertions.assertThat(replacedPathComplex).isEqualTo(":90")
     }
 
