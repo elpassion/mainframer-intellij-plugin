@@ -11,10 +11,6 @@ interface FieldValidator {
     fun validate(): ValidationInfo?
 }
 
-class TaskFieldValidator(private val taskField: JTextField) : FieldValidator {
-    override fun validate() = validateEmpty(taskField, "Task cannot be empty")
-}
-
 class BuildCommandValidator(private val buildCommandField: JTextField) : FieldValidator {
     override fun validate() = validateEmpty(buildCommandField, "Build command cannot be empty")
 }

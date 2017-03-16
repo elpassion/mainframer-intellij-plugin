@@ -15,7 +15,6 @@ public class MFBeforeRunTaskForm {
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JPanel panel;
     public JTextField buildCommandField;
-    public JTextField taskField;
     public TextFieldWithBrowseButton mainframerToolField;
 
     public MFBeforeRunTaskForm(Project project) {
