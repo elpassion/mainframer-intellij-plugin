@@ -61,6 +61,13 @@ class RemoteToLocalInputConverterTest {
     fun `Should check only one line if it matches first fragment regex`() {
         assertFalse(converter.FIRST_FRAGMENT_REGEX.matches("Very complicated exception\n: "))
     }
+
+    @Test
+    fun `Should replace remote base path with given local path and have first fragment`() {
+        val replacedPath = "Complicated exception: /longer/path/mainframer/$PROJECT_NAME/Example.kt".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$1$localBasePath$2")
+        Assertions.assertThat(replacedPath).isEqualTo("Complicated exception: $localBasePath/Example.kt")
+    }
+
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
@@ -70,5 +77,6 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"
     private val REMOTE_PATH = "$REMOTE_START_PATH/mainframer/$projectName"
     val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
-    val FIRST_FRAGMENT_REGEX = ".*:\\s".toRegex()
+    val FIRST_FRAGMENT_REGEX = "(.*:\\s)".toRegex()
+    val LINE_WITH_REMOTE_EXCEPTION = "${FIRST_FRAGMENT_REGEX.pattern}${FILE_PATH_REGEX.pattern}".toRegex()
 }
