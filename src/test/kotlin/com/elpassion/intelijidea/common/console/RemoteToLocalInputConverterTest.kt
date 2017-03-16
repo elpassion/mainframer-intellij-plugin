@@ -20,8 +20,14 @@ class RemoteToLocalInputConverterTest {
         assertFalse(converter.FILE_PATH_REGEX.matches("/$PROJECT_NAME"))
     }
 
+    @Test
+    fun `Should catch file path if it starts with longer path`() {
+        val converter = RemoteToLocalInputConverter(PROJECT_NAME)
+        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME"))
+    }
+
 }
 
 class RemoteToLocalInputConverter(private val projectName: String) {
-    val FILE_PATH_REGEX = "(/mainframer/$projectName)".toRegex()
+    val FILE_PATH_REGEX = "((/.+)*/mainframer/$projectName)".toRegex()
 }
