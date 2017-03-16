@@ -95,6 +95,11 @@ class RemoteToLocalInputConverterTest {
         Assertions.assertThat(replacedPathComplex).isEqualTo(":90")
     }
 
+    @Test
+    fun `Should catch end of last fragment of line`() {
+        assertTrue(converter.LAST_FRAGMENT_REGEX.matches(": Rest of line"))
+    }
+
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
@@ -110,4 +115,5 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val LINE_NUMBER_VALUE = "(\\d+)"
     private val LINE_NUMBER_END = "(?:,\\s\\d+\\))?"
     val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END".toRegex()
+    val LAST_FRAGMENT_REGEX = ".+".toRegex()
 }
