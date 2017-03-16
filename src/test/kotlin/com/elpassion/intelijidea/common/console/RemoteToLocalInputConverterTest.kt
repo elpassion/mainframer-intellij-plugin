@@ -43,8 +43,8 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should replace remote base path with given local path`() {
-        val replacedPath = "/longer/path/mainframer/$PROJECT_NAME/Example.kt".replace(converter.FILE_PATH_REGEX, "$localBasePath$1")
-        Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/Example.kt")
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX, "$localBasePath$1")
+        Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath/com/elpassion/mainframer/Example.kt: (19, 10): error")
     }
 
     @Test
