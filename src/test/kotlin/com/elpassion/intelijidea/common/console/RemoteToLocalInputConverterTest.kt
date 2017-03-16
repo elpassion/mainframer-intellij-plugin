@@ -39,7 +39,7 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
-    fun `Should not catch file path if it ends with not identified class name`() {
+    fun `Should not catch file path if it ends with undefined class name`() {
         val converter = RemoteToLocalInputConverter(PROJECT_NAME)
         assertFalse(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example."))
     }
