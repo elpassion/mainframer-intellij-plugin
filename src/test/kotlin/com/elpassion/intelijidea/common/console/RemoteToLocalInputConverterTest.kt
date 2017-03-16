@@ -73,6 +73,11 @@ class RemoteToLocalInputConverterTest {
         assertTrue(converter.LINE_NUMBER_REGEX.matches(":100"))
     }
 
+    @Test
+    fun `Should not catch wrong line number`() {
+        assertFalse(converter.LINE_NUMBER_REGEX.matches(":wrongLineNumber"))
+    }
+
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
@@ -84,5 +89,5 @@ class RemoteToLocalInputConverter(projectName: String) {
     val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
     val FIRST_FRAGMENT_REGEX = "(.*:\\s)".toRegex()
     val LINE_WITH_REMOTE_EXCEPTION = "${FIRST_FRAGMENT_REGEX.pattern}${FILE_PATH_REGEX.pattern}".toRegex()
-    val LINE_NUMBER_REGEX = ".+".toRegex()
+    val LINE_NUMBER_REGEX = ":\\d+".toRegex()
 }
