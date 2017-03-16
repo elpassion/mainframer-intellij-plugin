@@ -51,6 +51,11 @@ class RemoteToLocalInputConverterTest {
     fun `Should catch colon and space signs in first fragment of line`() {
         assertTrue(converter.FIRST_FRAGMENT_REGEX.matches(": "))
     }
+
+    @Test
+    fun `Should catch whole first fragment of line`() {
+        assertTrue(converter.FIRST_FRAGMENT_REGEX.matches("Very complicated exception: "))
+    }
 }
 
 class RemoteToLocalInputConverter(projectName: String) {
@@ -60,5 +65,5 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"
     private val REMOTE_PATH = "$REMOTE_START_PATH/mainframer/$projectName"
     val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
-    val FIRST_FRAGMENT_REGEX = ":\\s".toRegex()
+    val FIRST_FRAGMENT_REGEX = ".*:\\s".toRegex()
 }
