@@ -13,32 +13,48 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should catch file path from remote machine`() {
-        assertTrue(converter.FILE_PATH_REGEX.matches("/mainframer/$PROJECT_NAME"))
+        assertRegexMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/mainframer/$PROJECT_NAME")
     }
 
     @Test
     fun `Should not catch file path if it is not from remote machine`() {
-        assertFalse(converter.FILE_PATH_REGEX.matches("/$PROJECT_NAME"))
+        assertRegexNotMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/$PROJECT_NAME")
     }
 
     @Test
     fun `Should catch file path if it starts with longer path`() {
-        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME"))
+        assertRegexMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/longer/path/mainframer/$PROJECT_NAME"
+        )
     }
 
     @Test
     fun `Should catch file path if it ends with kotlin class name`() {
-        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example.kt"))
+        assertRegexMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/longer/path/mainframer/$PROJECT_NAME/Example.kt"
+        )
     }
 
     @Test
     fun `Should catch file path if it ends with java class name`() {
-        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example.java"))
+        assertRegexMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/longer/path/mainframer/$PROJECT_NAME/Example.java"
+        )
     }
 
     @Test
     fun `Should not catch file path if it ends with undefined class name`() {
-        assertFalse(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example."))
+        assertRegexNotMatches(
+                regexString = converter.FILE_PATH_REGEX,
+                input = "/longer/path/mainframer/$PROJECT_NAME/Example."
+        )
     }
 
     @Test
@@ -61,17 +77,26 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should catch line number`() {
-        assertTrue(converter.LINE_NUMBER_REGEX.matches(":100"))
+        assertRegexMatches(
+                regexString = converter.LINE_NUMBER_REGEX,
+                input = ":100"
+        )
     }
 
     @Test
     fun `Should not catch wrong line number`() {
-        assertFalse(converter.LINE_NUMBER_REGEX.matches(":wrongLineNumber"))
+        assertRegexNotMatches(
+                regexString = converter.LINE_NUMBER_REGEX,
+                input = ":wrongLineNumber"
+        )
     }
 
     @Test
     fun `Should catch line number when there is also given column number`() {
-        assertTrue(converter.LINE_NUMBER_REGEX.matches(": (9, 10)"))
+        assertRegexMatches(
+                regexString = converter.LINE_NUMBER_REGEX,
+                input = ": (9, 10)"
+        )
     }
 
     @Test
@@ -88,7 +113,18 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should catch path segment`() {
-        assertTrue(converter.PATH_SEGMENT.toRegex().matches("/test/test2"))
+        assertRegexMatches(
+                regexString = converter.PATH_SEGMENT,
+                input = "/test/test2"
+        )
+    }
+
+    private fun assertRegexMatches(regexString: String, input: String) {
+        assertTrue(regexString.toRegex().matches(input))
+    }
+
+    private fun assertRegexNotMatches(regexString: String, input: String) {
+        assertFalse(regexString.toRegex().matches(input))
     }
 
 }
@@ -99,10 +135,10 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val END_PATH = "($PATH_SEGMENT$FILE_EXTENSION)*"
     private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"
     private val REMOTE_PATH = "$REMOTE_START_PATH/mainframer/$projectName"
-    val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)".toRegex()
+    val FILE_PATH_REGEX = "(?:$REMOTE_PATH$END_PATH)"
     private val LINE_NUMBER_START = ":(?:\\s\\()?"
     private val LINE_NUMBER_VALUE = "(\\d+)"
     private val LINE_NUMBER_END = "(?:,\\s\\d+\\))?"
-    val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END".toRegex()
-    val LINE_WITH_REMOTE_EXCEPTION = "${FILE_PATH_REGEX.pattern}${LINE_NUMBER_REGEX.pattern}".toRegex()
+    val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END"
+    val LINE_WITH_REMOTE_EXCEPTION = "$FILE_PATH_REGEX$LINE_NUMBER_REGEX".toRegex()
 }
