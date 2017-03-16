@@ -96,7 +96,7 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
-    fun `Should catch end of last fragment of line`() {
+    fun `Should catch last fragment of line`() {
         assertTrue(converter.LAST_FRAGMENT_REGEX.matches(": Rest of line"))
     }
 
