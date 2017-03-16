@@ -26,8 +26,27 @@ class RemoteToLocalInputConverterTest {
         assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME"))
     }
 
+    @Test
+    fun `Should catch file path if it ends with kotlin class name`() {
+        val converter = RemoteToLocalInputConverter(PROJECT_NAME)
+        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example.kt"))
+    }
+
+    @Test
+    fun `Should catch file path if it ends with java class name`() {
+        val converter = RemoteToLocalInputConverter(PROJECT_NAME)
+        assertTrue(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example.java"))
+    }
+
+    @Test
+    fun `Should not catch file path if it ends with not identified class name`() {
+        val converter = RemoteToLocalInputConverter(PROJECT_NAME)
+        assertFalse(converter.FILE_PATH_REGEX.matches("/longer/path/mainframer/$PROJECT_NAME/Example."))
+    }
+
 }
 
 class RemoteToLocalInputConverter(private val projectName: String) {
-    val FILE_PATH_REGEX = "((/.+)*/mainframer/$projectName)".toRegex()
+    private val FILE_END_PATH_REGEX = "(/.+\\.\\w+)*"
+    val FILE_PATH_REGEX = "((/.+)*/mainframer/$projectName$FILE_END_PATH_REGEX)".toRegex()
 }
