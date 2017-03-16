@@ -1,7 +1,7 @@
 package com.elpassion.intelijidea.common.console
 
 class RemoteToLocalInputConverter(projectName: String) {
-    val PATH_SEGMENT = "(?:/\\w+)*?"
+    val PATH_SEGMENT = "(?:/\\w+(?:\\.\\w+)*)*?"
     private val FILE_EXTENSION = "\\.\\w+"
     private val END_PATH = "($PATH_SEGMENT$FILE_EXTENSION)*"
     private val REMOTE_START_PATH = "(?:$PATH_SEGMENT)*"

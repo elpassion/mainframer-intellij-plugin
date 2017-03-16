@@ -96,6 +96,12 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
+    fun `Should replace remote base path with given local path when inside path is package with dots`() {
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/src/main/com.elpassion.mainframer/Example.java: (19, 10): error".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath<$1>:$2")
+        Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath</src/main/com.elpassion.mainframer/Example.java>:19: error")
+    }
+
+    @Test
     fun `Should replace remote base path with given local path and have first fragment`() {
         val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
         Assertions.assertThat(replacedPath).isEqualTo("Complicated error: $localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
