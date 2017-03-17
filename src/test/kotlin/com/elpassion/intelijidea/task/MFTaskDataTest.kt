@@ -21,13 +21,6 @@ class IntegrationTest {
     }
 
     @Test
-    fun shouldTaskDataInvalidWhenTaskNameIsEmpty() {
-        val taskData = createTaskData(taskName = "")
-
-        assertFalse(taskData.isValid())
-    }
-
-    @Test
     fun shouldTaskDataInvalidWhenPathIsEmpty() {
         val taskDataWithoutFolder = createTaskData().copy(mainframerPath = "")
 
@@ -49,7 +42,7 @@ class IntegrationTest {
     }
 
     @Test
-    fun shouldTaskDataInvalidWhenFileDoesNotHaveExecutablePremissions() {
+    fun shouldTaskDataInvalidWhenFileDoesNotHaveExecutablePermissions() {
         val taskDataWithoutFolder = createTaskData().copy()
         temporaryFolder.newFile(mfFilename)
 
@@ -64,8 +57,8 @@ class IntegrationTest {
         assertTrue(taskDataWithoutFolder.isValid())
     }
 
-    private fun createTaskData(buildCommand: String = "./gradlew", taskName: String = "build"): MFTaskData {
+    private fun createTaskData(buildCommand: String = "./gradlew"): MFTaskData {
         val folderPath = File(temporaryFolder.root.absolutePath, mfFilename).absolutePath
-        return MFTaskData(folderPath, buildCommand, taskName)
+        return MFTaskData(buildCommand, folderPath)
     }
 }
