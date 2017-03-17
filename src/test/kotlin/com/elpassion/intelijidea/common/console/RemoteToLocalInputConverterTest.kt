@@ -90,6 +90,36 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
+    fun `Should catch colon and space signs in first fragment of line`() {
+        assertRegexMatches(
+                regexString = converter.FIRST_FRAGMENT_REGEX,
+                input = ": "
+        )
+    }
+
+    @Test
+    fun `Should catch whole first fragment of line`() {
+        assertRegexMatches(
+                regexString = converter.FIRST_FRAGMENT_REGEX,
+                input = "Very complicated exception: "
+        )
+    }
+
+    @Test
+    fun `Should check only one line if it matches first fragment regex`() {
+        assertRegexNotMatches(
+                regexString = converter.FIRST_FRAGMENT_REGEX,
+                input = "Very complicated exception\n: "
+        )
+    }
+
+    @Test
+    fun `Should replace first fragment only`() {
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replaceFirst(converter.FIRST_FRAGMENT_REGEX.toRegex(), "")
+        Assertions.assertThat(replacedPath).isEqualTo("/longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error")
+    }
+
+    @Test
     fun `Should replace remote base path with given local path`() {
         val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replace(converter.FILE_PATH_REGEX.toRegex(), "$localBasePath<$1>")
         Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath</com/elpassion/mainframer/Example.kt>: (19, 10): error")
@@ -98,19 +128,19 @@ class RemoteToLocalInputConverterTest {
     @Test
     fun `Should replace remote base path with given local path when inside path is package with dots`() {
         val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/src/main/com.elpassion.mainframer/Example.java: (19, 10): error".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath<$1>:$2")
-        Assertions.assertThat(replacedPath).isEqualTo("Error: $localBasePath</src/main/com.elpassion.mainframer/Example.java>:19: error")
+        Assertions.assertThat(replacedPath).isEqualTo("$localBasePath</src/main/com.elpassion.mainframer/Example.java>:19: error")
     }
 
     @Test
     fun `Should replace remote base path with given local path and have first fragment`() {
         val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
-        Assertions.assertThat(replacedPath).isEqualTo("Complicated error: $localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
+        Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
     }
 
     @Test
     fun `Should replace remote base path with given local path also when line number is simply given`() {
         val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
-        Assertions.assertThat(replacedPath).isEqualTo("Complicated error: $localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
+        Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
     }
 
     @Test

@@ -11,5 +11,6 @@ class RemoteToLocalInputConverter(projectName: String) {
     private val LINE_NUMBER_VALUE = "(\\d+)"
     private val LINE_NUMBER_END = "(?:,\\s\\d+\\))?"
     val LINE_NUMBER_REGEX = "$LINE_NUMBER_START$LINE_NUMBER_VALUE$LINE_NUMBER_END"
-    val LINE_WITH_REMOTE_EXCEPTION = "$FILE_PATH_REGEX$LINE_NUMBER_REGEX".toRegex()
+    val FIRST_FRAGMENT_REGEX = "(?:.*?:\\s)"
+    val LINE_WITH_REMOTE_EXCEPTION = "$FIRST_FRAGMENT_REGEX$FILE_PATH_REGEX$LINE_NUMBER_REGEX".toRegex()
 }
