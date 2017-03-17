@@ -115,8 +115,8 @@ class RemoteToLocalInputConverterTest {
 
     @Test
     fun `Should replace first fragment only`() {
-        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replaceFirst(converter.FIRST_FRAGMENT_REGEX.toRegex(), "")
-        Assertions.assertThat(replacedPath).isEqualTo("/longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error")
+        val replacedPath = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error".replaceFirst(converter.FIRST_FRAGMENT_REGEX.toRegex(), "<>")
+        Assertions.assertThat(replacedPath).isEqualTo("<>/longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (19, 10): error")
     }
 
     @Test
@@ -140,6 +140,12 @@ class RemoteToLocalInputConverterTest {
     @Test
     fun `Should replace remote base path with given local path also when line number is simply given`() {
         val replacedPath = "Complicated error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
+        Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
+    }
+
+    @Test
+    fun `Should replace remote base path with given local path also when first fragment is missing`() {
+        val replacedPath = "/longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
         Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
     }
 

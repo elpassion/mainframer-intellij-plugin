@@ -33,6 +33,12 @@ class RemoteToLocalTranslatingInputFilterTest {
         assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
     }
 
+    @Test
+    fun `should replace remote path with local event if error is missing at the begging of line`() {
+        val result = filter.applyFilter("/remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", ERROR_OUTPUT).first().first
+        assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
+    }
+
     companion object {
         private val PROJECT_NAME = "testProject"
         private val errorMessage = "error: cannot find pizza"
