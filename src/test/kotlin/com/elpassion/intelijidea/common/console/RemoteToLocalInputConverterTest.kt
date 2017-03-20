@@ -58,9 +58,9 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
-    fun `Should catch path segment`() {
+    fun `Should catch path`() {
         assertRegexMatches(
-                regexString = converter.PATH_SEGMENT,
+                regexString = converter.PATH,
                 input = "/test/test2"
         )
     }
