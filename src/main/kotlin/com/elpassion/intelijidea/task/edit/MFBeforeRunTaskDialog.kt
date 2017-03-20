@@ -14,6 +14,7 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
 
     init {
         isModal = true
+        title = "Configure Mainframer Make"
         init()
     }
 
