@@ -43,7 +43,6 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
             configuration?.project?.showInvalidDataError()
             return false
         }
-        configuration?.project?.showStartExecutionInfo()
         return MFBeforeRunTaskExecutor(project, mfCommandLineProvider).executeSync(task, env.executionId)
     }
 
@@ -61,9 +60,6 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
         showError(this, "Cannot execute task with invalid data")
     }
 
-    private fun Project.showStartExecutionInfo() {
-        showInfo(this, "Mainframer is executing task: $name")
-    }
 }
 
 val Project.mfBeforeRunTaskProvider: MFBeforeRunTaskProvider
