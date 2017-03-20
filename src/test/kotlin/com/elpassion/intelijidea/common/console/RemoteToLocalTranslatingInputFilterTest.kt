@@ -17,12 +17,24 @@ class RemoteToLocalTranslatingInputFilterTest {
 
     @Test
     fun `should replace remote path with local`() {
-        val result = filter.applyFilter("/remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", ERROR_OUTPUT).first().first
+        val result = filter.applyFilter("E: /remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", ERROR_OUTPUT).first().first
         assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
     }
 
     @Test
     fun `should really replace remote path with local`() {
+        val result = filter.applyFilter("E: /remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", ERROR_OUTPUT).first().first
+        assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
+    }
+
+    @Test
+    fun `should also replace remote path with local during compilation errors`() {
+        val result = filter.applyFilter("e: /remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java: (15, 10): $errorMessage", ERROR_OUTPUT).first().first
+        assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
+    }
+
+    @Test
+    fun `should replace remote path with local event if error is missing at the begging of line`() {
         val result = filter.applyFilter("/remote/user/mainframer/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", ERROR_OUTPUT).first().first
         assertEquals("/local/path/to/$PROJECT_NAME/src/ExampleUnitTest.java:15: $errorMessage", result)
     }

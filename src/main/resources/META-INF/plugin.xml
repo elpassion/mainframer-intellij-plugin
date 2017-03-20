@@ -47,6 +47,7 @@
             serviceImplementation="com.elpassion.intelijidea.common.MFStateProvider" />
         <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
         <consoleInputFilterProvider implementation="com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
+        <consoleFilterProvider implementation="com.elpassion.intelijidea.common.console.RegexpFilterProvider"/>
     </extensions>
 
     <actions>
