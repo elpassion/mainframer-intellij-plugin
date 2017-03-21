@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.elpassion.intelijidea</id>
+    <id>com.elpassion.mainframerplugin</id>
     <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
@@ -36,33 +36,35 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <configurationType implementation="com.elpassion.intelijidea.configuration.MFRunConfigurationType" />
-        <programRunner implementation="com.elpassion.intelijidea.configuration.MFProgramRunner" />
-        <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.task.MFBeforeRunTaskProvider" />
+        <configurationType implementation="com.elpassion.mainframerplugin.configuration.MFRunConfigurationType"/>
+        <programRunner implementation="com.elpassion.mainframerplugin.configuration.MFProgramRunner"/>
+        <stepsBeforeRunProvider implementation="com.elpassion.mainframerplugin.task.MFBeforeRunTaskProvider"/>
         <projectConfigurable displayName="Mainframer" groupId="tools" groupWeight="140" id="mainframer"
-            instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
+                             instance="com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultOptionsConfigurable"/>
         <projectService
-            serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
+                serviceImplementation="com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultSettingsProvider"/>
         <projectService
-            serviceImplementation="com.elpassion.intelijidea.common.MFStateProvider" />
-        <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
-        <consoleInputFilterProvider implementation="com.elpassion.intelijidea.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
-        <consoleFilterProvider implementation="com.elpassion.intelijidea.common.console.RegexpFilterProvider"/>
+                serviceImplementation="com.elpassion.mainframerplugin.common.MFStateProvider"/>
+        <search.optionContributor implementation="com.elpassion.mainframerplugin.MFSearchableOptionsContributor"/>
+        <consoleInputFilterProvider
+                implementation="com.elpassion.mainframerplugin.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
+        <consoleFilterProvider implementation="com.elpassion.mainframerplugin.common.console.RegexpFilterProvider"/>
     </extensions>
 
     <actions>
         <group class="com.intellij.openapi.actionSystem.DefaultActionGroup" icon="/icons/mainframerIcon.png"
             id="MF.ActionGroup" popup="true" text="Mainframer">
-            <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
+            <action class="com.elpassion.mainframerplugin.action.configure.MFConfigureProjectAction" id="MF.Configure">
                 <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
             </action>
             <separator/>
-            <action class="com.elpassion.intelijidea.action.select.MFSelectConfigurationsAction" id="MF.Select" />
+            <action class="com.elpassion.mainframerplugin.action.select.MFSelectConfigurationsAction" id="MF.Select"/>
             <add-to-group group-id="ToolsMenu" />
         </group>
         <group id="MainframerMainSwitch" text="Mainframer settings">
             <separator/>
-            <action class="com.elpassion.intelijidea.action.switcher.MFSwitchAction" id="MF.Switch" icon="/icons/mainframerIcon.png" />
+            <action class="com.elpassion.mainframerplugin.action.switcher.MFSwitchAction" id="MF.Switch"
+                    icon="/icons/mainframerIcon.png"/>
             <add-to-group group-id="MainToolBar" relative-to-action="ToolbarRunGroup" anchor="after" />
         </group>
     </actions>

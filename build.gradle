@@ -18,7 +18,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-group 'com.elpassion.intelijidea'
+group 'com.elpassion.mainframerplugin'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
