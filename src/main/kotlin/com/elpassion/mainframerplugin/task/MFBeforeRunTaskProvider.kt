@@ -1,10 +1,9 @@
 package com.elpassion.mainframerplugin.task
 
-import com.elpassion.mainframerplugin.common.mfCommandLineProvider
+import com.elpassion.mainframerplugin.common.console.mfCommandLineProvider
 import com.elpassion.mainframerplugin.task.edit.MFBeforeRunTaskDialog
 import com.elpassion.mainframerplugin.util.MFIcons
 import com.elpassion.mainframerplugin.util.showError
-import com.elpassion.mainframerplugin.util.showInfo
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.runners.ExecutionEnvironment
