@@ -50,8 +50,8 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
     private fun getDefaultData() = MFTaskData(
-            buildCommand = "",
-            mainframerPath = "")
+            buildCommand = "./gradlew",
+            mainframerPath = project.basePath!!)
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRun.data"
