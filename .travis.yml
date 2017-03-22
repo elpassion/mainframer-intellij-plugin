@@ -3,7 +3,7 @@ language: java
 jdk: oraclejdk8
 
 before_install:
-  - sh decrypt_gradle_properties.sh
+  - sh script/decrypt_gradle_properties.sh
 
 script:
   - ./gradlew test
