@@ -3,7 +3,7 @@ language: java
 jdk: oraclejdk8
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_192b72faab89_key -iv $encrypted_192b72faab89_iv -in gradle.properties.enc -out gradle.properties -d
+  - sh decrypt_gradle_properties.sh
 
 script:
   - ./gradlew test
