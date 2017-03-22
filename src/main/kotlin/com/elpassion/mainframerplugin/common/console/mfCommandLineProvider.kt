@@ -10,7 +10,7 @@ val mfCommandLineProvider: (Project, MFTaskData) -> GeneralCommandLine = { proje
         if (MFStateProvider.getInstance(project).isTurnOn) {
             GeneralCommandLine("bash", mainframerPath, buildCommand)
         } else {
-            GeneralCommandLine("bash", buildCommand)
+            GeneralCommandLine("bash", "-c", buildCommand)
         }
     }.withWorkDirectory(project.basePath)
 }
