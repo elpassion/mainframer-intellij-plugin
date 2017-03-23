@@ -7,35 +7,35 @@ import org.assertj.core.api.Assertions
 
 class MFRunConfigurationDefaultValuesTest : LightPlatformCodeInsightFixtureTestCase() {
 
+    private val mfTaskData = MFTaskData("newBuildCommand", "newPath")
+
+    override fun setUp() {
+        super.setUp()
+        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = mfTaskData
+    }
 
     fun testShouldSetMfTaskDataToNewOneOnValidateIfBuildCommandIsEmpty() {
-        val mfTaskData = MFTaskData("newBuildCommand", "newPath")
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = mfTaskData
-        val mfRunConfiguration = MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
-            data = MFTaskData("", "path")
-        }
+        val mfRunConfiguration = createMfRunConfiguration(MFTaskData("", "path"))
         mfRunConfiguration.validate()
         Assertions.assertThat(mfRunConfiguration.data).isEqualTo(mfTaskData)
     }
 
     fun testShouldSetMfTaskDataToNewOneOnValidateIfPathIsEmpty() {
-        val mfTaskData = MFTaskData("newBuildCommand", "newPath")
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = mfTaskData
-        val mfRunConfiguration = MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
-            data = MFTaskData("buildCommand", "")
-        }
+        val mfRunConfiguration = createMfRunConfiguration(MFTaskData("buildCommand", ""))
         mfRunConfiguration.validate()
         Assertions.assertThat(mfRunConfiguration.data).isEqualTo(mfTaskData)
     }
 
     fun testShouldNotSetMfTaskDataToNewOneOnValidateIfBuildCommandAndPathAreValid() {
-        val mfTaskData = MFTaskData("newBuildCommand", "newPath")
-        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = mfTaskData
-        val mfRunConfiguration = MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
-            data = MFTaskData("buildCommand", "path")
-        }
+        val mfRunConfiguration = createMfRunConfiguration(MFTaskData("buildCommand", "path"))
         mfRunConfiguration.validate()
         Assertions.assertThat(mfRunConfiguration.data).isNotEqualTo(mfTaskData)
+    }
+
+    private fun createMfRunConfiguration(mfTaskData: MFTaskData): MFRunConfiguration {
+        return MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
+            data = mfTaskData
+        }
     }
 
 }
