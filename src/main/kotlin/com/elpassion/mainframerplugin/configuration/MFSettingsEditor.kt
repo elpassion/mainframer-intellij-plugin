@@ -33,6 +33,7 @@ class MFSettingsEditor(project: Project) : SettingsEditor<MFRunConfiguration>() 
     }
 
     override fun resetEditorFrom(configuration: MFRunConfiguration) {
+        configuration.validate()
         configuration.data?.let {
             mainEditorPanel.buildCommand.text = it.buildCommand
             mainEditorPanel.mainframerTool.text = it.mainframerPath ?: ""
