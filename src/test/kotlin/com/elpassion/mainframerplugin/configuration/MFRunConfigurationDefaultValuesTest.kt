@@ -32,10 +32,9 @@ class MFRunConfigurationDefaultValuesTest : LightPlatformCodeInsightFixtureTestC
         Assertions.assertThat(mfRunConfiguration.data).isNotEqualTo(mfTaskData)
     }
 
-    private fun createMfRunConfiguration(mfTaskData: MFTaskData): MFRunConfiguration {
-        return MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
-            data = mfTaskData
-        }
-    }
+    private fun createMfRunConfiguration(mfTaskData: MFTaskData) =
+            MFRunConfiguration(project, MFConfigurationFactory(MFRunConfigurationType()), "").apply {
+                data = mfTaskData
+            }
 
 }
