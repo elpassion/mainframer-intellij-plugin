@@ -5,13 +5,11 @@ import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Pair
 
-class RemoteToLocalTranslatingInputFilter(private val project: Project) : InputFilter {
+class RemoteToLocalTranslatingInputFilter(project: Project) : InputFilter {
 
-    override fun applyFilter(text: String, contentType: ConsoleViewContentType) = mutableListOf(Pair(translateText(text), contentType))
+    private val converter = RemoteToLocalInputConverter(project.name, project.basePath!!)
 
-    private fun translateText(text: String): String {
-        val regex = RemoteToLocalInputConverter(project.name).LINE_WITH_REMOTE_EXCEPTION
-        return regex.replace(text, "${project.basePath}$1:$2")
-    }
+    override fun applyFilter(text: String, contentType: ConsoleViewContentType)
+            = mutableListOf(Pair(converter.convertInput(text), contentType))
 
 }

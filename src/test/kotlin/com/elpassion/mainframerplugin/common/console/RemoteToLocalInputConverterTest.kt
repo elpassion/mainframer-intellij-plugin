@@ -9,7 +9,7 @@ class RemoteToLocalInputConverterTest {
 
     private val PROJECT_NAME = "testProject"
     private val localBasePath = "base/path/$PROJECT_NAME"
-    private val converter = RemoteToLocalInputConverter(PROJECT_NAME)
+    private val converter = RemoteToLocalInputConverter(PROJECT_NAME, localBasePath)
 
     @Test
     fun `Should catch file path from remote machine`() {
@@ -147,6 +147,14 @@ class RemoteToLocalInputConverterTest {
     fun `Should replace remote base path with given local path also when first fragment is missing`() {
         val replacedPath = "/longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!".replace(converter.LINE_WITH_REMOTE_EXCEPTION, "$localBasePath$1:$2")
         Assertions.assertThat(replacedPath).isEqualTo("$localBasePath/com/elpassion/mainframer/Example.kt:19: error: Errors everywhere!")
+    }
+
+    @Test
+    fun `Should replace remote base path and change line number when method convertInput is being used`() {
+        val input = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (1, 20): error: Errors everywhere!"
+        val expectedConvertedInput = "$localBasePath/com/elpassion/mainframer/Example.kt:1: error: Errors everywhere!"
+        val convertedInput = converter.convertInput(input)
+        Assertions.assertThat(convertedInput).isEqualTo(expectedConvertedInput)
     }
 
     @Test
