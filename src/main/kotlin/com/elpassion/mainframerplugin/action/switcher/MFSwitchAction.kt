@@ -5,7 +5,7 @@ import com.elpassion.mainframerplugin.util.MFIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 
-class MFSwitchAction : AnAction(MF_SWTICH_ACTION) {
+class MFSwitchAction : AnAction(MF_SWITCH_ACTION) {
     override fun actionPerformed(event: AnActionEvent) {
         event.project?.let {
             MFStateProvider.getInstance(it).apply {
@@ -21,6 +21,6 @@ class MFSwitchAction : AnAction(MF_SWTICH_ACTION) {
     }
 
     companion object {
-        private val MF_SWTICH_ACTION = "Quickly turn on/off mainframer"
+        private val MF_SWITCH_ACTION = "Quickly turn on/off mainframer"
     }
 }
