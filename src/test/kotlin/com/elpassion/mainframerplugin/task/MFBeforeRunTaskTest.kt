@@ -9,6 +9,11 @@ import org.junit.Assert
 class MFBeforeRunTaskTest : LightPlatformCodeInsightFixtureTestCase() {
     val element = mock<Element>()
 
+    override fun setUp() {
+        super.setUp()
+        MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData = MFTaskData()
+    }
+
     fun testShouldReadDefaultValuesFromProviderWhenWasntSaveBefore() {
         val task = MFBeforeRunTask(data = MFTaskData())
         task.readExternal(element)
