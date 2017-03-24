@@ -2,6 +2,7 @@ package com.elpassion.mainframerplugin.configuration
 
 import com.elpassion.mainframerplugin.common.console.MFCommandLineState
 import com.elpassion.mainframerplugin.common.console.mfCommandLineProvider
+import com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.mainframerplugin.task.MFTaskData
 import com.elpassion.mainframerplugin.util.fromJson
 import com.elpassion.mainframerplugin.util.toJson
@@ -32,11 +33,6 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         }
     }
 
-    override fun checkConfiguration() = with(data ?: getDefaultData()) {
-        if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
-        if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
-    }
-
     override fun readExternal(element: Element) {
         super.readExternal(element)
         data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFTaskData>() ?: getDefaultData()
@@ -47,13 +43,23 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         data?.let { element.setAttribute(CONFIGURATION_ATTR_DATA, it.toJson()) }
     }
 
+    override fun checkConfiguration() = with(data ?: getDefaultData()) {
+        if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
+        if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
+    }
+
+    fun validate() {
+        if (data?.buildCommand.isNullOrEmpty() or data?.mainframerPath.isNullOrEmpty()) {
+            data = getDefaultData()
+        }
+    }
+
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
-    private fun getDefaultData() = MFTaskData(
-            buildCommand = "./gradlew",
-            mainframerPath = project.basePath!!)
+    private fun getDefaultData() = MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData
 
     companion object {
         private val CONFIGURATION_ATTR_DATA = "MFRun.data"
     }
+
 }

@@ -4,16 +4,11 @@ import com.elpassion.mainframerplugin.common.assertThrows
 import com.elpassion.mainframerplugin.task.MFTaskData
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
-import org.jdom.Element
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Test
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.never
-import org.mockito.Mockito.verify
+import org.jdom.Element
 
 class MFRunConfigurationTest {
 
@@ -36,6 +31,11 @@ class MFRunConfigurationTest {
     }
 
     @Test
+    fun shouldReturnFalseOnIsCompileBeforeLaunchAddedByDefault() {
+        assertFalse(mfRunConfiguration().isCompileBeforeLaunchAddedByDefault)
+    }
+
+    @Test
     fun shouldNotSetAttributeValueWhenDataIsNullOnWriteExternal() {
         mfRunConfiguration().run {
             data = null
@@ -54,23 +54,10 @@ class MFRunConfigurationTest {
     }
 
     @Test
-    fun shouldSetDefaultDataObjectWhenGetAttributeValueReturnsNullOnReadExternal() {
-        whenever(project.basePath).thenReturn("basePath")
-        assertReadExternalValue(
-                expectedMFTaskData = mfTaskData(buildCommand = "./gradlew", mainframerPath = "basePath"),
-                savedMfRunConfigurationData = null)
-    }
-
-    @Test
     fun shouldSetObjectFromGetAttributeValueOnReadExternal() {
         assertReadExternalValue(
                 expectedMFTaskData = mfTaskData(buildCommand = "build_command", mainframerPath = "path"),
                 savedMfRunConfigurationData = "{\"build_command\":\"build_command\",\"task_name\":\"task_name\",\"mainframer_path\":\"path\"}")
-    }
-
-    @Test
-    fun shouldReturnFalseOnIsCompileBeforeLaunchAddedByDefault() {
-        assertFalse(mfRunConfiguration().isCompileBeforeLaunchAddedByDefault)
     }
 
     private fun assertExceptionMessageOnCheckConfiguration(expectedMessage: String, taskData: MFTaskData?) {
