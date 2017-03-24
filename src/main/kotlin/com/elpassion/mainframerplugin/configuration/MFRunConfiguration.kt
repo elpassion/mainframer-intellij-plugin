@@ -4,12 +4,15 @@ import com.elpassion.mainframerplugin.common.console.MFCommandLineState
 import com.elpassion.mainframerplugin.common.console.mfCommandLineProvider
 import com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.mainframerplugin.task.MFTaskData
+import com.elpassion.mainframerplugin.util.fromJson
+import com.elpassion.mainframerplugin.util.toJson
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.*
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import org.jdom.Element
 
 class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
     : LocatableConfigurationBase(project, configurationFactory, name) {
@@ -30,6 +33,16 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
         }
     }
 
+    override fun readExternal(element: Element) {
+        super.readExternal(element)
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<MFTaskData>() ?: getDefaultData()
+    }
+
+    override fun writeExternal(element: Element) {
+        super.writeExternal(element)
+        data?.let { element.setAttribute(CONFIGURATION_ATTR_DATA, it.toJson()) }
+    }
+
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
         if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
         if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
@@ -44,5 +57,9 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
 
     private fun getDefaultData() = MFBeforeTaskDefaultSettingsProvider.getInstance(project).taskData
+
+    companion object {
+        private val CONFIGURATION_ATTR_DATA = "MFRun.data"
+    }
 
 }
