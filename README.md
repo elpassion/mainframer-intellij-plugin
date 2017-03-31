@@ -75,7 +75,7 @@ You can use **Mainframer Integration** plugin either to inject predefined *befor
 
 ![](readme/add_new_configuration.png)
 
-For created configuration you can set a build command and tasks to execute:
+For created configuration you can set a build command to execute:
 
 ![](readme/run_configurations.png)
 
