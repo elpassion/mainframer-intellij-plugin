@@ -21,7 +21,7 @@ Installation
 
 **Alternative way:**
 
-If you want to install a specific version of the plugin visit [Mainframer Integration website](https://plugins.jetbrains.com/plugin/9447-mainframer-integration), download zip file and click *Install plugin from disk...* providing path to it.
+If you want to install a specific version of the plugin visit [Mainframer Integration website](https://plugins.jetbrains.com/plugin/9603-mainframer-integration), download zip file and click *Install plugin from disk...* providing path to it.
 
 ![](readme/plugins.png)
 
