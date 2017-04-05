@@ -9,6 +9,6 @@ class MFConfigureProjectAction : AnAction(MF_CONFIGURE_PROJECT) {
     }
 
     companion object {
-        private val MF_CONFIGURE_PROJECT = "Configure Mainframer in Project"
+        private val MF_CONFIGURE_PROJECT = "Configure for Project"
     }
 }

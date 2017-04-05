@@ -37,7 +37,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Default mainframer tool location"/>
+              <text value="Default Mainframer location"/>
             </properties>
           </component>
           <component id="3c7ba" class="com.intellij.openapi.ui.LabeledComponent" binding="mainframerToolHolder" custom-create="true">
@@ -53,7 +53,7 @@
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Default values used to create mainframer before tasks"/>
+          <text value="Default values used to create Mainframer Make tasks"/>
         </properties>
       </component>
       <component id="e35d8" class="com.intellij.ui.TitledSeparator">

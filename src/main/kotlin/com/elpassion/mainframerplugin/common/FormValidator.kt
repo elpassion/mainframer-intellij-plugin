@@ -20,7 +20,7 @@ class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrow
             with(mainframerPathField) {
                 when {
                     isBlank() -> ValidationInfo("Path cannot be empty", this)
-                    isPathToScriptInvalid() -> ValidationInfo("Cannot find mainframer script in path", this)
+                    isPathToScriptInvalid() -> ValidationInfo("Cannot find Mainframer script in path", this)
                     isScriptNotExecutable() -> ValidationInfo("Mainframer script in not executable", this)
                     else -> null
                 }

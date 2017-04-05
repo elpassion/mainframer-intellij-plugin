@@ -21,6 +21,6 @@ class MFSwitchAction : AnAction(MF_SWITCH_ACTION) {
     }
 
     companion object {
-        private val MF_SWITCH_ACTION = "Quickly turn on/off mainframer"
+        private val MF_SWITCH_ACTION = "Quickly turn on/off Mainframer"
     }
 }
