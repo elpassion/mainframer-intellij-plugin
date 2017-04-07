@@ -10,7 +10,7 @@ class MFConfigurationFactoryTest {
 
     @Test
     fun shouldHaveProperName() {
-        assertEquals("Factory for mainframer configuration", confFactory.name)
+        assertEquals("Factory for Mainframer configuration", confFactory.name)
     }
 
     @Test
