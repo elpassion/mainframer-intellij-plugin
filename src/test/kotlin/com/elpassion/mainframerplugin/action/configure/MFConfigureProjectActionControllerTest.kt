@@ -78,7 +78,7 @@ class MFConfigureProjectActionControllerTest {
 
         controller.configureMainframer()
 
-        verify(showError).invoke("Error during mainframer configuration")
+        verify(showError).invoke("Error during Mainframer configuration")
     }
 
     @Test
@@ -87,7 +87,7 @@ class MFConfigureProjectActionControllerTest {
 
         controller.configureMainframer()
 
-        verify(showError).invoke("Error during mainframer configuration")
+        verify(showError).invoke("Error during Mainframer configuration")
     }
 
     @Test

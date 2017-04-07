@@ -15,7 +15,7 @@ class MFConfigurationTypeTest {
 
     @Test
     fun shouldHaveProperConfigurationTypeDescription() {
-        assertEquals("Run project using mainframer", configurationType.configurationTypeDescription)
+        assertEquals("Run project using Mainframer", configurationType.configurationTypeDescription)
     }
 
     @Test
