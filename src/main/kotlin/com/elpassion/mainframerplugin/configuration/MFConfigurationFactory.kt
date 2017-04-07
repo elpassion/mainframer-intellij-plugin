@@ -14,6 +14,6 @@ class MFConfigurationFactory(configurationType: ConfigurationType) : Configurati
     override fun getName() = FACTORY_NAME
 
     companion object {
-        private val FACTORY_NAME = "Factory for mainframer configuration"
+        private val FACTORY_NAME = "Factory for Mainframer configuration"
     }
 }

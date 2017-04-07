@@ -45,7 +45,7 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
 
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
         if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
-        if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer tool cannot be found")
+        if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer cannot be found")
     }
 
     fun validate() {

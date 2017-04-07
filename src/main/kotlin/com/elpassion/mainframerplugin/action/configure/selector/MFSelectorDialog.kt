@@ -17,7 +17,7 @@ class MFSelectorDialog(project: Project,
     private val sortedTemplateItems = templates.sortedBy { it.name }
 
     init {
-        title = "Select run configurations to inject mainframer"
+        title = "Inject or restore configurations"
         init()
     }
 

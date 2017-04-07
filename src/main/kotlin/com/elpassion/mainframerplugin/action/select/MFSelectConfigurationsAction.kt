@@ -10,6 +10,6 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     }
 
     companion object {
-        private val MF_SELECT_CONFIGURATIONS_ACTION = "Select configurations to inject mainframer or restore to default"
+        private val MF_SELECT_CONFIGURATIONS_ACTION = "Inject or restore configurations"
     }
 }

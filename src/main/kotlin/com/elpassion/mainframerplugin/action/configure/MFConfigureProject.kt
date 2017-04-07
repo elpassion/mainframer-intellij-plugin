@@ -20,4 +20,4 @@ fun configureMFToProject(project: Project) =
                 showMessage = { message -> showInfo(project, message) },
                 showError = { message -> showError(project, message) },
                 uiScheduler = UIScheduler,
-                progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
+                progressScheduler = ProgressScheduler(project, "Downloading Mainframer versions")).configureMainframer()

@@ -25,7 +25,7 @@ class MFConfigureProjectActionController(
                 .subscribe({
                     showMessage("Mainframer configured in your project!")
                 }, {
-                    showError("Error during mainframer configuration")
+                    showError("Error during Mainframer configuration")
                 })
     }
 }
