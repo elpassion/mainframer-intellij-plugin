@@ -73,6 +73,7 @@ Selecting a checkbox at the bottom of the dialog indicates that you want to over
 ## Switching between local and remote compilation
 
 Just press the blue button:
+
 ![](readme/turn_on_off.png)
 
 ### Run configurations
