@@ -1,14 +1,15 @@
 package com.elpassion.mainframerplugin.configuration
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.util.MFIcons
 import com.intellij.execution.configurations.ConfigurationType
 import javax.swing.Icon
 
 class MFRunConfigurationType : ConfigurationType {
 
-    override fun getDisplayName() = "Mainframer"
+    override fun getDisplayName() = StringsBundle.getMessage("configuration.name")
 
-    override fun getConfigurationTypeDescription() = "Run project using Mainframer"
+    override fun getConfigurationTypeDescription() = StringsBundle.getMessage("configuration.description")
 
     override fun getIcon(): Icon = MFIcons.mainframerIcon
 

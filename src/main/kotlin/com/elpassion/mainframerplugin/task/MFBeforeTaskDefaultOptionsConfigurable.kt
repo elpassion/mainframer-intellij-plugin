@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.task
 
 import com.elpassion.mainframerplugin.common.MFToolConfigurationImpl
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.task.ui.MFBeforeTaskDefaultSettingsPanel
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.options.Configurable
@@ -49,6 +50,6 @@ class MFBeforeTaskDefaultOptionsConfigurable(private val project: Project) : Sea
 
     companion object {
         val ID = "mainframer"
-        val DISPLAY_NAME = "Mainframer"
+        val DISPLAY_NAME = StringsBundle.getMessage("beforeRuntTask.default.provider.displayName")
     }
 }

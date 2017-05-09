@@ -2,6 +2,7 @@ package com.elpassion.mainframerplugin.task.edit
 
 import com.elpassion.mainframerplugin.common.BuildCommandValidator
 import com.elpassion.mainframerplugin.common.MainframerPathValidator
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.validateForm
 import com.elpassion.mainframerplugin.task.MFTaskData
 import com.intellij.openapi.project.Project
@@ -14,7 +15,7 @@ class MFBeforeRunTaskDialog(project: Project) : DialogWrapper(project) {
 
     init {
         isModal = true
-        title = "Configure Mainframer Make"
+        title = StringsBundle.getMessage("beforeRunTask.title")
         init()
     }
 

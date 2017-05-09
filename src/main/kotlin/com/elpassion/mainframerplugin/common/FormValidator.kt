@@ -12,23 +12,23 @@ interface FieldValidator {
 }
 
 class BuildCommandValidator(private val buildCommandField: JTextField) : FieldValidator {
-    override fun validate() = validateEmpty(buildCommandField, "Build command cannot be empty")
+    override fun validate() = validateEmpty(buildCommandField, StringsBundle.getMessage("common.form.validator.build.command.empty"))
 }
 
 class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrowseButton) : FieldValidator {
     override fun validate() =
             with(mainframerPathField) {
                 when {
-                    isBlank() -> ValidationInfo("Path cannot be empty", this)
-                    isPathToScriptInvalid() -> ValidationInfo("Cannot find Mainframer script in path", this)
-                    isScriptNotExecutable() -> ValidationInfo("Mainframer script in not executable", this)
+                    isBlank() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.path.empty"), this)
+                    isPathToScriptInvalid() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.found"), this)
+                    isScriptNotExecutable() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.executable"), this)
                     else -> null
                 }
             }
 }
 
 class RemoteMachineFieldValidator(private val remoteMachineField: JTextField) : FieldValidator {
-    override fun validate() = validateEmpty(jTextField = remoteMachineField, message = "Remote machine name cannot be empty!")
+    override fun validate() = validateEmpty(jTextField = remoteMachineField, message = StringsBundle.getMessage("common.form.validator.remote.name.empty"))
 }
 
 private fun validateEmpty(jTextField: JTextField, message: String) = if (jTextField.isBlank()) ValidationInfo(message, jTextField) else null

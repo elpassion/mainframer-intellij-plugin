@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.action.configure.downloader
 
 import com.elpassion.mainframerplugin.action.configure.configurator.MFToolInfo
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.util.asResultObservable
 import com.elpassion.mainframerplugin.util.getMfToolDownloadUrl
 import com.intellij.openapi.progress.ProgressManager
@@ -15,8 +16,8 @@ fun mfFileDownloader(project: Project): (MFToolInfo) -> Maybe<File> = { (version
 }
 
 private fun downloadFileToProject(project: Project, url: String, outputFile: File): Outcome<File> {
-    val title = "Downloading file"
-    val message = "Downloading ${DownloadUtil.CONTENT_LENGTH_TEMPLATE}..."
+    val title = StringsBundle.getMessage("configure.downloader.title")
+    val message = StringsBundle.getMessage("configure.downloader.text", DownloadUtil.CONTENT_LENGTH_TEMPLATE)
     return DownloadUtil.provideDataWithProgressSynchronously(project, title, message, fileSupplier(outputFile, project, url), null)
 }
 

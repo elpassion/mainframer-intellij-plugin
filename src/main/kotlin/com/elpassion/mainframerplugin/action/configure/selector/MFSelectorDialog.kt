@@ -2,6 +2,7 @@ package com.elpassion.mainframerplugin.action.configure.selector
 
 import com.elpassion.mainframerplugin.action.configure.selector.ui.MFSelectorForm
 import com.elpassion.mainframerplugin.common.DialogWrapperAdapter
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.intellij.openapi.project.Project
 import io.reactivex.Maybe
 import javax.swing.JComponent
@@ -17,7 +18,7 @@ class MFSelectorDialog(project: Project,
     private val sortedTemplateItems = templates.sortedBy { it.name }
 
     init {
-        title = "Inject or restore configurations"
+        title = StringsBundle.getMessage("selector.dialog.title")
         init()
     }
 

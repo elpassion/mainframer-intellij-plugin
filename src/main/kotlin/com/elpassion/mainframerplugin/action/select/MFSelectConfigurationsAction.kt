@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin.action.select
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 
@@ -10,6 +11,6 @@ class MFSelectConfigurationsAction : AnAction(MF_SELECT_CONFIGURATIONS_ACTION) {
     }
 
     companion object {
-        private val MF_SELECT_CONFIGURATIONS_ACTION = "Inject or restore configurations"
+        private val MF_SELECT_CONFIGURATIONS_ACTION = StringsBundle.getMessage("selector.action.name")
     }
 }

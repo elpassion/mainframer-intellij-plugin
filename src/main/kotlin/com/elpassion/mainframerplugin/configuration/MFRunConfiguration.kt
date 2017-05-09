@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin.configuration
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.console.MFCommandLineState
 import com.elpassion.mainframerplugin.common.console.mfCommandLineProvider
 import com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultSettingsProvider
@@ -44,8 +45,8 @@ class MFRunConfiguration(project: Project, configurationFactory: ConfigurationFa
     }
 
     override fun checkConfiguration() = with(data ?: getDefaultData()) {
-        if (buildCommand.isBlank()) throw RuntimeConfigurationError("Build command cannot be empty")
-        if (!isScriptValid()) throw RuntimeConfigurationError("Mainframer cannot be found")
+        if (buildCommand.isBlank()) throw RuntimeConfigurationError(StringsBundle.getMessage("common.form.validator.build.command.empty"))
+        if (!isScriptValid()) throw RuntimeConfigurationError(StringsBundle.getMessage("common.form.validator.script.not.found"))
     }
 
     fun validate() {

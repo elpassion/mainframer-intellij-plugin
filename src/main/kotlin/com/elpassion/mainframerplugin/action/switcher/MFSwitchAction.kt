@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.action.switcher
 
 import com.elpassion.mainframerplugin.common.MFStateProvider
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.util.MFIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -21,6 +22,6 @@ class MFSwitchAction : AnAction(MF_SWITCH_ACTION) {
     }
 
     companion object {
-        private val MF_SWITCH_ACTION = "Quickly turn on/off Mainframer"
+        private val MF_SWITCH_ACTION = StringsBundle.getMessage("switcher.action.name")
     }
 }
