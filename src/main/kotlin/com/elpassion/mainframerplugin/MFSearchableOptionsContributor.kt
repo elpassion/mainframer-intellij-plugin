@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultOptionsConfigurable
 import com.intellij.ide.ui.search.SearchableOptionContributor
 import com.intellij.ide.ui.search.SearchableOptionProcessor
@@ -7,9 +8,9 @@ import com.intellij.ide.ui.search.SearchableOptionProcessor
 class MFSearchableOptionsContributor : SearchableOptionContributor() {
     override fun processOptions(processor: SearchableOptionProcessor) {
         processor.addOptions(
-                "Mainframer",
+                StringsBundle.getMessage("searchable.options.mainframer.text"),
                 null,
-                "Mainframer",
+                StringsBundle.getMessage("searchable.options.mainframer.hint"),
                 MFBeforeTaskDefaultOptionsConfigurable.ID,
                 MFBeforeTaskDefaultOptionsConfigurable.DISPLAY_NAME,
                 true)
