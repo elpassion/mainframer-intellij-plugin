@@ -11,6 +11,7 @@ This plugin makes integration with Mainframer tool easy and seamless. Plugin use
 * Injecting/Restoring before tasks to all configurations
 * Configuring mainframer in project
 * Custom run configuration for mainframer
+* Switching between local and remote compilation
 
 Installation
 ------------
@@ -68,6 +69,11 @@ After clicking *OK* button plugin will modify all your created run configuration
 Simultaneously, for each unselected configuration, this action will restore default *before run* task, enabling project local build.
 
 Selecting a checkbox at the bottom of the dialog indicates that you want to override all **Mainframer Make** tasks properties, set separately per run configuration, with defaults from plugin settings (defined in *Tools > Mainframer*).
+
+## Switching between local and remote compilation
+
+Just press the blue button:
+![](readme/turn_on_off.png)
 
 ### Run configurations
 
