@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.action.select
 
 import com.elpassion.mainframerplugin.action.configure.selector.MFSelectorResult
+import com.elpassion.mainframerplugin.common.StringsBundle
 import io.reactivex.Maybe
 
 class MFSelectorConfigurationsController(val manipulateTasks: (MFSelectorResult) -> Unit,
@@ -11,7 +12,7 @@ class MFSelectorConfigurationsController(val manipulateTasks: (MFSelectorResult)
     fun configure() {
         selectorResult().map {
             if (!it.toInject.isEmpty() && !isSettingsTaskValid()) {
-                throw RuntimeException("Invalid inject configuration")
+                throw RuntimeException(StringsBundle.getMessage("selector.invalid.configuration.error"))
             } else {
                 it
             }
@@ -22,8 +23,7 @@ class MFSelectorConfigurationsController(val manipulateTasks: (MFSelectorResult)
         }.subscribe({ (injected, restored) ->
             showMessage(injected, restored)
         }, {
-            showError("MF is not configured, \n" +
-                    "<a href=\"\">click here</a> to change default settings")
+            showError(StringsBundle.getMessage("selector.mainframer.not.configured.error"))
         })
     }
 

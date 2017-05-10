@@ -26,7 +26,7 @@ class MFRunConfigurationTest {
     @Test
     fun shouldThrowRuntimeConfigurationErrorWhenScriptPathIsInvalidOnCheckConfiguration() {
         assertExceptionMessageOnCheckConfiguration(
-                expectedMessage = "Mainframer tool cannot be found",
+                expectedMessage = "Cannot find Mainframer script in path",
                 taskData = mfTaskData(mainframerPath = ""))
     }
 

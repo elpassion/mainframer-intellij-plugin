@@ -7,6 +7,7 @@ import com.elpassion.mainframerplugin.action.configure.releases.api.provideGitHu
 import com.elpassion.mainframerplugin.action.configure.releases.api.provideGitHubRetrofit
 import com.elpassion.mainframerplugin.action.configure.releases.service.mfReleasesFetcher
 import com.elpassion.mainframerplugin.common.ProgressScheduler
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.UIScheduler
 import com.elpassion.mainframerplugin.util.showError
 import com.elpassion.mainframerplugin.util.showInfo
@@ -20,4 +21,4 @@ fun configureMFToProject(project: Project) =
                 showMessage = { message -> showInfo(project, message) },
                 showError = { message -> showError(project, message) },
                 uiScheduler = UIScheduler,
-                progressScheduler = ProgressScheduler(project, "Downloading mainframer versions")).configureMainframer()
+                progressScheduler = ProgressScheduler(project, StringsBundle.getMessage("configure.fetching.versions.description"))).configureMainframer()

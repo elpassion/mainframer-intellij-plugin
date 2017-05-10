@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin.task
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.console.MFCommandLineState
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.GeneralCommandLine
@@ -10,7 +11,7 @@ import javax.swing.Icon
 
 
 class MFBeforeRunTaskProfile(private val task: MFBeforeRunTask, private val commandLineProvider: (MFTaskData) -> GeneralCommandLine) : ModuleRunProfile {
-    override fun getName(): String = "Mainframer"
+    override fun getName(): String = StringsBundle.getMessage("beforeRunTask.profile.name")
 
     override fun getIcon(): Icon? = null
 

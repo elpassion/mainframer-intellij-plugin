@@ -4,6 +4,7 @@ import com.elpassion.mainframerplugin.action.configure.configureMFToProject
 import com.elpassion.mainframerplugin.action.configure.selector.MFSelectorResult
 import com.elpassion.mainframerplugin.action.configure.selector.mfSelector
 import com.elpassion.mainframerplugin.action.configure.selector.showSelectorDialog
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.task.MFBeforeTaskDefaultSettingsProvider
 import com.elpassion.mainframerplugin.task.mfBeforeRunTaskProvider
 import com.elpassion.mainframerplugin.util.showError
@@ -33,7 +34,7 @@ private fun configureSelections(project: Project): (MFSelectorResult) -> Unit = 
 }
 
 private fun Project.showConfigurationChangesCountInfo() = { injected: Int, restored: Int ->
-    showInfo(this, "Number of injected configurations $injected, restored to default $restored")
+    showInfo(this, StringsBundle.getMessage("selector.summary", injected, restored))
 }
 
 private fun Project.showMFConfigurationError(): (String) -> Unit = {

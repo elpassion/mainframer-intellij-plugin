@@ -15,7 +15,7 @@ class MFConfiguratorDialog(project: Project,
     private val form = MConfiguratorForm()
 
     init {
-        title = "Configure Mainframer in Project"
+        title = StringsBundle.getMessage("configure.configurator.dialog.title")
         init()
     }
 

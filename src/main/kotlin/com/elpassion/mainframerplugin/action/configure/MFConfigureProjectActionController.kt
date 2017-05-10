@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.action.configure
 
 import com.elpassion.mainframerplugin.action.configure.configurator.MFToolInfo
+import com.elpassion.mainframerplugin.common.StringsBundle
 import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -23,9 +24,9 @@ class MFConfigureProjectActionController(
                 .flatMap(mainframerFileDownloader)
                 .doOnSuccess { it.setExecutable(true) }
                 .subscribe({
-                    showMessage("Mainframer configured in your project!")
+                    showMessage(StringsBundle.getMessage("configure.success"))
                 }, {
-                    showError("Error during mainframer configuration")
+                    showError(StringsBundle.getMessage("configure.error"))
                 })
     }
 }

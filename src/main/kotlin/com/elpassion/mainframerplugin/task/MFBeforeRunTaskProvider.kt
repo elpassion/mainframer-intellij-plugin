@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin.task
 
+import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.console.mfCommandLineProvider
 import com.elpassion.mainframerplugin.task.edit.MFBeforeRunTaskDialog
 import com.elpassion.mainframerplugin.util.MFIcons
@@ -52,11 +53,11 @@ class MFBeforeRunTaskProvider(private val project: Project) : BeforeRunTaskProvi
 
     companion object {
         val ID = Key.create<MFBeforeRunTask>("MainFrame.BeforeRunTask")
-        val TASK_NAME = "Mainframer Make"
+        val TASK_NAME = StringsBundle.getMessage("beforeRunTask.name")
     }
 
     private fun Project.showInvalidDataError() {
-        showError(this, "Cannot execute task with invalid data")
+        showError(this, StringsBundle.getMessage("beforeRunTask.invalid.data.error"))
     }
 
 }

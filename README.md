@@ -1,4 +1,4 @@
-# Mainframer Integration [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin)
+# Mainframer Integration [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/elpassion/mainframer-intellij-plugin.svg)](http://isitmaintained.com/project/elpassion/mainframer-intellij-plugin "Average time to resolve an issue") [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin) 
 An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 
 About
@@ -11,6 +11,7 @@ This plugin makes integration with Mainframer tool easy and seamless. Plugin use
 * Injecting/Restoring before tasks to all configurations
 * Configuring mainframer in project
 * Custom run configuration for mainframer
+* Switching between local and remote compilation
 
 Installation
 ------------
@@ -21,7 +22,7 @@ Installation
 
 **Alternative way:**
 
-If you want to install a specific version of the plugin visit [Mainframer Integration website](https://plugins.jetbrains.com/plugin/9447-mainframer-integration), download zip file and click *Install plugin from disk...* providing path to it.
+If you want to install a specific version of the plugin visit [Mainframer Integration website](https://plugins.jetbrains.com/plugin/9603-mainframer-integration), download zip file and click *Install plugin from disk...* providing path to it.
 
 ![](readme/plugins.png)
 
@@ -68,6 +69,12 @@ After clicking *OK* button plugin will modify all your created run configuration
 Simultaneously, for each unselected configuration, this action will restore default *before run* task, enabling project local build.
 
 Selecting a checkbox at the bottom of the dialog indicates that you want to override all **Mainframer Make** tasks properties, set separately per run configuration, with defaults from plugin settings (defined in *Tools > Mainframer*).
+
+## Switching between local and remote compilation
+
+Just press the blue button:
+
+![](readme/turn_on_off.png)
 
 ### Run configurations
 

@@ -35,14 +35,14 @@ class MainframerPathValidatorTest {
     fun shouldReturnProperValidationInfoIfFileDoesNotExist() {
         whenever(mainframerPathField.text).thenReturn("asd/asd/asd")
         val result = MainframerPathValidator(mainframerPathField).validate()
-        assertEquals("Cannot find mainframer script in path", result?.message)
+        assertEquals("Cannot find Mainframer script in path", result?.message)
     }
 
     @Test
     fun shouldReturnProperValidationInfoIfFileIsFolder() {
         whenever(mainframerPathField.text).thenReturn(temporaryFolder.newFolder().path)
         val result = MainframerPathValidator(mainframerPathField).validate()
-        assertEquals("Cannot find mainframer script in path", result?.message)
+        assertEquals("Cannot find Mainframer script in path", result?.message)
     }
 
     @Test
