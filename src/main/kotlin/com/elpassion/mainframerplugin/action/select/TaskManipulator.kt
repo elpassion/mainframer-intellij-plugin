@@ -1,30 +1,29 @@
 package com.elpassion.mainframerplugin.action.select
 
-import com.elpassion.mainframerplugin.task.MFBeforeRunTask
-import com.elpassion.mainframerplugin.task.MFBeforeRunTaskProvider
+import com.elpassion.mainframerplugin.task.MainframerTask
+import com.elpassion.mainframerplugin.task.MainframerTaskProvider
 import com.intellij.execution.BeforeRunTask
 import com.intellij.execution.BeforeRunTaskProvider
 import com.intellij.execution.RunManager
 import com.intellij.execution.RunManagerEx
 import com.intellij.execution.configurations.RunConfiguration
-import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.openapi.project.Project
 
 class TaskManipulator(private val project: Project) {
     private val runManager = RunManagerEx.getInstanceEx(project)
 
-    fun injectMFToConfigurations(taskProvider: MFBeforeRunTaskProvider, configurations: List<RunConfiguration>) {
+    fun injectToolToConfigurations(taskProvider: MainframerTaskProvider, configurations: List<RunConfiguration>) {
         configurations.forEach {
-            it.injectMFTask(taskProvider)
+            it.injectMainframerTask(taskProvider)
         }
     }
 
-    private fun RunConfiguration.injectMFTask(mfTaskProvider: BeforeRunTaskProvider<MFBeforeRunTask>) {
-        val taskToInject = mfTaskProvider.createEnabledTask(this)
+    private fun RunConfiguration.injectMainframerTask(mainframerTaskProvider: BeforeRunTaskProvider<MainframerTask>) {
+        val taskToInject = mainframerTaskProvider.createEnabledTask(this)
         runManager.setBeforeRunTasks(this, listOf(taskToInject), false)
     }
 
-    private fun BeforeRunTaskProvider<MFBeforeRunTask>.createEnabledTask(runConfiguration: RunConfiguration) =
+    private fun BeforeRunTaskProvider<MainframerTask>.createEnabledTask(runConfiguration: RunConfiguration) =
             createTask(runConfiguration)!!.apply { isEnabled = true }
 
     fun restoreConfigurations(configurations: List<RunConfiguration>) {

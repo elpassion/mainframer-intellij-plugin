@@ -16,15 +16,14 @@ class BuildCommandValidator(private val buildCommandField: JTextField) : FieldVa
 }
 
 class MainframerPathValidator(private val mainframerPathField: TextFieldWithBrowseButton) : FieldValidator {
-    override fun validate() =
-            with(mainframerPathField) {
-                when {
-                    isBlank() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.path.empty"), this)
-                    isPathToScriptInvalid() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.found"), this)
-                    isScriptNotExecutable() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.executable"), this)
-                    else -> null
-                }
-            }
+    override fun validate() = with(mainframerPathField) {
+        when {
+            isBlank() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.path.empty"), this)
+            isPathToScriptInvalid() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.found"), this)
+            isScriptNotExecutable() -> ValidationInfo(StringsBundle.getMessage("common.form.validator.script.not.executable"), this)
+            else -> null
+        }
+    }
 }
 
 class RemoteMachineFieldValidator(private val remoteMachineField: JTextField) : FieldValidator {
