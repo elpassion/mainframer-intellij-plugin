@@ -17,7 +17,5 @@ class MainframerRunProfile(private val task: MainframerTask, private val command
 
     override fun getModules(): Array<Module> = Module.EMPTY_ARRAY
 
-    override fun getState(executor: Executor, env: ExecutionEnvironment) = with(task.data) {
-        CommandLineState(env, commandLineProvider(task.data))
-    }
+    override fun getState(executor: Executor, env: ExecutionEnvironment) = CommandLineState(env, commandLineProvider(task.data))
 }

@@ -25,11 +25,9 @@ fun selectConfigurationsToMFActions(project: Project) {
 }
 
 private fun configureSelections(project: Project): (SelectorResult) -> Unit = {
-    with(it) {
-        TaskManipulator(project).run {
-            injectToolToConfigurations(project.mainframerTaskProvider, toInject)
-            restoreConfigurations(toRestore)
-        }
+    TaskManipulator(project).run {
+        injectToolToConfigurations(project.mainframerTaskProvider, it.toInject)
+        restoreConfigurations(it.toRestore)
     }
 }
 
