@@ -36,7 +36,7 @@ class MainframerSettingsEditor(project: Project) : SettingsEditor<MainframerRunC
         configuration.validate()
         configuration.data?.let {
             mainEditorPanel.buildCommand.text = it.buildCommand
-            mainEditorPanel.mainframerTool.text = it.mainframerPath ?: ""
+            mainEditorPanel.mainframerTool.text = it.mainframerPath
         }
     }
 }
