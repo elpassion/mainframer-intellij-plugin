@@ -70,7 +70,7 @@ Simultaneously, for each unselected configuration, this action will restore defa
 
 Selecting a checkbox at the bottom of the dialog indicates that you want to override all **Mainframer Make** tasks properties, set separately per run configuration, with defaults from plugin settings (defined in *Tools > Mainframer*).
 
-## Switching between local and remote compilation
+### Switching between local and remote compilation
 
 Just press the blue button:
 
