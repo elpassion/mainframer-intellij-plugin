@@ -3,13 +3,14 @@ language: java
 jdk: oraclejdk8
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_192b72faab89_key -iv $encrypted_192b72faab89_iv -in gradle.properties.enc -out gradle.properties -d
+  - ./script/decrypt_gradle_properties.sh
 
 script:
   - ./gradlew test
 
 after_success:
-  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin
+  - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin -PpublishChannel=Stable
+  - test "$TRAVIS_BRANCH" == "nightly" && ./gradlew publishPlugin -PpublishChannel=nightly
 
 notifications:
   slack:

@@ -1,6 +1,6 @@
 <idea-plugin>
-    <id>com.elpassion.intelijidea</id>
-    <name>mainframer-plugin</name>
+    <id>com.elpassion.mainframerplugin</id>
+    <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
 
     <description><![CDATA[
@@ -21,6 +21,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 0.3.7: Optimization and cosmetic fixes.<br>
+      Release 0.3.2: Settings provider is now project scoped. Fix not replacing existing configurations when selected.<br>
       Release 0.3.1: Fix bug with focusing tab on each output change.<br>
       Release 0.3.0: Remove actions injecting and restoring all before run tasks. Add machine name in settings. Minor bugs fixes.<br>
       Release 0.2.4: Add configurations select dialog to override existing mainframer tasks.<br>
@@ -35,25 +37,36 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <configurationType implementation="com.elpassion.intelijidea.configuration.MFRunConfigurationType" />
-        <programRunner implementation="com.elpassion.intelijidea.configuration.MFProgramRunner" />
-        <stepsBeforeRunProvider implementation="com.elpassion.intelijidea.task.MFBeforeRunTaskProvider" />
+        <configurationType implementation="com.elpassion.mainframerplugin.configuration.MainframerConfigurationType"/>
+        <programRunner implementation="com.elpassion.mainframerplugin.configuration.MainframerProgramRunner"/>
+        <stepsBeforeRunProvider implementation="com.elpassion.mainframerplugin.task.MainframerTaskProvider"/>
         <projectConfigurable displayName="Mainframer" groupId="tools" groupWeight="140" id="mainframer"
-            instance="com.elpassion.intelijidea.task.MFBeforeTaskDefaultOptionsConfigurable" />
-        <applicationService
-            serviceImplementation="com.elpassion.intelijidea.task.MFBeforeTaskDefaultSettingsProvider" />
-        <search.optionContributor implementation="com.elpassion.intelijidea.MFSearchableOptionsContributor" />
+                             instance="com.elpassion.mainframerplugin.task.TaskDefaultOptionsConfigurable"/>
+        <projectService
+                serviceImplementation="com.elpassion.mainframerplugin.task.MainframerTaskDefaultSettingsProvider"/>
+        <projectService
+                serviceImplementation="com.elpassion.mainframerplugin.common.StateProvider"/>
+        <search.optionContributor implementation="com.elpassion.mainframerplugin.MainframerOptionContributor"/>
+        <consoleInputFilterProvider
+                implementation="com.elpassion.mainframerplugin.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
+        <consoleFilterProvider implementation="com.elpassion.mainframerplugin.common.console.RegexpFilterProvider"/>
     </extensions>
 
     <actions>
         <group class="com.intellij.openapi.actionSystem.DefaultActionGroup" icon="/icons/mainframerIcon.png"
             id="MF.ActionGroup" popup="true" text="Mainframer">
-            <action class="com.elpassion.intelijidea.action.configure.MFConfigureProjectAction" id="MF.Configure">
+            <action class="com.elpassion.mainframerplugin.action.configure.ConfigureProjectAction" id="MF.Configure">
                 <keyboard-shortcut first-keystroke="shift control M" keymap="$default" />
             </action>
-            <separator />
-            <action class="com.elpassion.intelijidea.action.select.MFSelectConfigurationsAction" id="MF.Select" />
+            <separator/>
+            <action class="com.elpassion.mainframerplugin.action.select.SelectConfigurationsAction" id="MF.Select"/>
             <add-to-group group-id="ToolsMenu" />
+        </group>
+        <group id="MainframerMainSwitch" text="Mainframer settings">
+            <separator/>
+            <action class="com.elpassion.mainframerplugin.action.switcher.SwitchAction" id="MF.Switch"
+                    icon="/icons/mainframerIcon.png"/>
+            <add-to-group group-id="MainToolBar" relative-to-action="ToolbarRunGroup" anchor="after" />
         </group>
     </actions>
 

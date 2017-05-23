@@ -1,4 +1,4 @@
-# mainframer-intellij-plugin [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin)
+# Mainframer Integration [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/elpassion/mainframer-intellij-plugin.svg)](http://isitmaintained.com/project/elpassion/mainframer-intellij-plugin "Average time to resolve an issue") [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intelij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intelij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intelij-plugin) 
 An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 
 About
@@ -11,36 +11,37 @@ This plugin makes integration with Mainframer tool easy and seamless. Plugin use
 * Injecting/Restoring before tasks to all configurations
 * Configuring mainframer in project
 * Custom run configuration for mainframer
+* Switching between local and remote compilation
 
 Installation
 ------------
 
 1. Open plugins window (with proper action or through *Preferences > Plugins*).
-2. Find **mainframer-plugin** in JetBrains plugins repository.
+2. Find **Mainframer Integration** in JetBrains plugins repository.
 3. Install plugin and restart IDE to apply changes.
 
 **Alternative way:**
 
-If you want to install a specific version of the plugin visit [mainframer-plugin website](https://plugins.jetbrains.com/idea/plugin/9447-mainframer-plugin), download zip file and click *Install plugin from disk...* providing path to it.
+If you want to install a specific version of the plugin visit [Mainframer Integration website](https://plugins.jetbrains.com/plugin/9603-mainframer-integration), download zip file and click *Install plugin from disk...* providing path to it.
 
 ![](readme/plugins.png)
 
 **:warning: Nightly builds:**
 
-If you prefer to follow latest features of **mainframer-plugin** (being under development), you can switch to nightly channel. However, keep in mind that these versions are not stable so you can encounter some unexpected bugs. To make a switch follow these steps: 
+If you prefer to follow latest features of **Mainframer Integration** plugin (being under development), you can switch to nightly channel. However, keep in mind that these versions are not stable so you can encounter some unexpected bugs. To make a switch follow these steps: 
 
 1. Inside plugins window click *Browse repositories...*
 2. In the next window click *Manage repositories...*
 3. Click :heavy_plus_sign: icon.
 4. Paste a repository URL: `https://plugins.jetbrains.com/plugins/nightly/9447`
-5. Confirm and browse **mainframer-plugin** again to install nightly version.
+5. Confirm and browse **Mainframer Integration** again to install nightly version.
 
 When you decide to return to stable channel simply delete provided repository URL.
 
 Setup
 -----
 
-Before you can start using **mainframer-plugin** you must configure your [remote machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_REMOTE.md) and [local machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_LOCAL.md) (omitting last *Configuration* section, because the plugin will do it for you).
+Before you can start using **Mainframer Integration** plugin you must configure your [remote machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_REMOTE.md) and [local machine](https://github.com/gojuno/mainframer/blob/development/docs/SETUP_LOCAL.md) (omitting last *Configuration* section, because the plugin will do it for you).
 
 Usage
 -----
@@ -55,23 +56,33 @@ Launch *Enter action dialog* with (<kbd>command</kbd> or <kbd>ctrl</kbd>) + <kbd
 
 This is an initial action you need to perform to configure Mainframer in your current project. It starts with fetching a list of all available tool releases. You can select a Mainframer tool version you are interested in. It will check if your opened project contains a *mainframer.sh* file and if not it will download it for you.
 
-#### Inject mainframer before run task
+#### Select configurations to inject mainframer or restore to default
 
-With this action plugin will modify all your created run configurations. For each configuration it will remove default *before launch* task and inject **Mainframer Make** task:
+This action comes with a dialog containing selectable lists of run/debug configurations and default configurations (templates):
+
+![](readme/select_configurations.png)
+
+After clicking *OK* button plugin will modify all your created run configurations. For each selected configuration it will remove default *before launch* task and inject **Mainframer Make** task. 
 
 ![](readme/injecting.png)
 
-#### Restore default before run tasks
+Simultaneously, for each unselected configuration, this action will restore default *before run* task, enabling project local build.
 
-Whenever you decide to build your project locally, this action will restore default *before run* tasks in all run configurations defined.
+Selecting a checkbox at the bottom of the dialog indicates that you want to override all **Mainframer Make** tasks properties, set separately per run configuration, with defaults from plugin settings (defined in *Tools > Mainframer*).
+
+### Switching between local and remote compilation
+
+Just press the blue button:
+
+![](readme/turn_on_off.png)
 
 ### Run configurations
 
-You can use **mainframer-plugin** either to inject predefined *before launch* tasks or to create a custom run configuration. In case to add new mainframer configuration open run configurations dialog, click add button and select proper configuration type as below:
+You can use **Mainframer Integration** plugin either to inject predefined *before launch* tasks or to create a custom run configuration. In case to add new mainframer configuration open run configurations dialog, click add button and select proper configuration type as below:
 
 ![](readme/add_new_configuration.png)
 
-For created configuration you can set a build command and tasks to execute:
+For created configuration you can set a build command to execute:
 
 ![](readme/run_configurations.png)
 
