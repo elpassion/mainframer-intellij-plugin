@@ -33,7 +33,7 @@ If you prefer to follow latest features of **Mainframer Integration** plugin (be
 1. Inside plugins window click *Browse repositories...*
 2. In the next window click *Manage repositories...*
 3. Click :heavy_plus_sign: icon.
-4. Paste a repository URL: `https://plugins.jetbrains.com/plugins/nightly/9447`
+4. Paste a repository URL: `https://plugins.jetbrains.com/plugins/nightly/9603`
 5. Confirm and browse **Mainframer Integration** again to install nightly version.
 
 When you decide to return to stable channel simply delete provided repository URL.
