@@ -51,7 +51,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Select Mainframer version:"/>
+              <text value="Mainframer version:"/>
             </properties>
           </component>
           <component id="fdaf7" class="javax.swing.JLabel">
