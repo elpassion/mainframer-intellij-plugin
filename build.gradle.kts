@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
 import org.gradle.script.lang.kotlin.*
-import org.jetbrains.intellij.IntelliJPluginExtension
+import org.jetbrains.intellij.*
 
 buildscript {
     repositories {
@@ -15,14 +15,9 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.2.0"
+    id("org.jetbrains.intellij") version "0.2.11"
     id("org.jetbrains.kotlin.jvm") version "1.1.1"
-    java
 }
-
-val publishUsername = project.findProperty("MF_PUBLISH_USER_NAME") as String?
-val publishPassword = project.findProperty("MF_PUBLISH_PASSWORD") as String?
-val publishChannel = project.findProperty("publishChannel") as String?
 
 group = "com.elpassion.mainframerplugin"
 version = readVersion()
@@ -42,9 +37,9 @@ repositories {
 configure<IntelliJPluginExtension> {
     version = "IC-171.4424.56"
     pluginName = "mainframer-integration"
-    publish.username = publishUsername
-    publish.password = publishPassword
-    publish.setChannel(publishChannel)
+    publish.username = project.findProperty("MF_PUBLISH_USER_NAME") as String?
+    publish.password = project.findProperty("MF_PUBLISH_PASSWORD") as String?
+    publish.setChannel(project.findProperty("publishChannel") as String?)
     updateSinceUntilBuild = false
 }
 
