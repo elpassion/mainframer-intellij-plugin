@@ -54,13 +54,13 @@ fun readVersion(): String {
 }
 
 
-val versionNumber by project
+val versionName by project
 task("updateVersion") {
     doLast {
         val versionFile = File("version.gradle.properties")
         val matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.readText())
         if (matcher.find()) {
-            val versionText = StringBuilder(versionFile.readText()).replace(matcher.start(1), matcher.end(1), versionNumber.toString())
+            val versionText = StringBuilder(versionFile.readText()).replace(matcher.start(1), matcher.end(1), versionName.toString())
             versionFile.writeText(versionText.toString())
         }
     }
