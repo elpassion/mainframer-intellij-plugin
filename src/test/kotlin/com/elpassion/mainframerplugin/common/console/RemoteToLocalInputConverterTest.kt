@@ -8,7 +8,7 @@ import org.junit.Test
 class RemoteToLocalInputConverterTest {
 
     private val PROJECT_NAME = "testProject"
-    private val localBasePath = "base/path/$PROJECT_NAME"
+    private val localBasePath = "/base/path/$PROJECT_NAME"
     private val converter = RemoteToLocalInputConverter(PROJECT_NAME, localBasePath)
 
     @Test
@@ -153,6 +153,14 @@ class RemoteToLocalInputConverterTest {
     fun `Should replace remote base path and change line number when method convertInput is being used`() {
         val input = "Error: /longer/path/mainframer/$PROJECT_NAME/com/elpassion/mainframer/Example.kt: (1, 20): error: Errors everywhere!"
         val expectedConvertedInput = "$localBasePath/com/elpassion/mainframer/Example.kt:1: error: Errors everywhere!"
+        val convertedInput = converter.convertInput(input)
+        Assertions.assertThat(convertedInput).isEqualTo(expectedConvertedInput)
+    }
+
+    @Test
+    fun `Should replace remote path even if remote path contains dashes`() {
+        val input = "/home/kasper-work/mainframer/$PROJECT_NAME/src/main/java/A.java:1"
+        val expectedConvertedInput = "$localBasePath/src/main/java/A.java:1"
         val convertedInput = converter.convertInput(input)
         Assertions.assertThat(convertedInput).isEqualTo(expectedConvertedInput)
     }
