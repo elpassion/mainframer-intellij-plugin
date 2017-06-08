@@ -166,6 +166,14 @@ class RemoteToLocalInputConverterTest {
     }
 
     @Test
+    fun `Should replace remote path even if package contains dashes`() {
+        val input = "/home/mainframer/$PROJECT_NAME/src/main/com.elpassion-with-dashes/Example.java:1"
+        val expectedConvertedInput = "$localBasePath/src/main/com.elpassion-with-dashes/Example.java:1"
+        val convertedInput = converter.convertInput(input)
+        Assertions.assertThat(convertedInput).isEqualTo(expectedConvertedInput)
+    }
+
+    @Test
     fun `Should format correctly simple path line number value`() {
         val replacedPathSimple = ":321".replace(converter.LINE_NUMBER_REGEX.toRegex(), ":$1")
         Assertions.assertThat(replacedPathSimple).isEqualTo(":321")

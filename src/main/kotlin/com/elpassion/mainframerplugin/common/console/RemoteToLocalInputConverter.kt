@@ -1,7 +1,7 @@
 package com.elpassion.mainframerplugin.common.console
 
 class RemoteToLocalInputConverter(projectName: String, val projectBasePath: String) {
-    private val DOT_WORD = "(?:\\.\\w+)"
+    private val DOT_WORD = "(?:\\.[^\\s/]+)"
     private val OPTIONAL_PACKAGE_NAME = "$DOT_WORD*"
     val PATH_SEGMENT = "(?:/[^\\s/]+\\-?$OPTIONAL_PACKAGE_NAME)"
     val PATH = "$PATH_SEGMENT*?"
