@@ -22,7 +22,7 @@ class ConfigureProjectActionControllerTest {
     private val showError = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()
-    private val controller = ConfigureProjectActionController(releasesFetcher, versionChooser, fileDownloader, showMessage, showError, uiScheduler, progressScheduler)
+    private val controller = ConfigureProjectActionController(releasesFetcher, versionChooser, fileDownloader, showMessage, showError, uiScheduler, progressScheduler, mock())
 
     @Test
     fun shouldConfigureMainframerInProject() {
