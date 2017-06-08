@@ -3,7 +3,6 @@ package com.elpassion.mainframerplugin.common
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-
 class AssertThrowsTest {
 
     @Test(expected = AssertionError::class)
