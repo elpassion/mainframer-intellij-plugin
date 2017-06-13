@@ -6,7 +6,9 @@ import com.elpassion.mainframerplugin.action.configure.downloader.fileDownloader
 import com.elpassion.mainframerplugin.action.configure.releases.api.provideGitHubApi
 import com.elpassion.mainframerplugin.action.configure.releases.api.provideGitHubRetrofit
 import com.elpassion.mainframerplugin.action.configure.releases.service.releasesFetcher
-import com.elpassion.mainframerplugin.action.configure.templater.templater
+import com.elpassion.mainframerplugin.action.configure.templater.resourceCopier
+import com.elpassion.mainframerplugin.action.configure.templater.templateChooser
+import com.elpassion.mainframerplugin.action.configure.templater.templateSetter
 import com.elpassion.mainframerplugin.common.ProgressScheduler
 import com.elpassion.mainframerplugin.common.StringsBundle
 import com.elpassion.mainframerplugin.common.UIScheduler
@@ -23,4 +25,6 @@ fun configureToolInProject(project: Project) =
                 showError = { message -> showError(project, message) },
                 uiScheduler = UIScheduler,
                 progressScheduler = ProgressScheduler(project, StringsBundle.getMessage("configure.fetching.versions.description")),
-                templater = { templater(project) }).configureMainframer()
+                templateChooser = { templateChooser(project) },
+                templateFileResolver = templateSetter(project),
+                fileCopier = resourceCopier).configureMainframer()

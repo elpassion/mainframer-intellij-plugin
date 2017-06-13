@@ -1,9 +1,11 @@
 package com.elpassion.mainframerplugin.action.configure
 
 import com.elpassion.mainframerplugin.action.configure.configurator.ToolInfo
+import com.elpassion.mainframerplugin.action.configure.templater.FileCopier
 import com.elpassion.mainframerplugin.action.configure.templater.ProjectType
 import com.elpassion.mainframerplugin.common.StringsBundle
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import java.io.File
@@ -16,7 +18,9 @@ class ConfigureProjectActionController(
         val showError: (String) -> Unit,
         val uiScheduler: Scheduler,
         val progressScheduler: Scheduler,
-        val templater: () -> Maybe<ProjectType>) {
+        val templateChooser: () -> Maybe<ProjectType>,
+        val templateFileResolver: (ProjectType) -> Observable<Pair<String, String>>,
+        val fileCopier: FileCopier) {
 
     fun configureMainframer() {
         releasesFetcher()
@@ -25,7 +29,11 @@ class ConfigureProjectActionController(
                 .flatMapMaybe(configurator)
                 .flatMap(fileDownloader)
                 .doOnSuccess { it.setExecutable(true) }
-                .flatMap { templater() }
+                .flatMapCompletable {
+                    templateChooser()
+                            .flatMapObservable(templateFileResolver)
+                            .flatMapCompletable { (src, dst) -> fileCopier(src, dst) }
+                }
                 .subscribe({
                     showMessage(StringsBundle.getMessage("configure.success"))
                 }, {
