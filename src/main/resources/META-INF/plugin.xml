@@ -21,6 +21,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 1.0.3: Add initial support for windows<br>
+      Release 1.0.2: Fix for release script<br>
+      Relaase 1.0.1: Migrate to gradle-script-kotlin<br>
       Release 1.0.0: Highlight errors from remote compilation + quick turn on/off<br>
       Release 0.3.7: Optimization and cosmetic fixes.<br>
       Release 0.3.2: Settings provider is now project scoped. Fix not replacing existing configurations when selected.<br>
