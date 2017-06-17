@@ -2,7 +2,7 @@
     <id>com.elpassion.mainframerplugin</id>
     <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
-
+    <idea-version since-build="145" until-build="171.4424.56"/>
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
       easy and seamless.<br>
