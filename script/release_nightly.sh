@@ -21,9 +21,10 @@ git stash
 checkResult
 git checkout develop -b release/$VERSION_NAME
 checkResult
-./gradlew build
-checkResult
 ./gradlew updateVersion -PversionName=$VERSION_NAME
+checkResult
+./gradlew build
+mv build/distributions/mainframer-integration-$VERSION_NAME.zip build/distributions/mainframer-integration.zip
 checkResult
 git commit -a -m "Update version to $VERSION_NAME."
 checkResult
