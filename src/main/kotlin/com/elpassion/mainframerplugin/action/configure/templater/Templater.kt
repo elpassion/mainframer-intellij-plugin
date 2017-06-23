@@ -17,8 +17,8 @@ fun templateSetter(project: Project): (ProjectType) -> Observable<Pair<String, S
             }
 }
 
-private fun createTargetPath(project: Project, fileName: String) = "${project.basePath}${File.separator}.mainframer${File.separator}$fileName"
+private fun createTargetPath(project: Project, fileName: String) = "${project.basePath}/.mainframer/$fileName"
 
-private fun createSourcePath(projectTypeResourceDir: String, fileName: String) = "templates${File.separator}$projectTypeResourceDir${File.separator}$fileName"
+private fun createSourcePath(projectTypeResourceDir: String, fileName: String) = "templates/$projectTypeResourceDir/$fileName"
 
 typealias FileCopier = (source: String, destination: String) -> Completable

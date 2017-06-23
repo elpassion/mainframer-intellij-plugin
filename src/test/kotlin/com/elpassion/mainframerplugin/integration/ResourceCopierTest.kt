@@ -8,8 +8,8 @@ class ResourceCopierTest : IdeaTestCase() {
 
     fun testShouldCopyFileFromSourceToDestination() {
         val file = File("")
-        val copyDestination = "${file.absolutePath}${File.separator}justAFile"
-        resourceCopier("templates${File.separator}ignoreExample", copyDestination)
+        val copyDestination = "${file.absolutePath}/justAFile"
+        resourceCopier("templates/ignoreExample", copyDestination)
                 .test()
                 .assertNoErrors()
         val copiedFile = File(copyDestination).apply { deleteOnExit() }
