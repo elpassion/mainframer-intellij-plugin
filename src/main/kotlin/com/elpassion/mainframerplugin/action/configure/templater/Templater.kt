@@ -4,12 +4,11 @@ import com.intellij.openapi.project.Project
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import java.io.File
 
 fun templateChooser(project: Project): Maybe<ProjectType> = templateApplicationDialog(project)
 
 fun templateSetter(project: Project): (ProjectType) -> Observable<Pair<String, String>> = { projectType ->
-    Observable.fromIterable(listOf("ignore", "remoteignore", "localignore"))
+    Observable.just("ignore", "remoteignore", "localignore")
             .map { fileName ->
                 val sourceFile = createSourcePath(projectType.resourceDir, fileName)
                 val targetFile = createTargetPath(project, fileName)
