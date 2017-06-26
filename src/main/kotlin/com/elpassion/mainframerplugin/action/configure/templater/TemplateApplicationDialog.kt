@@ -8,7 +8,7 @@ import com.intellij.ui.CollectionComboBoxModel
 import io.reactivex.Maybe
 import javax.swing.JComponent
 
-class TemplateApplicationDialog(project: Project,
+private class TemplateApplicationDialog(project: Project,
                                 doOnOk: (ProjectType) -> Unit,
                                 doOnCancel: () -> Unit) : DialogWrapperAdapter<ProjectType>(project, doOnOk, doOnCancel) {
 
