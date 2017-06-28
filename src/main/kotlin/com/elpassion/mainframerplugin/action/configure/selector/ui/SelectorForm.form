@@ -28,7 +28,7 @@
             <properties>
               <icon value="general/run.png"/>
               <labelFor value="3b3cd"/>
-              <text value="Run configurations:"/>
+              <text resource-bundle="messages/Mainframer" key="selector.dialog.configurations.label.run"/>
             </properties>
           </component>
           <component id="b3766" class="javax.swing.JLabel">
@@ -38,7 +38,7 @@
             <properties>
               <icon value="general/settings.png"/>
               <labelFor value="c1230"/>
-              <text value="Templates:"/>
+              <text resource-bundle="messages/Mainframer" key="selector.dialog.configurations.label.templates"/>
             </properties>
           </component>
           <scrollpane id="3b3cd">
@@ -77,7 +77,7 @@
             </constraints>
             <properties>
               <selected value="false"/>
-              <text value="Replace all existing Mainframer Make tasks"/>
+              <text resource-bundle="messages/Mainframer" key="selector.dialog.replace.checkbox"/>
               <toolTipText value=""/>
             </properties>
           </component>
@@ -94,7 +94,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Select All"/>
+                  <text resource-bundle="messages/Mainframer" key="selector.dialog.buttons.selectall"/>
                 </properties>
               </component>
               <hspacer id="b6dbd">
@@ -107,7 +107,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Unselect All"/>
+                  <text resource-bundle="messages/Mainframer" key="selector.dialog.buttons.deselectall"/>
                 </properties>
               </component>
             </children>
@@ -125,7 +125,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Select All"/>
+                  <text resource-bundle="messages/Mainframer" key="selector.dialog.buttons.selectall"/>
                 </properties>
               </component>
               <hspacer id="8ce70">
@@ -138,7 +138,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Unselect All"/>
+                  <text resource-bundle="messages/Mainframer" key="selector.dialog.buttons.deselectall"/>
                 </properties>
               </component>
             </children>
