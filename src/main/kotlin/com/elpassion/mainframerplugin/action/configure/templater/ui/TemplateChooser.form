@@ -33,7 +33,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Apply template configuration for"/>
+              <text resource-bundle="messages/Mainframer" key="configure.templater.dialog.project.type"/>
             </properties>
           </component>
         </children>
