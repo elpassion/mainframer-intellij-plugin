@@ -50,6 +50,6 @@ class TaskDefaultOptionsConfigurable(private val project: Project) : SearchableC
 
     companion object {
         val ID = "mainframer"
-        val DISPLAY_NAME = StringsBundle.getMessage("taskEdit.default.provider.displayName")
+        val DISPLAY_NAME = StringsBundle.getMessage("task.default.settings.provider.displayName")
     }
 }

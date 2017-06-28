@@ -15,7 +15,7 @@ class TaskEditDialog(project: Project) : DialogWrapper(project) {
 
     init {
         isModal = true
-        title = StringsBundle.getMessage("taskEdit.title")
+        title = StringsBundle.getMessage("task.settings.dialog.title")
         init()
     }
 

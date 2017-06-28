@@ -53,11 +53,11 @@ class MainframerTaskProvider(private val project: Project) : BeforeRunTaskProvid
 
     companion object {
         val ID = Key.create<MainframerTask>("MainFrame.BeforeRunTask")
-        val TASK_NAME = StringsBundle.getMessage("taskEdit.name")
+        val TASK_NAME = StringsBundle.getMessage("task.settings.name")
     }
 
     private fun Project.showInvalidDataError() {
-        showError(this, StringsBundle.getMessage("taskEdit.invalid.data.error"))
+        showError(this, StringsBundle.getMessage("task.settings.invalid.data.error"))
     }
 
 }
