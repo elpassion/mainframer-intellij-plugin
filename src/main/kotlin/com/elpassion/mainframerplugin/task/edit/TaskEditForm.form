@@ -22,7 +22,7 @@
             </constraints>
             <properties>
               <labelFor value="e0494"/>
-              <text resource-bundle="messages/Mainframer" key="task.settings.dialog.build.command"/>
+              <text resource-bundle="messages/Mainframer" key="common.task.settings.build.command"/>
             </properties>
           </component>
           <component id="11182" class="javax.swing.JLabel">
@@ -30,7 +30,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text resource-bundle="messages/Mainframer" key="task.settings.dialog.mainframer.path"/>
+              <text resource-bundle="messages/Mainframer" key="common.task.settings.path"/>
             </properties>
           </component>
           <component id="e0494" class="javax.swing.JTextField" binding="buildCommandField">
