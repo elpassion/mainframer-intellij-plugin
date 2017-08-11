@@ -18,5 +18,7 @@ class RemoteToLocalInputConverter(projectName: String, val projectBasePath: Stri
     val LINE_WITH_REMOTE_EXCEPTION = "$FIRST_FRAGMENT_REGEX$FILE_PATH_REGEX$LINE_NUMBER_REGEX".toRegex()
 
     fun convertInput(input: String)
-            = LINE_WITH_REMOTE_EXCEPTION.replace(input, "$projectBasePath$1:$2")
+            = input.lines().map {
+                LINE_WITH_REMOTE_EXCEPTION.replace(it, "$projectBasePath$1:$2")
+            }.joinToString("\n")
 }
