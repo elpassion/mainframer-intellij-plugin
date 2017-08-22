@@ -1,6 +1,5 @@
 package com.elpassion.mainframerplugin.util
 
-import com.elpassion.mainframerplugin.common.assertThrows
 import org.hamcrest.core.StringEndsWith.endsWith
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -17,10 +16,8 @@ class ToolDownloadTest {
         assertThat(getToolDownloadUrl("2.0.0"), endsWith("$toolFilename.sh"))
     }
 
-    @Test
+    @Test(expected = RuntimeException::class)
     fun `Expect runtime exception on invalid version format`() {
-        assertThrows<RuntimeException> {
-            getToolDownloadUrl("invalid version")
-        }
+        getToolDownloadUrl("invalid version")
     }
 }
