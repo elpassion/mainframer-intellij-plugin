@@ -9,6 +9,7 @@ script:
   - ./gradlew test
 
 after_success:
+  - mv build/distributions/mainframer-integration-*.zip build/distributions/mainframer-integration.zip
   - test "$TRAVIS_BRANCH" == "master" && ./gradlew publishPlugin -PpublishChannel=Stable
   - test "$TRAVIS_BRANCH" == "nightly" && ./gradlew publishPlugin -PpublishChannel=nightly
 

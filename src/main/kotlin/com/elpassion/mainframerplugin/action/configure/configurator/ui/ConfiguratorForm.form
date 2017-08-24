@@ -25,7 +25,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Remote machine name:"/>
+              <text resource-bundle="messages/Mainframer" key="common.task.settings.default.remote.name"/>
             </properties>
           </component>
           <component id="e011a" class="javax.swing.JTextField" binding="remoteMachineField">
@@ -51,7 +51,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="Mainframer version:"/>
+              <text resource-bundle="messages/Mainframer" key="configure.configurator.dialog.version"/>
             </properties>
           </component>
           <component id="fdaf7" class="javax.swing.JLabel">
@@ -59,7 +59,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Default build command:"/>
+              <text resource-bundle="messages/Mainframer" key="common.task.settings.default.build.command"/>
             </properties>
           </component>
           <component id="32b82" class="javax.swing.JTextField" binding="buildCommandField">

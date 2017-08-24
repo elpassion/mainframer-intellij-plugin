@@ -4,9 +4,12 @@ import com.elpassion.android.commons.rxjavatest.thenError
 import com.elpassion.android.commons.rxjavatest.thenJust
 import com.elpassion.android.commons.rxjavatest.thenNever
 import com.elpassion.mainframerplugin.action.configure.configurator.ToolInfo
+import com.elpassion.mainframerplugin.action.configure.templater.FileCopier
+import com.elpassion.mainframerplugin.action.configure.templater.ProjectType
 import com.intellij.openapi.util.io.FileUtil
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.junit.Assert.assertTrue
@@ -22,13 +25,28 @@ class ConfigureProjectActionControllerTest {
     private val showError = mock<(String) -> Unit>()
     private val uiScheduler = Schedulers.trampoline()
     private val progressScheduler = Schedulers.trampoline()
-    private val controller = ConfigureProjectActionController(releasesFetcher, versionChooser, fileDownloader, showMessage, showError, uiScheduler, progressScheduler)
+    private val templateChooser = mock<() -> Maybe<ProjectType>>()
+    private val templateFileResolver = mock<(ProjectType) -> Observable<Pair<String, String>>>()
+    private val fileCopier = mock<FileCopier>()
+    private val controller = ConfigureProjectActionController(
+            releasesFetcher,
+            versionChooser,
+            fileDownloader,
+            showMessage,
+            showError,
+            uiScheduler,
+            progressScheduler,
+            templateChooser,
+            templateFileResolver,
+            fileCopier)
 
     @Test
     fun shouldConfigureMainframerInProject() {
         whenever(releasesFetcher.invoke()).thenJust("2.0.0")
         whenever(versionChooser.invoke(any())).thenJust(ToolInfo("2.0.0", File("")))
         whenever(fileDownloader.invoke(any())).thenJust(File(""))
+        whenever(templateChooser.invoke()).thenReturn(Maybe.empty())
+        whenever(templateFileResolver.invoke(any())).thenReturn(Observable.empty())
 
         controller.configureMainframer()
 
@@ -75,6 +93,8 @@ class ConfigureProjectActionControllerTest {
         whenever(releasesFetcher.invoke()).thenJust("2.0.0")
         whenever(versionChooser.invoke(any())).thenJust(ToolInfo("2.0.0", File("")))
         whenever(fileDownloader.invoke(any())).thenError()
+        whenever(templateChooser.invoke()).thenReturn(Maybe.empty())
+        whenever(templateFileResolver.invoke(any())).thenReturn(Observable.empty())
 
         controller.configureMainframer()
 
@@ -84,6 +104,8 @@ class ConfigureProjectActionControllerTest {
     @Test
     fun shouldShowErrorWhenFetchFails() {
         whenever(releasesFetcher.invoke()).thenError()
+        whenever(templateChooser.invoke()).thenReturn(Maybe.empty())
+        whenever(templateFileResolver.invoke(any())).thenReturn(Observable.empty())
 
         controller.configureMainframer()
 
@@ -100,5 +122,31 @@ class ConfigureProjectActionControllerTest {
         controller.configureMainframer()
 
         assertTrue(outputFile.canExecute())
+    }
+
+    @Test
+    fun shouldShowSuccessMessageIfTemplateChooserReturnNothing() {
+        whenever(releasesFetcher.invoke()).thenJust("2.0.0")
+        whenever(versionChooser.invoke(any())).thenJust(ToolInfo("2.0.0", File("")))
+        whenever(fileDownloader.invoke(any())).thenJust(File(""))
+        whenever(templateChooser.invoke()).thenReturn(Maybe.empty())
+        whenever(templateFileResolver.invoke(any())).thenReturn(Observable.empty())
+
+        controller.configureMainframer()
+
+        verify(showMessage).invoke("Mainframer configured in your project!")
+    }
+
+    @Test
+    fun shouldCopyProperFilesFromResourcesToProjectDir() {
+        whenever(releasesFetcher.invoke()).thenJust("2.0.0")
+        whenever(versionChooser.invoke(any())).thenJust(ToolInfo("2.0.0", File("")))
+        whenever(fileDownloader.invoke(any())).thenJust(File(""))
+        whenever(templateChooser.invoke()).thenReturn(Maybe.just(ProjectType.ANDROID))
+        whenever(templateFileResolver.invoke(any())).thenReturn(Observable.just("src" to "dst"))
+
+        controller.configureMainframer()
+
+        verify(fileCopier).invoke("src", "dst")
     }
 }
