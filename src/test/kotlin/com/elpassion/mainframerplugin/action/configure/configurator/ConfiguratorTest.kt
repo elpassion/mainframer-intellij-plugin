@@ -93,7 +93,7 @@ class ConfiguratorTest : LightPlatformCodeInsightFixtureTestCase() {
 
     fun testShouldSaveMainframerPathToSettingsProvider() {
         configureMainframerInProject()
-        Assert.assertEquals(File(project.basePath, "mainframer.sh").absolutePath, settingsProviderTask().mainframerPath)
+        Assert.assertEquals(File(project.basePath, toolFilename).absolutePath, settingsProviderTask().mainframerPath)
     }
 
     private fun configureMainframerInProject(versionList: List<String> = emptyList()) {

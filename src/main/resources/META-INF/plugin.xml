@@ -2,7 +2,7 @@
     <id>com.elpassion.mainframerplugin</id>
     <name>Mainframer Integration</name>
     <vendor email="mainframer@elpassion.pl" url="http://www.elpassion.com/">EL Passion</vendor>
-
+    <idea-version since-build="145" until-build="171.4424.56"/>
     <description><![CDATA[
       This plugin makes integration with <a href="https://github.com/gojuno/mainframer">Mainframer tool</a>
       easy and seamless.<br>
@@ -21,6 +21,9 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      Release 1.0.3: Add initial support for windows<br>
+      Release 1.0.2: Fix for release script<br>
+      Relaase 1.0.1: Migrate to gradle-script-kotlin<br>
       Release 1.0.0: Highlight errors from remote compilation + quick turn on/off<br>
       Release 0.3.7: Optimization and cosmetic fixes.<br>
       Release 0.3.2: Settings provider is now project scoped. Fix not replacing existing configurations when selected.<br>

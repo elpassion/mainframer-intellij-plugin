@@ -11,7 +11,7 @@ import javax.swing.Icon
 
 class MainframerRunProfile(private val task: MainframerTask, private val commandLineProvider: (TaskData) -> GeneralCommandLine) : ModuleRunProfile {
 
-    override fun getName(): String = StringsBundle.getMessage("taskEdit.profile.name")
+    override fun getName(): String = StringsBundle.getMessage("task.profile.name")
 
     override fun getIcon(): Icon? = null
 
