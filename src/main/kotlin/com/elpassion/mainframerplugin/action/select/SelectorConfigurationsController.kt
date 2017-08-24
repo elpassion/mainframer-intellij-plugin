@@ -8,14 +8,13 @@ class SelectorConfigurationsController(val manipulateTasks: (SelectorResult) -> 
                                        val selectorResult: () -> Maybe<SelectorResult>,
                                        val isSettingsTaskValid: () -> Boolean,
                                        val showMessage: (Int, Int) -> Unit,
-                                       val showError: (String) -> Unit) {
+                                       val showMainframerNotConfiguredError: (String) -> Unit,
+                                       val showMainframerTaskInvalidError: (String) -> Unit,
+                                       val doesMainframerExists: () -> Boolean) {
     fun configure() {
         selectorResult().map {
-            if (!it.toInject.isEmpty() && !isSettingsTaskValid()) {
-                throw RuntimeException(StringsBundle.getMessage("selector.invalid.configuration.error"))
-            } else {
-                it
-            }
+            assertSystemState(it)
+            it
         }.doOnSuccess {
             manipulateTasks(it)
         }.map {
@@ -23,9 +22,23 @@ class SelectorConfigurationsController(val manipulateTasks: (SelectorResult) -> 
         }.subscribe({ (injected, restored) ->
             showMessage(injected, restored)
         }, {
-            showError(StringsBundle.getMessage("selector.mainframer.not.configured.error"))
+            when (it) {
+                is MainframerNotConfiguredException -> showMainframerNotConfiguredError(it.message!!)
+                is InvalidTaskConfigurationException -> showMainframerTaskInvalidError(it.message!!)
+            }
         })
     }
 
-
+    private fun assertSystemState(it: SelectorResult) {
+        when {
+            !it.toInject.isEmpty() -> when {
+                !isSettingsTaskValid() -> throw InvalidTaskConfigurationException(StringsBundle.getMessage("selector.invalid.configuration.error"))
+                !doesMainframerExists() -> throw MainframerNotConfiguredException(StringsBundle.getMessage("selector.mainframer.not.configured.error"))
+            }
+        }
+    }
 }
+
+private class InvalidTaskConfigurationException(message: String) : RuntimeException(message)
+
+private class MainframerNotConfiguredException(message: String) : RuntimeException(message)

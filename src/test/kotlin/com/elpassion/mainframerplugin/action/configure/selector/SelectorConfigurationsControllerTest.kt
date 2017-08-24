@@ -12,8 +12,10 @@ class SelectorConfigurationsControllerTest {
     private val taskSettingsIsValid = mock<() -> Boolean>()
     private val manipulateTasks = mock<(SelectorResult) -> Unit>()
     private val showMessage = mock<(Int, Int) -> Unit>()
-    private val showError = mock<(String) -> Unit>()
-    private val controller = SelectorConfigurationsController(manipulateTasks, selectorResults, taskSettingsIsValid, showMessage, showError)
+    private val showMainframerNotConfiguredError = mock<(String) -> Unit>()
+    private val showMainframerTaskInvalidError = mock<(String) -> Unit>()
+    private val doesMainframerExists = mock<() -> Boolean>()
+    private val controller = SelectorConfigurationsController(manipulateTasks, selectorResults, taskSettingsIsValid, showMessage, showMainframerNotConfiguredError, showMainframerTaskInvalidError, doesMainframerExists)
 
     @Test
     fun shouldNeverCallManipulateTasksWhenSelectorResultEmpty() {
@@ -46,10 +48,11 @@ class SelectorConfigurationsControllerTest {
     fun shouldShowErrorWhenTaskInjectionFails() {
         stubSelectorResults(toInject = createSingletonListMockConfiguration())
         whenever(taskSettingsIsValid.invoke()).thenReturn(false)
+        whenever(doesMainframerExists.invoke()).thenReturn(true)
 
         controller.configure()
 
-        verify(showError).invoke(any())
+        verify(showMainframerTaskInvalidError).invoke(any())
     }
 
     @Test
@@ -57,6 +60,7 @@ class SelectorConfigurationsControllerTest {
         val toInject = createSingletonListMockConfiguration()
         stubSelectorResults(toInject = toInject)
         whenever(taskSettingsIsValid.invoke()).thenReturn(true)
+        whenever(doesMainframerExists.invoke()).thenReturn(true)
 
         controller.configure()
 
@@ -68,10 +72,23 @@ class SelectorConfigurationsControllerTest {
         val toRestore = createSingletonListMockConfiguration()
         stubSelectorResults(toRestore = toRestore)
         whenever(taskSettingsIsValid.invoke()).thenReturn(false)
+        whenever(doesMainframerExists.invoke()).thenReturn(true)
 
         controller.configure()
 
         verify(showMessage).invoke(any(), eq(toRestore.size))
+    }
+
+    @Test
+    fun shouldShowMainframerNotConfiguredErrorWhenMainframerDoesNotExists() {
+        val toInject = createSingletonListMockConfiguration()
+        stubSelectorResults(toInject = toInject)
+        whenever(taskSettingsIsValid.invoke()).thenReturn(true)
+        whenever(doesMainframerExists.invoke()).thenReturn(false)
+
+        controller.configure()
+
+        verify(showMainframerNotConfiguredError).invoke(any())
     }
 
     private fun createSingletonListMockConfiguration() = listOf(mock<RunConfiguration>())
