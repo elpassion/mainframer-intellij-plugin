@@ -2,20 +2,17 @@ import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
 import org.gradle.script.lang.kotlin.*
 import org.jetbrains.intellij.*
+import org.jetbrains.intellij.tasks.PublishTask
 
 buildscript {
     repositories {
-        gradleScriptKotlin()
         jcenter()
         maven { setUrl("http://dl.bintray.com/jetbrains/intellij-plugin-service") }
-    }
-    dependencies {
-        classpath(kotlinModule("gradle-plugin"))
     }
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.2.11"
+    id("org.jetbrains.intellij") version "0.2.17"
     id("org.jetbrains.kotlin.jvm") version "1.1.1"
 }
 
@@ -34,13 +31,17 @@ repositories {
     jcenter()
 }
 
-configure<IntelliJPluginExtension> {
+intellij {
     version = "IC-171.4424.56"
     pluginName = "mainframer-integration"
-    publish.username = project.findProperty("MF_PUBLISH_USER_NAME") as String?
-    publish.password = project.findProperty("MF_PUBLISH_PASSWORD") as String?
-    publish.setChannel(project.findProperty("publishChannel") as String?)
     updateSinceUntilBuild = false
+}
+val publishPlugin: PublishTask by tasks
+
+publishPlugin {
+    username(project.findProperty("MF_PUBLISH_USER_NAME") as String?)
+    password(project.findProperty("MF_PUBLISH_PASSWORD") as String?)
+    channels(listOf(project.findProperty("publishChannel") as String?))
 }
 
 fun readVersion(): String {
@@ -80,3 +81,5 @@ dependencies {
     testCompile("junit:junit:4.11")
     testCompile("org.assertj:assertj-core:3.6.1")
 }
+
+inline operator fun <T : Task> T.invoke(a: T.() -> Unit): T = apply(a)
