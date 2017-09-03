@@ -15,4 +15,14 @@ class ResourceCopierTest : IdeaTestCase() {
         val copiedFile = File(copyDestination).apply { deleteOnExit() }
         assertTrue(copiedFile.exists())
     }
+
+    fun testShouldCreateParentIfItDoesNotExist() {
+        val file = File("")
+        val copyDestination = "${file.absolutePath}/parentDir/justAFile"
+        resourceCopier("templates/ignoreExample", copyDestination)
+                .test()
+                .assertNoErrors()
+        val copiedFile = File(copyDestination).apply { deleteOnExit() }
+        assertTrue(copiedFile.exists())
+    }
 }
