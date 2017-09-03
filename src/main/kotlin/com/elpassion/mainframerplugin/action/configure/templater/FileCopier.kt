@@ -1,6 +1,8 @@
 package com.elpassion.mainframerplugin.action.configure.templater
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.vfs.VirtualFileManager
 import io.reactivex.Completable
 import java.io.File
 import java.nio.file.Files
@@ -12,7 +14,10 @@ val resourceCopier: FileCopier = { source, target ->
     Completable.create { emitter ->
         ApplicationManager.getApplication().runWriteAction {
             try {
-                Files.copy(classLoader.getResourceAsStream(source), Paths.get(File(target).toURI()), StandardCopyOption.REPLACE_EXISTING)
+                val targetFile = File(target)
+                FileUtil.createParentDirs(targetFile)
+                Files.copy(classLoader.getResourceAsStream(source), Paths.get(targetFile.toURI()), StandardCopyOption.REPLACE_EXISTING)
+                VirtualFileManager.getInstance().syncRefresh()
                 emitter.onComplete()
             } catch(e: Exception) {
                 emitter.onError(e)
