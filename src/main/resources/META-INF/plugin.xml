@@ -45,15 +45,7 @@
         <programRunner implementation="com.elpassion.mainframerplugin.configuration.MainframerProgramRunner"/>
         <stepsBeforeRunProvider implementation="com.elpassion.mainframerplugin.task.MainframerTaskProvider"/>
         <projectConfigurable displayName="Mainframer" groupId="tools" groupWeight="140" id="mainframer"
-                             instance="com.elpassion.mainframerplugin.task.TaskDefaultOptionsConfigurable"/>
-        <projectService
-                serviceImplementation="com.elpassion.mainframerplugin.task.MainframerTaskDefaultSettingsProvider"/>
-        <projectService
-                serviceImplementation="com.elpassion.mainframerplugin.common.StateProvider"/>
-        <search.optionContributor implementation="com.elpassion.mainframerplugin.MainframerOptionContributor"/>
-        <consoleInputFilterProvider
-                implementation="com.elpassion.mainframerplugin.common.console.RemoteToLocalTranslatingInputFilterProvider"/>
-        <consoleFilterProvider implementation="com.elpassion.mainframerplugin.common.console.RegexpFilterProvider"/>
+
     </extensions>
 
     <actions>
