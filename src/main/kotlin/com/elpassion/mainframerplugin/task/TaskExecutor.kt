@@ -6,6 +6,7 @@ import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.ExecutionEnvironmentBuilder
+import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
@@ -15,10 +16,10 @@ import io.reactivex.SingleEmitter
 import io.reactivex.functions.Consumer
 
 class TaskExecutor(private val project: Project,
-                   private val commandLineProvider: (Project, TaskData) -> GeneralCommandLine) {
+                   private val commandLineProvider: (Project, TaskData, DataContext) -> GeneralCommandLine) {
 
-    fun executeSync(task: MainframerTask, executionId: Long): Boolean {
-        return Single.fromCallable { createExecutionEnv(task, executionId) }
+    fun executeSync(task: MainframerTask, executionId: Long, context: DataContext): Boolean {
+        return Single.fromCallable { createExecutionEnv(task, executionId, context) }
                 .subscribeOn(UINonModalScheduler)
                 .doAfterSuccess { saveAllDocuments() }
                 .flatMap(executeAsync)
@@ -29,9 +30,9 @@ class TaskExecutor(private val project: Project,
                 .blockingGet()
     }
 
-    private fun createExecutionEnv(task: MainframerTask, executionId: Long): ExecutionEnvironment {
+    private fun createExecutionEnv(task: MainframerTask, executionId: Long, context: DataContext): ExecutionEnvironment {
         return ExecutionEnvironmentBuilder(project, DefaultRunExecutor.getRunExecutorInstance())
-                .runProfile(MainframerRunProfile(task, { taskData: TaskData -> commandLineProvider(project, taskData) }))
+                .runProfile(MainframerRunProfile(task, { taskData: TaskData -> commandLineProvider(project, taskData, context) }))
                 .build()
                 .apply {
                     this.executionId = executionId
