@@ -21,6 +21,7 @@ public class SettingsEditorPanel {
 
     public SettingsEditorPanel(Project project) {
         this.project = project;
+        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommand, project));
     }
 
     private void createUIComponents() {
@@ -30,6 +31,5 @@ public class SettingsEditorPanel {
         mainframerTool.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerTool);
-        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommand, project));
     }
 }
