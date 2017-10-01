@@ -30,6 +30,7 @@ public class TaskDefaultSettingsPanel {
         this.project = project;
         this.settingsProvider = settingsProvider;
         this.toolConfiguration = toolConfiguration;
+        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommandField, project));
     }
 
     private void createUIComponents() {
@@ -39,7 +40,6 @@ public class TaskDefaultSettingsPanel {
         mainframerToolField.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerToolField);
-        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommandField, project));
     }
 
     public Boolean isModified() {
