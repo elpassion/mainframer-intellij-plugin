@@ -1,5 +1,6 @@
 package com.elpassion.mainframerplugin.configuration.ui;
 
+import com.elpassion.mainframerplugin.common.ui.InsertMacroActionListener;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.LabeledComponent;
 import com.intellij.openapi.ui.TextBrowseFolderListener;
@@ -15,6 +16,7 @@ public class SettingsEditorPanel {
     public JTextField buildCommand;
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
+    private JButton insertMacroButton;
     public TextFieldWithBrowseButton mainframerTool;
 
     public SettingsEditorPanel(Project project) {
@@ -28,5 +30,6 @@ public class SettingsEditorPanel {
         mainframerTool.addBrowseFolderListener(textBrowseFolderListener);
         mainframerToolHolder = new LabeledComponent<>();
         mainframerToolHolder.setComponent(mainframerTool);
+        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommand, project));
     }
 }
