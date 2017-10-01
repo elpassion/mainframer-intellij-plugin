@@ -9,8 +9,6 @@ import com.elpassion.mainframerplugin.util.fromJson
 import com.elpassion.mainframerplugin.util.toJson
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.*
-import com.intellij.execution.configurations.ConfigurationFactory
-import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.filters.TextConsoleBuilderFactory
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
@@ -27,7 +25,7 @@ class MainframerRunConfiguration(project: Project, configurationFactory: Configu
     }
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment) = with(data ?: getDefaultData()) {
-        createCommandLineState(environment, commandLineProvider(project, this))
+        createCommandLineState(environment, commandLineProvider(project, this, environment.dataContext))
     }
 
     private fun createCommandLineState(environment: ExecutionEnvironment, commandLine: GeneralCommandLine): CommandLineState {

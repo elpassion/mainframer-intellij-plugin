@@ -4,6 +4,7 @@ import com.elpassion.mainframerplugin.action.configure.selector.SelectorItem
 import com.intellij.ui.CheckBoxList
 import com.jgoodies.common.collect.ArrayListModel
 import javax.swing.JCheckBox
+import javax.swing.ListModel
 import javax.swing.ListSelectionModel
 
 class SelectorList : CheckBoxList<SelectorItem>() {
@@ -14,7 +15,8 @@ class SelectorList : CheckBoxList<SelectorItem>() {
 
     var items: List<SelectorItem> = emptyList()
         set(value) {
-            model = value.asListModel()
+            @Suppress("UNCHECKED_CAST")
+            model = value.asListModel() as ListModel<JCheckBox>
             field = value
         }
         get() = field.mapIndexed { index, selectorItem -> selectorItem.copy(isSelected = isItemSelected(index)) }

@@ -3,11 +3,14 @@ package com.elpassion.mainframerplugin.common.console
 import com.elpassion.mainframerplugin.common.StateProvider
 import com.elpassion.mainframerplugin.task.TaskData
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.ide.macro.MacroManager
+import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import java.util.stream.Collectors
 
-val commandLineProvider: (Project, TaskData) -> GeneralCommandLine = { project, taskData ->
+val commandLineProvider: (Project, TaskData, DataContext?) -> GeneralCommandLine = { project, taskData, dataContext ->
     with(taskData) {
+        val buildCommandWithExpandedMacros = dataContext?.let { expandMacros(dataContext) } ?: buildCommand
         if (StateProvider.getInstance(project).isTurnOn) {
 
             // bash command cannot work with Windows paths so converting to ie c:\ to /mnt/c/ for linux subsystem
@@ -23,9 +26,12 @@ val commandLineProvider: (Project, TaskData) -> GeneralCommandLine = { project, 
                                 .map(String::toString).collect(Collectors.joining("/"))
             }
 
-            GeneralCommandLine("bash", modifiedMainframerPath, buildCommand)
+            GeneralCommandLine("bash", modifiedMainframerPath, buildCommandWithExpandedMacros)
         } else {
-            GeneralCommandLine("bash", "-c", buildCommand)
+            GeneralCommandLine("bash", "-c", buildCommandWithExpandedMacros)
         }
     }.withWorkDirectory(project.basePath)
 }
+
+private fun TaskData.expandMacros(dataContext: DataContext?) =
+        MacroManager.getInstance().expandMacrosInString(buildCommand, true, dataContext)
