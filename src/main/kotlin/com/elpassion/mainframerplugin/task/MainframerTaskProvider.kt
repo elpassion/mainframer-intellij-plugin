@@ -46,7 +46,7 @@ class MainframerTaskProvider(private val project: Project) : BeforeRunTaskProvid
         return TaskExecutor(project, commandLineProvider).executeSync(task, env.executionId)
     }
 
-    override fun createTask(runConfiguration: RunConfiguration?): MainframerTask {
+    override fun createTask(runConfiguration: RunConfiguration): MainframerTask {
         val settingsProvider = MainframerTaskDefaultSettingsProvider.getInstance(project)
         return MainframerTask(settingsProvider.taskData)
     }
