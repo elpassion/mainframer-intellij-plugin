@@ -12,6 +12,7 @@ This plugin makes integration with Mainframer tool easy and seamless. Plugin use
 * Configuring mainframer in project
 * Custom run configuration for mainframer
 * Switching between local and remote compilation
+* Support for Intellij idea macros
 
 Installation
 ------------
