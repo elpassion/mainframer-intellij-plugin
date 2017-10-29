@@ -7,4 +7,5 @@ public class ConfiguratorForm {
     public JComboBox<String> versionComboBox;
     public JTextField buildCommandField;
     public JTextField remoteMachineField;
+    public JButton insertMacroButton;
 }

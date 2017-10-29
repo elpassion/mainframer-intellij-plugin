@@ -43,10 +43,10 @@ class MainframerTaskProvider(private val project: Project) : BeforeRunTaskProvid
             configuration?.project?.showInvalidDataError()
             return false
         }
-        return TaskExecutor(project, commandLineProvider).executeSync(task, env.executionId)
+        return TaskExecutor(project, commandLineProvider).executeSync(task, env.executionId, context)
     }
 
-    override fun createTask(runConfiguration: RunConfiguration?): MainframerTask {
+    override fun createTask(runConfiguration: RunConfiguration): MainframerTask {
         val settingsProvider = MainframerTaskDefaultSettingsProvider.getInstance(project)
         return MainframerTask(settingsProvider.taskData)
     }

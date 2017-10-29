@@ -2,6 +2,7 @@ package com.elpassion.mainframerplugin.action.configure.configurator
 
 import com.elpassion.mainframerplugin.action.configure.configurator.ui.ConfiguratorForm
 import com.elpassion.mainframerplugin.common.*
+import com.elpassion.mainframerplugin.common.ui.InsertMacroActionListener
 import com.intellij.openapi.project.Project
 import com.intellij.ui.CollectionComboBoxModel
 import io.reactivex.Maybe
@@ -17,6 +18,7 @@ class ConfiguratorDialog(project: Project,
     init {
         title = StringsBundle.getMessage("configure.configurator.dialog.title")
         init()
+        form.insertMacroButton.addActionListener(InsertMacroActionListener(form.buildCommandField, project))
     }
 
     override fun createCenterPanel(): JComponent {

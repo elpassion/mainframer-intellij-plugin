@@ -1,6 +1,7 @@
 package com.elpassion.mainframerplugin.task.ui;
 
 import com.elpassion.mainframerplugin.common.*;
+import com.elpassion.mainframerplugin.common.ui.InsertMacroActionListener;
 import com.elpassion.mainframerplugin.task.MainframerTaskDefaultSettingsProvider;
 import com.elpassion.mainframerplugin.task.TaskData;
 import com.intellij.openapi.options.ConfigurationException;
@@ -22,12 +23,14 @@ public class TaskDefaultSettingsPanel {
     public JPanel panel;
     private LabeledComponent<TextFieldWithBrowseButton> mainframerToolHolder;
     public JTextField remoteMachineField;
+    private JButton insertMacroButton;
     private ToolConfiguration toolConfiguration;
 
     public TaskDefaultSettingsPanel(Project project, MainframerTaskDefaultSettingsProvider settingsProvider, ToolConfiguration toolConfiguration) {
         this.project = project;
         this.settingsProvider = settingsProvider;
         this.toolConfiguration = toolConfiguration;
+        insertMacroButton.addActionListener(new InsertMacroActionListener(buildCommandField, project));
     }
 
     private void createUIComponents() {
