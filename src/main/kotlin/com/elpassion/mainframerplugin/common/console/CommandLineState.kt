@@ -35,7 +35,7 @@ class BringConsoleToFrontExecutionResult(
     }
 
     class OnProcessStartedProcessAdapter(val onProcessStarted: () -> Unit) : ProcessAdapter() {
-        override fun startNotified(event: ProcessEvent?) {
+        override fun startNotified(event: ProcessEvent) {
             onProcessStarted()
         }
     }
