@@ -13,7 +13,8 @@ buildscript {
 
 plugins {
     id("org.jetbrains.intellij") version "0.2.17"
-    id("org.jetbrains.kotlin.jvm") version "1.1.1"
+    //had to upgrade because of gradle: "Could not resolve all files for configuration ':runtime'."
+    id("org.jetbrains.kotlin.jvm") version "1.2.10"
 }
 
 group = "com.elpassion.mainframerplugin"
@@ -32,7 +33,7 @@ repositories {
 }
 
 intellij {
-    version = "IC-171.4424.56"
+    version = "IC-173.3942.27"
     pluginName = "mainframer-integration"
     updateSinceUntilBuild = false
 }
