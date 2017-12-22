@@ -13,7 +13,6 @@ buildscript {
 
 plugins {
     id("org.jetbrains.intellij") version "0.2.17"
-    //had to upgrade because of gradle: "Could not resolve all files for configuration ':runtime'."
     id("org.jetbrains.kotlin.jvm") version "1.2.10"
 }
 
