@@ -25,7 +25,8 @@ class MainframerTaskProvider(private val project: Project) : BeforeRunTaskProvid
 
     override fun isConfigurable(): Boolean = true
 
-    override fun configureTask(runConfiguration: RunConfiguration?, task: MainframerTask): Boolean {
+    //TODO switch to Promise implementation
+    override fun configureTask(runConfiguration: RunConfiguration, task: MainframerTask): Boolean {
         TaskEditDialog(project).run {
             restoreTaskData(task.data)
             if (showAndGet()) {
@@ -36,11 +37,11 @@ class MainframerTaskProvider(private val project: Project) : BeforeRunTaskProvid
         return false
     }
 
-    override fun canExecuteTask(configuration: RunConfiguration?, task: MainframerTask): Boolean = task.isValid()
+    override fun canExecuteTask(configuration: RunConfiguration, task: MainframerTask): Boolean = task.isValid()
 
-    override fun executeTask(context: DataContext, configuration: RunConfiguration?, env: ExecutionEnvironment, task: MainframerTask): Boolean {
+    override fun executeTask(context: DataContext, configuration: RunConfiguration, env: ExecutionEnvironment, task: MainframerTask): Boolean {
         if (!task.isValid()) {
-            configuration?.project?.showInvalidDataError()
+            configuration.project?.showInvalidDataError()
             return false
         }
         return TaskExecutor(project, commandLineProvider).executeSync(task, env.executionId, context)
