@@ -32,7 +32,7 @@ repositories {
 }
 
 intellij {
-    version = "IC-173.3942.27"
+    version = "IC-173.4301.14"
     pluginName = "mainframer-integration"
     updateSinceUntilBuild = false
 }
