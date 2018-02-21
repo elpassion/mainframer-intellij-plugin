@@ -12,6 +12,7 @@ buildscript {
 }
 
 plugins {
+    jacoco
     id("org.jetbrains.intellij") version "0.2.17"
     id("org.jetbrains.kotlin.jvm") version "1.2.10"
 }
@@ -25,6 +26,15 @@ configure<JavaPluginConvention> {
     sourceSets[SourceSet.MAIN_SOURCE_SET_NAME].java {
         srcDir("src/main/kotlin")
     }
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = true
+    }
+    val check by tasks
+    check.dependsOn(this)
 }
 
 repositories {
