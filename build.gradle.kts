@@ -44,7 +44,9 @@ repositories {
 intellij {
     version = "IC-173.4301.14"
     pluginName = "mainframer-integration"
-    updateSinceUntilBuild = false
+    updateSinceUntilBuild = true
+    sinceBuild = "145"
+    untilBuild = "173.*"
 }
 val publishPlugin: PublishTask by tasks
 
