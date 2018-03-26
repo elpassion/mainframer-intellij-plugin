@@ -2,6 +2,7 @@ import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
 import org.gradle.script.lang.kotlin.*
 import org.jetbrains.intellij.*
+import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishTask
 
 buildscript {
@@ -46,7 +47,9 @@ intellij {
     pluginName = "mainframer-integration"
     updateSinceUntilBuild = true
 }
+
 val publishPlugin: PublishTask by tasks
+val patchPluginXml: PatchPluginXmlTask by tasks
 
 publishPlugin {
     username(project.findProperty("MF_PUBLISH_USER_NAME") as String?)
@@ -55,8 +58,8 @@ publishPlugin {
 }
 
 patchPluginXml {
-    sinceBuild = "145"
-    untilBuild = "173.*"
+    sinceBuild("145")
+    untilBuild("173.*")
 }
 
 fun readVersion(): String {
