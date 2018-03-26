@@ -13,7 +13,7 @@ buildscript {
 
 plugins {
     jacoco
-    id("org.jetbrains.intellij") version "0.2.17"
+    id("org.jetbrains.intellij") version "0.3.1"
     id("org.jetbrains.kotlin.jvm") version "1.2.10"
 }
 
