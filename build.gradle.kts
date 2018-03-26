@@ -45,8 +45,6 @@ intellij {
     version = "IC-173.4301.14"
     pluginName = "mainframer-integration"
     updateSinceUntilBuild = true
-    sinceBuild = "145"
-    untilBuild = "173.*"
 }
 val publishPlugin: PublishTask by tasks
 
@@ -54,6 +52,11 @@ publishPlugin {
     username(project.findProperty("MF_PUBLISH_USER_NAME") as String?)
     password(project.findProperty("MF_PUBLISH_PASSWORD") as String?)
     channels(listOf(project.findProperty("publishChannel") as String?))
+}
+
+patchPluginXml {
+    sinceBuild = "145"
+    untilBuild = "173.*"
 }
 
 fun readVersion(): String {
