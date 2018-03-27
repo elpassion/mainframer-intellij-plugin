@@ -2,6 +2,7 @@ import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
 import org.gradle.script.lang.kotlin.*
 import org.jetbrains.intellij.*
+import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishTask
 
 buildscript {
@@ -12,7 +13,8 @@ buildscript {
 }
 
 plugins {
-    id("org.jetbrains.intellij") version "0.2.17"
+    jacoco
+    id("org.jetbrains.intellij") version "0.3.1"
     id("org.jetbrains.kotlin.jvm") version "1.2.10"
 }
 
@@ -27,6 +29,15 @@ configure<JavaPluginConvention> {
     }
 }
 
+tasks.withType<JacocoReport> {
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = true
+    }
+    val check by tasks
+    check.dependsOn(this)
+}
+
 repositories {
     jcenter()
 }
@@ -34,14 +45,21 @@ repositories {
 intellij {
     version = "IC-173.4301.14"
     pluginName = "mainframer-integration"
-    updateSinceUntilBuild = false
+    updateSinceUntilBuild = true
 }
+
 val publishPlugin: PublishTask by tasks
+val patchPluginXml: PatchPluginXmlTask by tasks
 
 publishPlugin {
     username(project.findProperty("MF_PUBLISH_USER_NAME") as String?)
     password(project.findProperty("MF_PUBLISH_PASSWORD") as String?)
     channels(listOf(project.findProperty("publishChannel") as String?))
+}
+
+patchPluginXml {
+    sinceBuild("145")
+    untilBuild("173.*")
 }
 
 fun readVersion(): String {
