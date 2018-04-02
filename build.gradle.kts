@@ -1,7 +1,5 @@
 import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
-import org.gradle.script.lang.kotlin.*
-import org.jetbrains.intellij.*
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishTask
 
