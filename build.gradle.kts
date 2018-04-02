@@ -2,6 +2,7 @@ import org.gradle.api.tasks.SourceSet
 import java.util.regex.Pattern
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishTask
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 
 buildscript {
     repositories {
@@ -13,8 +14,9 @@ buildscript {
 plugins {
     jacoco
     id("org.jetbrains.intellij") version "0.3.1"
-    id("org.jetbrains.kotlin.jvm") version "1.2.10"
+    kotlin("jvm") version "1.2.0"
 }
+val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 
 group = "com.elpassion.mainframerplugin"
 version = readVersion()
@@ -84,8 +86,8 @@ task("updateVersion") {
 }
 
 dependencies {
-    compile(kotlinModule("stdlib"))
-    compile(kotlinModule("reflect"))
+    compile(kotlin("stdlib", kotlinVersion))
+    compile(kotlin("reflect", kotlinVersion))
     compile("com.fasterxml.jackson.core:jackson-databind:2.8.6")
     compile("com.squareup.retrofit2:retrofit:2.1.0")
     compile("com.squareup.retrofit2:converter-jackson:2.1.0")
