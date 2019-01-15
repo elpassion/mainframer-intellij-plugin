@@ -51,7 +51,7 @@ private fun getHardcodedBeforeRunTasks(configuration: RunConfiguration, project:
     return beforeRunProviders.associate { provider -> provider.id to provider.createTask(configuration) }
             .filterValues { task -> task != null && task.isEnabled }
             .map {
-                configuration.factory.configureBeforeRunTaskDefaults(it.key, it.value)
+                configuration.factory?.configureBeforeRunTaskDefaults(it.key, it.value)
                 it.value
             }
             .filterNotNull()
