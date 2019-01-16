@@ -43,7 +43,7 @@ repositories {
 }
 
 intellij {
-    version = "IC-2018.1"
+    version = "IC-2018.2"
     pluginName = "mainframer-integration"
     updateSinceUntilBuild = true
 }
@@ -59,7 +59,7 @@ publishPlugin {
 
 patchPluginXml {
     sinceBuild("145")
-    untilBuild("181.*")
+    untilBuild("182.*")
 }
 
 fun readVersion(): String {
