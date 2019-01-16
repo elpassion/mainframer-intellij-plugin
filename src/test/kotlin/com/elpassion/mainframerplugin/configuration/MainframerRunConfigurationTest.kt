@@ -4,11 +4,15 @@ import com.elpassion.mainframerplugin.common.assertThrows
 import com.elpassion.mainframerplugin.task.TaskData
 import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.openapi.project.Project
-import com.nhaarman.mockito_kotlin.*
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Test
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.jdom.Element
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class MainframerRunConfigurationTest {
 
@@ -28,11 +32,6 @@ class MainframerRunConfigurationTest {
         assertExceptionMessageOnCheckConfiguration(
                 expectedMessage = "Cannot find Mainframer script in path",
                 taskData = createTaskData(mainframerPath = ""))
-    }
-
-    @Test
-    fun shouldReturnFalseOnIsCompileBeforeLaunchAddedByDefault() {
-        assertFalse(createRunConfiguration().isCompileBeforeLaunchAddedByDefault)
     }
 
     @Test

@@ -2,11 +2,12 @@ package com.elpassion.mainframerplugin.configuration
 
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
+import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.project.Project
 
 class MainframerConfigurationFactory(configurationType: ConfigurationType) : ConfigurationFactory(configurationType) {
 
-    override fun createTemplateConfiguration(project: Project) = MainframerRunConfiguration(
+    override fun createTemplateConfiguration(project: Project): RunConfiguration = MainframerRunConfiguration(
             project = project,
             configurationFactory = this,
             name = "Mainframer")
