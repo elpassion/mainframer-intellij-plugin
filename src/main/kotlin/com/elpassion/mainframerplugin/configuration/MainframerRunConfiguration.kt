@@ -15,8 +15,11 @@ import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import org.jdom.Element
 
-class MainframerRunConfiguration(project: Project, configurationFactory: ConfigurationFactory, name: String)
-    : LocatableConfigurationBase(project, configurationFactory, name) {
+class MainframerRunConfiguration(
+    project: Project,
+    configurationFactory: ConfigurationFactory,
+    name: String
+) : LocatableConfigurationBase<RunConfigurationOptions>(project, configurationFactory, name) {
 
     var data: TaskData? = null
 
@@ -36,7 +39,7 @@ class MainframerRunConfiguration(project: Project, configurationFactory: Configu
 
     override fun readExternal(element: Element) {
         super.readExternal(element)
-        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson<TaskData>() ?: getDefaultData()
+        data = element.getAttributeValue(CONFIGURATION_ATTR_DATA)?.fromJson() ?: getDefaultData()
     }
 
     override fun writeExternal(element: Element) {
@@ -55,12 +58,10 @@ class MainframerRunConfiguration(project: Project, configurationFactory: Configu
         }
     }
 
-    override fun isCompileBeforeLaunchAddedByDefault(): Boolean = false
-
     private fun getDefaultData() = MainframerTaskDefaultSettingsProvider.getInstance(project).taskData
 
     companion object {
-        private val CONFIGURATION_ATTR_DATA = "MFRun.data"
+        private const val CONFIGURATION_ATTR_DATA = "MFRun.data"
     }
 
 }
