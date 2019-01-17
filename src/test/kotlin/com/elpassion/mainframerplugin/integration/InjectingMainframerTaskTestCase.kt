@@ -12,6 +12,7 @@ import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
+import com.intellij.execution.configurations.RunConfigurationOptions
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
@@ -76,11 +77,11 @@ class InjectingMainframerTaskTestCase : LightPlatformCodeInsightFixtureTestCase(
 
     private fun firstTaskData(runConfiguration: RunConfiguration) = (runManager.getBeforeRunTasks(runConfiguration).first() as MainframerTask).data
 
-    private fun createTestConfigurationType() = TestConfigurationType(randomString(), true)
+    private fun createTestConfigurationType() = TestConfigurationType(randomString())
 
     private fun addTestConfiguration(testConfigurationType: TestConfigurationType): RunConfiguration {
         val testConfigurationFactory = testConfigurationType.configurationFactories.first()
-        val runConfiguration = runManager.createRunConfiguration(randomString(), testConfigurationFactory)
+        val runConfiguration = runManager.createConfiguration(randomString(), testConfigurationFactory)
         runManager.addConfiguration(runConfiguration, false)
         return runConfiguration.configuration
     }
@@ -92,22 +93,20 @@ class InjectingMainframerTaskTestCase : LightPlatformCodeInsightFixtureTestCase(
         return runManager.getConfigurationTemplate(configurationFactory).configuration
     }
 
-    private class TestConfigurationFactory(testConfigurationType: TestConfigurationType, val uuid: String, val compileBeforeLaunch: Boolean) : ConfigurationFactory(testConfigurationType) {
-        override fun createTemplateConfiguration(project: Project) = TestRunConfigurationBase(this, project, uuid, compileBeforeLaunch)
+    private class TestConfigurationFactory(testConfigurationType: TestConfigurationType, val uuid: String) : ConfigurationFactory(testConfigurationType) {
+        override fun createTemplateConfiguration(project: Project): RunConfiguration = TestRunConfigurationBase(this, project, uuid)
     }
 
-    private class TestRunConfigurationBase(configurationFactory: ConfigurationFactory, project: Project, uuid: String, val compileBeforeLaunch: Boolean) : RunConfigurationBase(project, configurationFactory, uuid) {
+    private class TestRunConfigurationBase(configurationFactory: ConfigurationFactory, project: Project, uuid: String) : RunConfigurationBase<RunConfigurationOptions>(project, configurationFactory, uuid) {
         override fun checkConfiguration() = Unit
 
         override fun getConfigurationEditor() = TODO("mock")
 
         override fun getState(executor: Executor, environment: ExecutionEnvironment) = null
-
-        override fun isCompileBeforeLaunchAddedByDefault() = compileBeforeLaunch
     }
 
-    private class TestConfigurationType(val uuid: String, compileBeforeLaunch: Boolean) : ConfigurationType {
-        private val elements = TestConfigurationFactory(this, uuid, compileBeforeLaunch)
+    private class TestConfigurationType(val uuid: String) : ConfigurationType {
+        private val elements = TestConfigurationFactory(this, uuid)
 
         override fun getIcon(): Icon = AllIcons.Icons.Ide.NextStep
 
