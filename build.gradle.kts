@@ -14,7 +14,7 @@ buildscript {
 plugins {
     jacoco
     id("org.jetbrains.intellij") version "0.4.8"
-    kotlin("jvm") version "1.2.30"
+    kotlin("jvm") version "1.3.30"
 }
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 
@@ -88,6 +88,7 @@ task("updateVersion") {
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlin("reflect", kotlinVersion))
+    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0")
     compile("com.fasterxml.jackson.core:jackson-databind:2.8.6")
     compile("com.squareup.retrofit2:retrofit:2.1.0")
     compile("com.squareup.retrofit2:converter-jackson:2.1.0")
