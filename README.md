@@ -1,4 +1,4 @@
-# Mainframer Integration [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/elpassion/mainframer-intellij-plugin.svg)](http://isitmaintained.com/project/elpassion/mainframer-intellij-plugin "Average time to resolve an issue") [![Stories in Ready](https://badge.waffle.io/elpassion/mainframer-intellij-plugin.svg?label=ready&title=Ready)](http://waffle.io/elpassion/mainframer-intellij-plugin) [![Stories in progress](https://badge.waffle.io/elpassion/mainframer-intellij-plugin.svg?label=in%20progress&title=In%20Progress)](http://waffle.io/elpassion/mainframer-intellij-plugin) [![Stories in CR](https://badge.waffle.io/elpassion/mainframer-intellij-plugin.svg?label=cr&title=CR)](http://waffle.io/elpassion/mainframer-intellij-plugin) 
+# Mainframer Integration [![Build Status](https://travis-ci.org/elpassion/mainframer-intellij-plugin.svg?branch=develop)](https://travis-ci.org/elpassion/mainframer-intellij-plugin) [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/elpassion/mainframer-intellij-plugin.svg)](http://isitmaintained.com/project/elpassion/mainframer-intellij-plugin "Average time to resolve an issue")
 An IntelliJ IDEA plugin for [Mainframer](https://github.com/gojuno/mainframer).
 
 About
@@ -94,7 +94,7 @@ Now you are ready to run your custom mainframer configuration:
 License
 -------
 
-    Copyright 2017 EL Passion
+    Copyright 2017-2019 EL Passion
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
