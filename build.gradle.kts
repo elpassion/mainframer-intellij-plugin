@@ -58,7 +58,7 @@ publishPlugin {
 
 patchPluginXml {
     sinceBuild("145")
-    untilBuild("191.*")
+    untilBuild("193.*")
 }
 
 fun readVersion(): String {
