@@ -1,8 +1,7 @@
-import org.gradle.api.tasks.SourceSet
-import java.util.regex.Pattern
 import org.jetbrains.intellij.tasks.PatchPluginXmlTask
 import org.jetbrains.intellij.tasks.PublishTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
+import java.util.regex.Pattern
 
 buildscript {
     repositories {
@@ -13,8 +12,8 @@ buildscript {
 
 plugins {
     jacoco
-    id("org.jetbrains.intellij") version "0.4.8"
-    kotlin("jvm") version "1.3.30"
+    id("org.jetbrains.intellij") version "0.4.16"
+    kotlin("jvm") version "1.3.70"
 }
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 
@@ -72,14 +71,14 @@ fun readVersion(): String {
     }
 }
 
-
-val versionName by project
+val versionName: String by project
 task("updateVersion") {
     doLast {
         val versionFile = File("version.gradle.properties")
         val matcher = Pattern.compile("version=(\\d+.\\d+.\\d+)").matcher(versionFile.readText())
         if (matcher.find()) {
-            val versionText = StringBuilder(versionFile.readText()).replace(matcher.start(1), matcher.end(1), versionName.toString())
+            val versionText =
+                StringBuilder(versionFile.readText()).replace(matcher.start(1), matcher.end(1), versionName.toString())
             versionFile.writeText(versionText.toString())
         }
     }
@@ -88,7 +87,7 @@ task("updateVersion") {
 dependencies {
     compile(kotlin("stdlib", kotlinVersion))
     compile(kotlin("reflect", kotlinVersion))
-    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0")
+    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
     compile("com.fasterxml.jackson.core:jackson-databind:2.8.6")
     compile("com.squareup.retrofit2:retrofit:2.1.0")
     compile("com.squareup.retrofit2:converter-jackson:2.1.0")
